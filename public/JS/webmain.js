@@ -10,18 +10,32 @@ function updateDATA(reqG) {
         },
         type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
         success: function(responseData) {
-            var sensors = responseData.sensors
-            console.log("RECEIVED: " + sensors[0].T);
+            gatewaysStatus = responseData
+            console.log(gatewaysStatus)
+                // var sensors = responseData.sensors
+                // console.log("RECEIVED: " + sensors[0].T);
 
-            $('#G1S1T').text = sensors[0].T;
-            for (var i = 0; i < sensors.length; i++) {
-                var ELEMENT = 'G';
-                ELEMENT += reqG;
-                ELEMENT += 'S' + sensors[i].SID;
-                console.log(ELEMENT);
-                document.getElementById(ELEMENT + 'T').innerText = sensors[i].T;
-                document.getElementById(ELEMENT + 'H').innerText = sensors[i].H;
-            };
+            // $('#G1S1T').text = sensors[0].T;
+            // for (var i = 0; i < sensors.length; i++) {
+            //     var ELEMENT = 'G';
+            //     ELEMENT += reqG;
+            //     ELEMENT += 'S' + sensors[i].SID;
+            //     console.log(ELEMENT);
+            //     document.getElementById(ELEMENT + 'T').innerText = sensors[i].T;
+            //     document.getElementById(ELEMENT + 'H').innerText = sensors[i].H;
+            // };
+
+            for (var i = 0; i < gatewaysStatus.length; i++) {
+                var prefixElement = gatewaysStatus[i].GID;
+                console.log(gatewaysStatus[i].avgTemperature.length)
+                for (var j = 0; j < gatewaysStatus[i].avgTemperature.length; j++) {
+                    let ELEMENT = prefixElement + "s" + j.toString();
+                    console.log(ELEMENT)
+                    document.getElementById(ELEMENT + 't').innerText = gatewaysStatus[i].avgTemperature[j];
+                    document.getElementById(ELEMENT + 'h').innerText = gatewaysStatus[i].avgHumidity[j];
+                }
+
+            }
 
         },
         error: console.error
@@ -51,4 +65,4 @@ function emergencyCall(reqG, command) {
 
 
 var myVar1 = setInterval(updateDATA, 5000, 1);
-var myVar2 = setInterval(updateDATA, 5000, 2);
+// var myVar2 = setInterval(updateDATA, 5000, 2);

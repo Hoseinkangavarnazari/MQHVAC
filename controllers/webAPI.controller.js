@@ -8,41 +8,57 @@ function randomInt(low, high) {
 
 exports.updateData = async(req, res) => {
 
-    answer = []
-    sensorData = await sensorStatus.find({ GID: "g1f0" }, function(err, document) {
-        // five is number of sensors
-        var avgTemperature = new Array(5);
-        avgTemperature.fill(0);
+    response = []
 
-        var avgHumidity = new Array(5);
-        avgHumidity.fill(0);
-        for (x of document) {
-            tempSensors = x.sensors
-            for (y of tempSensors) {
-                avgTemperature[y.SID] += y.temperature;
-                avgHumidity[y.SID] += y.humidity;
+    GIDLIST = ['g1f0', 'g2f0']
+    for (currentGID of GIDLIST) {
+        sensorData = await sensorStatus.find({ GID: currentGID }, function(err, document) {
+            // five is number of sensors
+            var avgTemperature = new Array(5);
+            avgTemperature.fill(0);
+
+            var avgHumidity = new Array(5);
+            avgHumidity.fill(0);
+            for (x of document) {
+                tempSensors = x.sensors
+                for (y of tempSensors) {
+                    avgTemperature[y.SID] += y.temperature;
+                    avgHumidity[y.SID] += y.humidity;
+                }
             }
-        }
 
-        for (i = 0; i < avgTemperature.length; i++) {
-            avgTemperature[i] /= document.length
-            avgHumidity[i] /= document.length
-        }
-        console.log(document)
-    }).sort({ _id: -1 }).limit(5);
+            for (i = 0; i < avgTemperature.length; i++) {
+                avgTemperature[i] /= document.length
+                avgHumidity[i] /= document.length
+            }
+
+            let tempresponse = {
+                "GID": currentGID,
+                "avgTemperature": avgTemperature,
+                "avgHumidity": avgHumidity
+            }
+            response.push(tempresponse);
+        }).sort({ _id: -1 }).limit(5);
+    }
+
+    // console.log(response)
+    res.send(response)
+
+
+
 
     //return model
-    console.log("REQUEST gateway: " + req.body.requestedGateway)
+    // console.log("REQUEST gateway: " + req.body.requestedGateway)
 
-    let GID = req.body.requestedGateway;
-    let sensors = [
-        { SID: 1, H: randomInt(10, 24), T: randomInt(1, 9) },
-        { SID: 2, H: randomInt(10, 24), T: randomInt(1, 9) }
-    ]
+    // let GID = req.body.requestedGateway;
+    // let sensors = [
+    //     { SID: 1, H: randomInt(10, 24), T: randomInt(1, 9) },
+    //     { SID: 2, H: randomInt(10, 24), T: randomInt(1, 9) }
+    // ]
 
-    res.send({
-        "sensors": sensors
-    })
+    // res.send({
+    //     "sensors": sensors
+    // })
 
 }
 
