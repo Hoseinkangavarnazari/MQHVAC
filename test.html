@@ -4,7 +4,7 @@
     <title>SARV HVAC PLATFORM</title>
     <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="CSS/main.css">
     <script>
         var socket = io();
     </script>
@@ -40,11 +40,11 @@
                     <h5 class="card-title">Gateway IT-1</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Computer Science department</h6>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><b>Sensor 1:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g1f0s0t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g1f0s0h">0 </strong></li>
-                        <li class="list-group-item"><b>Sensor 2:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g1f0s1t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g1f0s1h">0 </strong></li>
-                        <li class="list-group-item"><b>Sensor 3:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g1f0s2t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g1f0s2h">0 </strong></li>
-                        <li class="list-group-item"><b>Sensor 4:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g1f0s3t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g1f0s3h">0 </strong></li>
-                        <li class="list-group-item"><b>Sensor 5:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g1f0s4t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g1f0s4h">0 </strong></li>
+                        <li class="list-group-item"><b>Sensor 1:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g1f0s0t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g1f0s0h">0 </strong></li>
+                        <li class="list-group-item"><b>Sensor 2:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g1f0s1t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g1f0s1h">0 </strong></li>
+                        <li class="list-group-item"><b>Sensor 3:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g1f0s2t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g1f0s2h">0 </strong></li>
+                        <li class="list-group-item"><b>Sensor 4:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g1f0s3t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g1f0s3h">0 </strong></li>
+                        <li class="list-group-item"><b>Sensor 5:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g1f0s4t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g1f0s4h">0 </strong></li>
                         <!-- <li class="list-group-item">Relay Status: &nbsp; &nbsp;<button type="button" class="btn btn-sm btn-success" style="width: 100px;">  ON</button> </li>
                         <li class="list-group-item">
                             Emergency Control: </br>
@@ -76,11 +76,12 @@
                     <h5 class="card-title">Gateway IT-2</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Computer Science department</h6>
                     <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><b>Sensor 1:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g2f0s0t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g2f0s0h">0 </strong></li>
-                      <li class="list-group-item"><b>Sensor 2:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g2f0s1t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g2f0s1h">0 </strong></li>
-                      <li class="list-group-item"><b>Sensor 3:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g2f0s2t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g2f0s2h">0 </strong></li>
-                      <li class="list-group-item"><b>Sensor 4:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g2f0s3t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g2f0s3h">0 </strong></li>
-                      <li class="list-group-item"><b>Sensor 5:</b>&nbsp; &nbsp; Temperature:&nbsp;<strong id="g2f0s4t">0</strong>&nbsp;C &nbsp;Humidity:&nbsp;<strong id="g2f0s4h">0 </strong></li>
+
+                        <li class="list-group-item"><b>Sensor 1:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g2f0s0t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g2f0s0h">0</strong></li>
+                        <li class="list-group-item"><b>Sensor 2:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g2f0s1t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g2f0s1h">0</strong></li>
+                        <li class="list-group-item"><b>Sensor 3:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g2f0s2t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g2f0s2h">0</strong></li>
+                        <li class="list-group-item"><b>Sensor 4:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g2f0s3t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g2f0s3h">0</strong></li>
+                        <li class="list-group-item"><b>Sensor 5:</b><img src="icon/temperature.svg" class="statusIcon"><strong id="g2f0s4t">0</strong> <img src="icon/humidity.svg" class="statusIcon"><strong id="g2f0s4h">0</strong></li>
                         <!-- <li class="list-group-item">Relay Status: &nbsp; &nbsp;<button type="button" class="btn btn-sm btn-success" style="width: 100px;">  ON</button> </li>
                         <li class="list-group-item">
                             Emergency Control: </br>
