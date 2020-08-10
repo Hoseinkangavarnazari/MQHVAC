@@ -11,7 +11,8 @@ var mqttRouter = require("./routes/mqtt.routes")
 
 //------------------MQTT Handlers-------------------
 var mqtt = require('mqtt')
-const mqttBroker = "mqtt://127.0.0.1"
+    // const mqttBroker = "mqtt://127.0.0.1"
+const mqttBroker = "mqtt://mqtt.eclipse.org"
 const options = {
     qos: 2
 };

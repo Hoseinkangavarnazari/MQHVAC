@@ -7,7 +7,8 @@ function between(min, max) {
 }
 
 
-const HOST = "mqtt://127.0.0.1"
+// const HOST = "mqtt://127.0.0.1"
+const HOST = "mqtt://mqtt.eclipse.org"
 const options = {
     qos: 2
 };
