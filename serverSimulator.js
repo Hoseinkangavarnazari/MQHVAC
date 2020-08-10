@@ -11,8 +11,8 @@ var mqttRouter = require("./routes/mqtt.routes")
 
 //------------------MQTT Handlers-------------------
 var mqtt = require('mqtt')
-    // const mqttBroker = "mqtt://127.0.0.1"
-const mqttBroker = "mqtt://mqtt.eclipse.org"
+const mqttBroker = "mqtt://127.0.0.1"
+// const mqttBroker = "mqtt://mqtt.eclipse.org"
 const options = {
     qos: 2
 };
@@ -55,8 +55,13 @@ app.use(express.static('public'))
 //  serve dashboard page ---------------------------------
 const serverRouter = express.Router();
 serverRouter.get('/', (req, res) => {
-    console.log("received a request from browser");
+    console.log("received a request for index page");
     res.sendFile(path.join(__dirname + '/test.html'));
+})
+
+serverRouter.get('/setting' , (req,res)=>{
+    console.log("received a request for scheduling page")
+    res.sendFile(path.join(__dirname + '/setting.html'));
 })
 app.use('/page', serverRouter);
 
