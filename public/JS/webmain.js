@@ -12,19 +12,6 @@ function updateDATA(reqG) {
         success: function(responseData) {
             gatewaysStatus = responseData
             console.log(gatewaysStatus)
-                // var sensors = responseData.sensors
-                // console.log("RECEIVED: " + sensors[0].T);
-
-            // $('#G1S1T').text = sensors[0].T;
-            // for (var i = 0; i < sensors.length; i++) {
-            //     var ELEMENT = 'G';
-            //     ELEMENT += reqG;
-            //     ELEMENT += 'S' + sensors[i].SID;
-            //     console.log(ELEMENT);
-            //     document.getElementById(ELEMENT + 'T').innerText = sensors[i].T;
-            //     document.getElementById(ELEMENT + 'H').innerText = sensors[i].H;
-            // };
-
             for (var i = 0; i < gatewaysStatus.length; i++) {
                 var prefixElement = gatewaysStatus[i].GID;
                 console.log(gatewaysStatus[i].avgTemperature.length)
@@ -34,7 +21,6 @@ function updateDATA(reqG) {
                     document.getElementById(ELEMENT + 't').innerText = gatewaysStatus[i].avgTemperature[j];
                     document.getElementById(ELEMENT + 'h').innerText = gatewaysStatus[i].avgHumidity[j];
                 }
-
             }
 
         },
@@ -64,5 +50,52 @@ function emergencyCall(reqG, command) {
 }
 
 
+function addTime(day){
+    console.log("Add time from day:",day);
+
+    var element = document.getElementById(day);
+    console.log(element)
+
+    var context= document.createElement("div");
+    context.setAttribute("class","input-group");
+    context.setAttribute("style","margin-bottom:10px;")
+
+
+    var childTitle= document.createElement("div");
+    childTitle.setAttribute("class","input-group-prepend");
+
+
+    var childChildSpan = document.createElement('span');
+    childChildSpan.setAttribute("class","input-group-text");
+    childChildSpan.textContent="Start & End";
+
+
+    childTitle.appendChild(childChildSpan);
+    context.appendChild(childTitle);
+
+    var timeStart= document.createElement("input");
+    timeStart.setAttribute("type","time");
+    timeStart.setAttribute("id","appt");
+    timeStart.setAttribute("name","appt");
+    timeStart.setAttribute("min","00:00");
+    timeStart.setAttribute("max","23:59");
+    timeStart.setAttribute("style","margin-right:5px;");
+
+    var timeEnd = document.createElement("input");
+    timeEnd.setAttribute("type","time");
+    timeEnd.setAttribute("id","appt");
+    timeEnd.setAttribute("name","appt");
+    timeEnd.setAttribute("min","00:00");
+    timeEnd.setAttribute("max","23:59");
+
+    console.log(timeStart)
+    context.appendChild(timeStart);
+    context.appendChild(timeEnd);
+    element.appendChild(context);
+}
+
+
 var myVar1 = setInterval(updateDATA, 5000, 1);
 // var myVar2 = setInterval(updateDATA, 5000, 2);
+
+

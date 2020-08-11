@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1113 810" style="enable-background:new 0 0 1113 810;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#81FF00;stroke:#000000;stroke-miterlimit:10;}
+	.st2{fill:#2E994A;stroke:#000000;stroke-miterlimit:10;}
+	.st3{font-family:'MyriadPro-Regular';}
+	.st4{font-size:47.4754px;}
+	.st5{font-size:25.8405px;}
+</style>
+<g>
+	<g>
+		<polygon class="st0" points="811.67,789.5 811.67,525.42 690.63,525.42 690.63,579.13 400.1,579.13 400.1,525.42 317.03,525.42 
+			317.03,789.5 26.5,789.5 26.5,261.22 158.79,261.22 158.79,0.5 434.62,0.5 434.62,261.22 640.18,261.22 640.18,0.5 916.01,0.5 
+			916.01,261.22 1087.5,261.22 1087.5,789.5 		"/>
+		<path d="M915.51,1v259.72v1h1H1087V789H812.17V525.92v-1h-1H691.13h-1v1v52.71H400.6v-52.71v-1h-1h-82.07h-1v1V789H27V261.72
+			h131.29h1v-1V1h274.83v259.72v1h1h204.56h1v-1V1H915.51 M916.51,0H639.68v260.72H435.12V0H158.29v260.72H26V790h291.53V525.92
+			h82.07v53.71h291.53v-53.71h120.04V790H1088V260.72H916.51V0L916.51,0z"/>
+	</g>
+</g>
+<circle class="st1" cx="811" cy="526" r="25.5"/>
+<circle class="st1" cx="811" cy="742" r="25.5"/>
+<circle class="st1" cx="1088" cy="526" r="25.5"/>
+<circle class="st1" cx="1088" cy="620" r="25.5"/>
+<circle class="st1" cx="318" cy="542" r="25.5"/>
+<circle class="st1" cx="311" cy="784" r="25.5"/>
+<circle class="st1" cx="32" cy="785" r="25.5"/>
+<circle class="st1" cx="26" cy="536" r="25.5"/>
+<path class="st2" d="M802.59,84.73h-47.69c-18.45,0-33.41-14.96-33.41-33.41V31.68c0-18.45,14.96-33.41,33.41-33.41h47.69
+	c18.45,0,33.41,14.96,33.41,33.41v19.65C836,69.77,821.04,84.73,802.59,84.73z"/>
+<text transform="matrix(1 0 0 1 735.4248 57.2036)" class="st3 st4">g0L1</text>
+<text transform="matrix(1 0 0 1 691.5781 497.5938)" class="st3 st5">Sensor 1</text>
+<text transform="matrix(1 0 0 1 849.5781 741.5449)" class="st3 st5">Sensor 2</text>
+<text transform="matrix(1 0 0 1 958.5488 531.5928)" class="st3 st5">Sensor 3</text>
+<text transform="matrix(1 0 0 1 936.2148 631.2383)" class="st3 st5">Sensor 4</text>
+<text transform="matrix(1 0 0 1 62.418 547.2598)" class="st3 st5">Sensor 5</text>
+<text transform="matrix(1 0 0 1 65.418 775.54)" class="st3 st5">Sensor 8</text>
+<text transform="matrix(1 0 0 1 189.3853 550.5898)" class="st3 st5">Sensor 6</text>
+<text transform="matrix(1 0 0 1 348.6885 785.207)" class="st3 st5">Sensor 7</text>
+</svg>
