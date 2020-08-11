@@ -95,7 +95,21 @@ function addTime(day){
 }
 
 
-var myVar1 = setInterval(updateDATA, 5000, 1);
+
+function test(){
+
+    week = ["saturday","sunday","monday","tuesday","wednesday","thursday"]
+    
+    temp = document.querySelectorAll("#sunday .input-group input");
+
+    for (day in week){
+        console.log(week[day])
+    }
+
+    console.log(temp)
+}
+
+// var myVar1 = setInterval(updateDATA, 5000, 1);
 // var myVar2 = setInterval(updateDATA, 5000, 2);
 
 
