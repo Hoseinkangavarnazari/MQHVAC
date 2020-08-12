@@ -9,5 +9,7 @@ webAPI_router.post('/updatedata', webAPI_controller.updateData);
 
 webAPI_router.post('/setSchedule',webAPI_controller.setSchedule)
 webAPI_router.post('/emergencyCall', webAPI_controller.emergencyCall);
+webAPI_router.post('/readlogs', webAPI_controller.readLogs);
+
 
 module.exports = webAPI_router;

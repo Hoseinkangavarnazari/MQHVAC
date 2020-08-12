@@ -116,8 +116,6 @@ exports.updateData = async (req, res) => {
 
 }
 
-
-
 exports.emergencyCall = async (req, res) => {
 
     // for security reasons don't let setting SJ dirrectly
@@ -152,9 +150,13 @@ exports.emergencyCall = async (req, res) => {
                 console.log("Emergency call published successfully");
             }
         });
-
-
         res.send({"status":"Emergency call published successfully"})
+}
 
+exports.readLogs = async (req,res)=>{
+
+// search for latest logs from the server 
+
+// send this data to res
 
 }
