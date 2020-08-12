@@ -1,6 +1,7 @@
 var request = require('request');
 var sensorStatus = require("../models/sensorStatus.model");
 var schedule = require('../models/schedule.model');
+var emergencyCall = require('../models/emergencyCall.model')
 
 
 
@@ -122,7 +123,7 @@ exports.emergencyCall = async (req, res) => {
     // for security reasons don't let setting SJ dirrectly
 
     //save the request into database 
-    var newEmergencyCall = new schedule({
+    var newEmergencyCall = new emergencyCall({
         GID: req.body.GID,
         SJ: "M",
         command:req.body.command
@@ -137,7 +138,6 @@ exports.emergencyCall = async (req, res) => {
         // You should stop the whole process here
         console.log("::: There is something wrong with saving in DB", err)
     }
-
     
     // publish received emergency call to the broker ...................................................
         var mqtttemp = require('mqtt')
@@ -152,6 +152,9 @@ exports.emergencyCall = async (req, res) => {
                 console.log("Emergency call published successfully");
             }
         });
+
+
+        res.send({"status":"Emergency call published successfully"})
 
 
 }
