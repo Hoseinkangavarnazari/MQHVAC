@@ -9,7 +9,7 @@ function updateDATA(reqG) {
             "requestedGateway": reqG
         },
         type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
-        success: function(responseData) {
+        success: function (responseData) {
             gatewaysStatus = responseData
             console.log(gatewaysStatus)
             for (var i = 0; i < gatewaysStatus.length; i++) {
@@ -42,7 +42,7 @@ function emergencyCall(reqG, command) {
             command: command
         },
         type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
-        success: function(responseData) {
+        success: function (responseData) {
             console.log("Emergency call requested");
         },
         error: console.error
@@ -50,43 +50,43 @@ function emergencyCall(reqG, command) {
 }
 
 
-function addTime(day){
-    console.log("Add time from day:",day);
+function addTime(day) {
+    console.log("Add time from day:", day);
 
     var element = document.getElementById(day);
     console.log(element)
 
-    var context= document.createElement("div");
-    context.setAttribute("class","input-group");
-    context.setAttribute("style","margin-bottom:10px;")
+    var context = document.createElement("div");
+    context.setAttribute("class", "input-group");
+    context.setAttribute("style", "margin-bottom:10px;")
 
 
-    var childTitle= document.createElement("div");
-    childTitle.setAttribute("class","input-group-prepend");
+    var childTitle = document.createElement("div");
+    childTitle.setAttribute("class", "input-group-prepend");
 
 
     var childChildSpan = document.createElement('span');
-    childChildSpan.setAttribute("class","input-group-text");
-    childChildSpan.textContent="Start & End";
+    childChildSpan.setAttribute("class", "input-group-text");
+    childChildSpan.textContent = "Start & End";
 
 
     childTitle.appendChild(childChildSpan);
     context.appendChild(childTitle);
 
-    var timeStart= document.createElement("input");
-    timeStart.setAttribute("type","time");
-    timeStart.setAttribute("id","appt");
-    timeStart.setAttribute("name","appt");
-    timeStart.setAttribute("min","00:00");
-    timeStart.setAttribute("max","23:59");
-    timeStart.setAttribute("style","margin-right:5px;");
+    var timeStart = document.createElement("input");
+    timeStart.setAttribute("type", "time");
+    timeStart.setAttribute("id", "appt");
+    timeStart.setAttribute("name", "appt");
+    timeStart.setAttribute("min", "00:00");
+    timeStart.setAttribute("max", "23:59");
+    timeStart.setAttribute("style", "margin-right:5px;");
 
     var timeEnd = document.createElement("input");
-    timeEnd.setAttribute("type","time");
-    timeEnd.setAttribute("id","appt");
-    timeEnd.setAttribute("name","appt");
-    timeEnd.setAttribute("min","00:00");
-    timeEnd.setAttribute("max","23:59");
+    timeEnd.setAttribute("type", "time");
+    timeEnd.setAttribute("id", "appt");
+    timeEnd.setAttribute("name", "appt");
+    timeEnd.setAttribute("min", "00:00");
+    timeEnd.setAttribute("max", "23:59");
 
     console.log(timeStart)
     context.appendChild(timeStart);
@@ -96,36 +96,35 @@ function addTime(day){
 
 
 
-function setSchedule(reqG){
+function setSchedule(reqG) {
 
-    week = ["saturday","sunday","monday","tuesday","wednesday","thursday"]
-
+    week = ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday"]
     var schedule = {};
-
     const postFixAddress = " .input-group input"
 
-
-    for (day in week){
-        selectorStr = '#'+ week[day]+postFixAddress
+    for (day in week) {
+        selectorStr = '#' + week[day] + postFixAddress
         time = document.querySelectorAll(selectorStr)
-        tempSchedule=[]
-        for ( i =0 ; i < time.length; i++){
-            startTime =""
-            endTime=""
+        tempSchedule = []
+        for (i = 0; i < time.length; i++) {
+            startTime = ""
+            endTime = ""
 
             startTime = time[i].value
             i++;
-            endTime=time[i].value
+            endTime = time[i].value
 
-            if (startTime !="" & endTime !="") {
-                console.log("Starts at ",startTime,"Ends at",endTime)
-                tempInner=[]
+            if (startTime != "" & endTime != "") {
+                console.log("Starts at ", startTime, "Ends at", endTime)
+                tempInner = []
                 tempInner.push(startTime)
                 tempInner.push(endTime)
                 tempSchedule.push(tempInner)
             }
+            else{
+                tempSchedule.push(["00:00","00:00"])
+            }
         }
-
         schedule[week[day]] = tempSchedule
     }
 
@@ -134,28 +133,22 @@ function setSchedule(reqG){
         dataType: 'json',
         data: {
             "GID": reqG,
-            "SJ":"S&C",
-            "sunday":schedule["sunday"],
-            "monday":schedule["monday"]
-            // ,
-        //     "tuesday":tuesday,
-        //     "thursday":thursday,
-        //     "wednesday":wednesday,
-        //     "friday": friday,
-        //     "saturday":saturday
+            "SJ": "S&C",
+            "sunday": schedule["sunday"],
+            "monday": schedule["monday"],
+            "tuesday": schedule["tuesday"],
+            "thursday": schedule["thursday"],
+            "wednesday": schedule["wednesday"],
+            "friday": schedule["friday"],
+            "saturday": schedule["saturday"]
         },
         type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
-        success: function(responseData) {
-            console.log("Scheduling successfully published");
+        success: function (responseData) {
+            console.log("Status of published schedule:",responseData.status);
         },
         error: console.error
     });
-
-
-
 }
 
 // var myVar1 = setInterval(updateDATA, 5000, 1);
 // var myVar2 = setInterval(updateDATA, 5000, 2);
-
-
