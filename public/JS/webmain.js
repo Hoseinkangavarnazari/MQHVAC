@@ -152,5 +152,25 @@ function setSchedule(reqG) {
     });
 }
 
+function refereshLogs(reqG){ 
+
+
+    $.ajax({
+        url: "http://localhost:2999/webapi/readlogs",
+        dataType: 'json',
+        data: {
+            "GID": reqG
+        },
+        type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
+        success: function (responseData) {
+            console.log("Status of published schedule:",responseData.status);
+            // call another function or do it here and update the results of logs here
+        },
+        error: console.error
+    });
+
+
+}
+
 // var myVar1 = setInterval(updateDATA, 5000, 1);
 // var myVar2 = setInterval(updateDATA, 5000, 2);
