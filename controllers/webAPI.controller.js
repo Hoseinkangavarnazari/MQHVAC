@@ -1,20 +1,20 @@
 var request = require('request');
 var sensorStatus = require("../models/sensorStatus.model");
 var schedule = require('../models/schedule.model');
-const {
-    Console
-} = require('console');
+
 
 
 function randomInt(low, high) {
     return Math.floor(Math.random() * (high - low) + low)
 }
 
+
+
 exports.setSchedule = async (req, res) => {
     console.log("An schedule have been received. GID: ", req.body.GID)
     console.log("sunday", req.body.sunday)
 
-    // first save it into database 
+    // save received Schedule first in Database ..........................................
     var newSchedule = new schedule({
         GID: req.body.GID,
         SJ: "S",
@@ -29,28 +29,20 @@ exports.setSchedule = async (req, res) => {
 
     try {
         newSchedule.save();
-        // res.send("::: Saved into the database.");
-        console.log(":::  Saved into the database.")
-
+        console.log(":::  Schedule has been saved into the database.")
     } catch (err) {
-        res.send("::: There is something wrong with saving to DB");
+        res.send({"status":"Failed to access database"});
+        // there should be a log checker
         // You should stop the whole process here
-        console.log("::: There is something wrong with saving to DB", err)
+        console.log("::: There is something wrong with saving in DB", err)
     }
+    // [end]save received Schedule first in Database ..........................................
 
-
-    // publish it into related topic 
-
+    // publish received shchedule to broker ...................................................
     var mqtttemp = require('mqtt')
     const mqtttempBroker = "mqtt://127.0.0.1"
-    // const mqttBroker = "mqtt://mqtt.eclipse.org"
-    const options = {
-        qos: 2
-    };
-
-    var mqtttempClient = mqtttemp.connect(mqtttempBroker, {
-        clientId: "mqttjs99"
-    }, options);
+    const options = {qos: 2};
+    var mqtttempClient = mqtttemp.connect(mqtttempBroker, {clientId: "mqttjs99"}, options);
 
     mqtttempClient.publish(req.body.GID+"/schedule",JSON.stringify(req.body),options,(error)=>{
         if(error){
@@ -60,10 +52,11 @@ exports.setSchedule = async (req, res) => {
         }
     });
 
+    // [end]publish received shchedule to broker ...................................................
 
+
+    //send the result ..............................................................................
     res.send({"status":"Schedule published successfully"})
-    // answer to it 
-
 }
 
 exports.updateData = async (req, res) => {
@@ -126,26 +119,39 @@ exports.updateData = async (req, res) => {
 
 exports.emergencyCall = async (req, res) => {
 
-    var net = require('net'),
-        JsonSocket = require('json-socket');
+    // for security reasons don't let setting SJ dirrectly
 
-    var port = 9000; //The same port that the server is listening on
-    var host = '127.0.0.1';
-
-    var socket = new JsonSocket(new net.Socket()); //Decorate a standard net.Socket with JsonSocket
-    socket.connect(port, host);
-    socket.on('connect', function () { //Don't send until we're connected
-        socket.sendMessage({
-            "status": 's',
-            "GID": req.body.GID,
-            "command": req.body.command,
-            "relayStatus": [{
-                "RID": 1,
-                "relaySTATUS": req.body.command
-            }]
-        });
-        socket.on('message', function (message) {
-            console.log('The result is: ' + message.result);
-        });
+    //save the request into database 
+    var newEmergencyCall = new schedule({
+        GID: req.body.GID,
+        SJ: "M",
+        command:req.body.command
     });
+
+    try {
+        newEmergencyCall.save();
+        console.log(":::  Emergency call has been saved into the database.")
+    } catch (err) {
+        res.send({"status":"Failed to access database"});
+        // there should be a log checker
+        // You should stop the whole process here
+        console.log("::: There is something wrong with saving in DB", err)
+    }
+
+    
+    // publish received emergency call to the broker ...................................................
+        var mqtttemp = require('mqtt')
+        const mqtttempBroker = "mqtt://127.0.0.1"
+        const options = {qos: 2};
+        var mqtttempClient = mqtttemp.connect(mqtttempBroker, {clientId: "mqttjs99"}, options);
+
+        mqtttempClient.publish(req.body.GID+"/emergencycall",JSON.stringify(req.body),options,(error)=>{
+            if(error){
+                console.log("there was an error: ",error);
+            }else{
+                console.log("Emergency call published successfully");
+            }
+        });
+
+
 }

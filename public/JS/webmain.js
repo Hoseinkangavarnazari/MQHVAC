@@ -32,18 +32,20 @@ function updateDATA(reqG) {
 
 function emergencyCall(reqG, command) {
 
-    console.log("Emergency Call requested");
+    console.log("An emergency call has been requested from",reqG);
 
     $.ajax({
         url: "http://localhost:2999/webapi/emergencycall",
         dataType: 'json',
         data: {
             "GID": reqG,
-            command: command
+            "SJ": "M",
+            "command": command
         },
-        type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
+        type: "POST", 
         success: function (responseData) {
-            console.log("Emergency call requested");
+            console.log("For gateway: ",reqG);
+            console.log("Requested emergency call status:",responseData.status);
         },
         error: console.error
     });
