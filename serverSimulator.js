@@ -22,10 +22,12 @@ var mqttClient = mqtt.connect(mqttBroker, { clientId: "mqttjs99" }, options);
 mqttClient.subscribe("g1f0/+", { qos: 2 });
 mqttClient.subscribe("g2f0/+", { qos: 2 });
 
+mqttClient.subscribe("G0L1F0/+", { qos: 2 });
+mqttClient.subscribe("G0R1F0/+", { qos: 2 });
 
 
 mqttClient.on("connect", () => {
-    console.log("connected  " + mqttClient.connected);
+    // console.log("connected  " + mqttClient.connected);
 });
 
 mqttClient.on("error", (err) => {
@@ -39,6 +41,10 @@ mqttClient.on('message', (topic, message, packet) => {
             return mqttRouter.writeNewStatus("g1f0", message)
         case "g2f0/update_status":
             return mqttRouter.writeNewStatus("g2f0", message)
+        case "G0L1F0/logs":
+            return mqttRouter.writeNewLog("G0L1F0",message)
+        case "G0R1F0/logs":
+            return mqttRouter.writeNewLog("G0R1F0",message)
     }
 });
 
@@ -88,8 +94,6 @@ app.post('/temperature', function(req, res) {
     console.log(req.body);
     res.send('test');
 });
-
-
 
 
 // start the server in the port 3000 !
