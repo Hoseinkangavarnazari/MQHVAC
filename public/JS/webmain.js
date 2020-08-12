@@ -96,17 +96,63 @@ function addTime(day){
 
 
 
-function test(){
+function setSchedule(reqG){
 
     week = ["saturday","sunday","monday","tuesday","wednesday","thursday"]
-    
-    temp = document.querySelectorAll("#sunday .input-group input");
+
+    var schedule = {};
+
+    const postFixAddress = " .input-group input"
+
 
     for (day in week){
-        console.log(week[day])
+        selectorStr = '#'+ week[day]+postFixAddress
+        time = document.querySelectorAll(selectorStr)
+        tempSchedule=[]
+        for ( i =0 ; i < time.length; i++){
+            startTime =""
+            endTime=""
+
+            startTime = time[i].value
+            i++;
+            endTime=time[i].value
+
+            if (startTime !="" & endTime !="") {
+                console.log("Starts at ",startTime,"Ends at",endTime)
+                tempInner=[]
+                tempInner.push(startTime)
+                tempInner.push(endTime)
+                tempSchedule.push(tempInner)
+            }
+        }
+
+        schedule[week[day]] = tempSchedule
     }
 
-    console.log(temp)
+    $.ajax({
+        url: "http://localhost:2999/webapi/setschedule",
+        dataType: 'json',
+        data: {
+            "GID": reqG,
+            "SJ":"S&C",
+            "sunday":schedule["sunday"],
+            "monday":schedule["monday"]
+            // ,
+        //     "tuesday":tuesday,
+        //     "thursday":thursday,
+        //     "wednesday":wednesday,
+        //     "friday": friday,
+        //     "saturday":saturday
+        },
+        type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
+        success: function(responseData) {
+            console.log("Scheduling successfully published");
+        },
+        error: console.error
+    });
+
+
+
 }
 
 // var myVar1 = setInterval(updateDATA, 5000, 1);

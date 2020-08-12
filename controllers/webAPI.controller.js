@@ -1,9 +1,24 @@
 var request = require('request');
-var sensorStatus = require("../models/sensorStatus.model")
+var sensorStatus = require("../models/sensorStatus.model");
+const { Console } = require('console');
 
 
 function randomInt(low, high) {
     return Math.floor(Math.random() * (high - low) + low)
+}
+
+
+
+
+exports.setSchedule = async(req,res) =>
+{
+    console.log("An schedule have been received. GID: ",req.body.GID)
+    console.log("sunday",req.body.sunday)
+
+    // first save it into database 
+    // publish it into related topic 
+    // answer to it 
+    
 }
 
 exports.updateData = async(req, res) => {
@@ -43,10 +58,6 @@ exports.updateData = async(req, res) => {
 
     // console.log(response)
     res.send(response)
-
-
-
-
     //return model
     // console.log("REQUEST gateway: " + req.body.requestedGateway)
 
