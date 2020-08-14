@@ -48,7 +48,6 @@ var writeNewLog = async (gid, msg) => {
 
     console.log("Here at write new log controller")
 
-
     var newLog = new log({
         GID: GID,
         time: time,

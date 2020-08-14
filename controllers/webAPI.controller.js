@@ -2,6 +2,7 @@ var request = require('request');
 var sensorStatus = require("../models/sensorStatus.model");
 var schedule = require('../models/schedule.model');
 var emergencyCall = require('../models/emergencyCall.model')
+var logs = require('../models/log.model')
 
 
 
@@ -155,8 +156,31 @@ exports.emergencyCall = async (req, res) => {
 
 exports.readLogs = async (req,res)=>{
 
+
+
 // search for latest logs from the server 
+readLogs= await logs.find({},function (err, document){
+
+if(err){
+    console.log("There was an problem: ",err)
+}
+
+list = []
+for (log in document){
+    let tempLog = {}
+    tempLog['details'] = document[parseInt(log)].detail
+    tempLog['level']= document[parseInt(log)].level
+    tempLog['GID'] = document[parseInt(log)].GID
+    tempLog['time']= document[parseInt(log)].time
+    list.push(tempLog)
+}
+
+res.send(JSON.stringify(list))
+}).sort({_id:1}).limit(10);
 
 // send this data to res
+
+
+
 
 }

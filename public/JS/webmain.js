@@ -163,7 +163,13 @@ function refereshLogs(reqG){
         },
         type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
         success: function (responseData) {
-            console.log("Status of published schedule:",responseData.status);
+            // console.log("Status of published schedule:",JSON.parse(responseData));
+
+            console.log("Document: ",responseData)
+            for (i in responseData){
+                templog = responseData[i]
+                console.log(templog)
+            }
             // call another function or do it here and update the results of logs here
         },
         error: console.error
