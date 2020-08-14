@@ -13,8 +13,8 @@ mqtttempClient.on("connect", () => {
     
         "time":new Date(),
         "GID":"G0L1F0",
-        "detail":"There was a problem on the sennsor side",
-        "level":"warning",
+        "detail":"FATAl error in gateway",
+        "level":"danger",
         "seen":false
         
         }),options,(error)=>{

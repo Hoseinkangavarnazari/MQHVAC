@@ -49,8 +49,6 @@ mqttClient.on('message', (topic, message, packet) => {
 });
 
 //....................................................
-
-
 const PORT = 2999;
 
 var bodyParser = require('body-parser');
@@ -73,28 +71,21 @@ app.use('/page', serverRouter);
 
 // --------------------------------------------------------
 
-
 // status receiver ----------------------------------------
 var gatewayRouter = require('./routes/node.routes');
 app.use('/status', gatewayRouter);
 // --------------------------------------------------------
-
-
 
 // status receiver ----------------------------------------
 var webAPIRouter = require('./routes/webAPI.routes');
 app.use('/webapi', webAPIRouter);
 // --------------------------------------------------------
 
-
-
-
 // On localhost:3000/welcome
 app.post('/temperature', function(req, res) {
     console.log(req.body);
     res.send('test');
 });
-
 
 // start the server in the port 3000 !
 app.listen(PORT, function() {

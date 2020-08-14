@@ -11,7 +11,6 @@ function randomInt(low, high) {
 }
 
 
-
 exports.setSchedule = async (req, res) => {
     console.log("An schedule have been received. GID: ", req.body.GID)
     console.log("sunday", req.body.sunday)
@@ -156,10 +155,10 @@ exports.emergencyCall = async (req, res) => {
 
 exports.readLogs = async (req,res)=>{
 
-
+requestedGID = req.body.GID
 
 // search for latest logs from the server 
-readLogs= await logs.find({},function (err, document){
+readLogs= await logs.find({GID: requestedGID},function (err, document){
 
 if(err){
     console.log("There was an problem: ",err)
@@ -168,19 +167,15 @@ if(err){
 list = []
 for (log in document){
     let tempLog = {}
-    tempLog['details'] = document[parseInt(log)].detail
+    tempLog['detail'] = document[parseInt(log)].detail
     tempLog['level']= document[parseInt(log)].level
     tempLog['GID'] = document[parseInt(log)].GID
     tempLog['time']= document[parseInt(log)].time
     list.push(tempLog)
 }
 
-res.send(JSON.stringify(list))
-}).sort({_id:1}).limit(10);
-
 // send this data to res
-
-
-
+res.send(JSON.stringify(list))
+}).sort({_id:-1}).limit(10);
 
 }

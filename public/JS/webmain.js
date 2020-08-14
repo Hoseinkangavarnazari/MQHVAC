@@ -153,8 +153,6 @@ function setSchedule(reqG) {
 }
 
 function refereshLogs(reqG){ 
-
-
     $.ajax({
         url: "http://localhost:2999/webapi/readlogs",
         dataType: 'json',
@@ -163,20 +161,49 @@ function refereshLogs(reqG){
         },
         type: "POST", // if you want to send data via the "data" property change this to "POST". This can be omitted otherwise
         success: function (responseData) {
-            // console.log("Status of published schedule:",JSON.parse(responseData));
+            console.log(responseData[0].GID);
+            CurrentElement = document.getElementById(responseData[0].GID + "-logs")
+            CurrentElement.innerHTML='';
+            LOGeLEMENTS = []
 
-            console.log("Document: ",responseData)
             for (i in responseData){
                 templog = responseData[i]
-                console.log(templog)
+
+                // define the borders color
+                levelClass=""
+                switch (templog.level) {
+                    case "success":
+                        level="alertSuccess"
+                        break;
+                    case "warning":
+                        level="alertWarning"
+                        break;
+                    case "danger":
+                        level="alertDanger"
+                        break;      
+                }
+
+                var context = document.createElement("div");
+                context.setAttribute("class", level);
+                var time = document.createElement("time")
+                time.innerHTML = "<b>Log time: </b> " + templog.time +"</br>"
+                var samp = document.createElement("samp");
+                samp.innerHTML= "<b>Log: </b> " + templog.detail
+
+                context.appendChild(time);
+                context.appendChild(samp);
+                CurrentElement.appendChild(context)
+          
             }
             // call another function or do it here and update the results of logs here
         },
         error: console.error
     });
-
-
 }
 
 // var myVar1 = setInterval(updateDATA, 5000, 1);
 // var myVar2 = setInterval(updateDATA, 5000, 2);
+
+
+// it should be done for all gateways
+window.onload = refereshLogs("G0L1F0")
