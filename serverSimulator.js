@@ -21,6 +21,7 @@ var mqttClient = mqtt.connect(mqttBroker, { clientId: "mqttjs99" }, options);
 // gateway initialization
 var conf = require('./conf/topicMananger');
 conf.checkGatewayInitialization();
+conf.subscribtion(mqttClient)
 
 
 
@@ -28,11 +29,11 @@ conf.checkGatewayInitialization();
 
 
 
-mqttClient.subscribe("g1f0/+", { qos: 2 });
-mqttClient.subscribe("g2f0/+", { qos: 2 });
+// mqttClient.subscribe("g1f0/+", { qos: 2 });
+// mqttClient.subscribe("g2f0/+", { qos: 2 });
 
-mqttClient.subscribe("G0L1F0/+", { qos: 2 });
-mqttClient.subscribe("G0R1F0/+", { qos: 2 });
+// mqttClient.subscribe("G0L1F0/+", { qos: 2 });
+// mqttClient.subscribe("G0R1F0/+", { qos: 2 });
 
 
 mqttClient.on("connect", () => {
@@ -45,6 +46,7 @@ mqttClient.on("error", (err) => {
 });
 
 mqttClient.on('message', (topic, message, packet) => {
+    console.log("Topic: ",topic)
     switch (topic) {
         case "g1f0/update_status":
             return mqttRouter.writeNewStatus("g1f0", message)

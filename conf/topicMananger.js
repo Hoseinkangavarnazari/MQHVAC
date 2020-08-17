@@ -70,6 +70,31 @@ function initGateway() {
     }
 }
 
-
-
 //  Write a subscriber function to all gateways
+exports.subscribtion= (mqttClient)=> {
+    // for each gateway in gateways collection ( for each gid )
+    // subscribe the "g"+gateway.gid+"/+"
+ 
+mqttClient.subscribe("g1f0/+", { qos: 2 });
+mqttClient.subscribe("g2f0/+", { qos: 2 });
+mqttClient.subscribe("G0L1F0/+", { qos: 2 });
+mqttClient.subscribe("G0R1F0/+", { qos: 2 });
+
+
+var gateway = require("../models/gateway.model")
+gateway.find({},function(error,gateways){
+
+    gateways.forEach((g)=>{
+        topic = "g"+g.gid+"/+";
+        mqttClient.subscribe(topic, { qos: 2 });
+        console.log(topic)
+    });
+
+});
+
+// for ( var i=0; i<gateways.length; i++){
+//     console.log('g'+gateways[i].gid+'/+');
+// }
+
+
+}
