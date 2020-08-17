@@ -1,4 +1,5 @@
-// const gateways = require("./gateways")
+
+var mqttRouter = require("../routes/mqtt.routes")
 // first check the database and see if the gateways are entered or we should add it from config file 
 
 
@@ -91,10 +92,26 @@ gateway.find({},function(error,gateways){
     });
 
 });
+}
 
-// for ( var i=0; i<gateways.length; i++){
-//     console.log('g'+gateways[i].gid+'/+');
-// }
+ 
+exports.topicHandler = (topic, message, packet)=>{
+    console.log("Topic: ",topic)
+
+    temp = topic.split("/")
+
+    gid =temp[0]
+    subTopic=temp[1]
 
 
+    // avalesho ta slash bardar ke esme gateway hast ono estekhraj kon chon mikhay ke estefadash koni va pas bedi bedakhel
+    // baghie ham ke dg mishe goft adie
+
+    switch (subTopic) {
+        case "update_status":
+            return mqttRouter.writeNewStatus(gid, message)
+        case "logs":
+            return mqttRouter.writeNewLog(gid,message)
+
+    }
 }

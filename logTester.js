@@ -9,10 +9,10 @@ mqtttempClient.on("connect", () => {
     console.log("connected  " + mqtttempClient.connected);
 
 
-    mqtttempClient.publish('G0L1F0/logs',JSON.stringify({
+    mqtttempClient.publish('g2/logs',JSON.stringify({
     
         "time":new Date(),
-        "GID":"G0L1F0",
+        "GID":"g2",
         "detail":"FATAl error in gateway",
         "level":"danger",
         "seen":false
