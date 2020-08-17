@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
+// var io = require('socket.io')(server);
 var mqttRouter = require("./routes/mqtt.routes")
 
 //------------------MQTT Handlers-------------------
@@ -16,6 +16,17 @@ const options = {
 };
 
 var mqttClient = mqtt.connect(mqttBroker, { clientId: "mqttjs99" }, options);
+
+
+// gateway initialization
+var conf = require('./conf/topicMananger');
+conf.checkGatewayInitialization();
+
+
+
+
+
+
 
 mqttClient.subscribe("g1f0/+", { qos: 2 });
 mqttClient.subscribe("g2f0/+", { qos: 2 });
@@ -70,20 +81,11 @@ app.use('/page', serverRouter);
 // --------------------------------------------------------
 
 // status receiver ----------------------------------------
-var gatewayRouter = require('./routes/node.routes');
-app.use('/status', gatewayRouter);
-// --------------------------------------------------------
-
-// status receiver ----------------------------------------
 var webAPIRouter = require('./routes/webAPI.routes');
 app.use('/webapi', webAPIRouter);
 // --------------------------------------------------------
 
-// On localhost/welcome
-app.post('/temperature', function(req, res) {
-    console.log(req.body);
-    res.send('test');
-});
+
 
 // start the server
 app.listen(PORT, function() {

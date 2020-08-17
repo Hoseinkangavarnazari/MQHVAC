@@ -6,7 +6,7 @@ const connection = require("./conn_db");
 var gatewaySchema = new Schema({
 
     gid: {
-        type: number,
+        type: Number,
         required: true,
         unique: true
     },
