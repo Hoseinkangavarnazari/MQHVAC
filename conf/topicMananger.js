@@ -13,7 +13,6 @@ exports.checkGatewayInitialization = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
-
     conn.on('open', function () {
         conn.db.listCollections().toArray(function (err, collectionNames) {
 
@@ -23,7 +22,7 @@ exports.checkGatewayInitialization = () => {
             }
             existenceFlag = false;
             for (i in collectionNames) {
-                if (collectionNames[i].name == 'gatewayConf') {
+                if (collectionNames[i].name == 'gateways') {
                     existenceFlag = true;
                     break;
                 }
@@ -31,12 +30,14 @@ exports.checkGatewayInitialization = () => {
 
             if (existenceFlag == true) {
                 console.log("The gateway configurations are exits.");
+                conn.close();
             } else {
 
                 console.log("Initialization : Configuring gateways.");
-                initGateway();
+                conn.close();
+                return initGateway();
             }
-            conn.close();
+
         });
     });
 };
@@ -47,23 +48,22 @@ function initGateway() {
     const data = require('./gateways.json');
     var gateway = require("../models/gateway.model")
 
-
     // for all members of data you should add a model
     for (var i = 0; i < data.length; i++) {
 
-        var gateway = new gateway({
+        var newGateway = new gateway({
             gid: data[i].gid,
             location: data[i].location,
-            relay: data[i].realy,
+            relay: data[i].relay,
             control: data[i].control,
             scheduleFlag: data[i].scheduleFlag,
-            thermostatFlag: data[i].scheduleFlag,
+            thermostatFlag: data[i].thermostatFlag,
             sensor: data[i].sensor,
             mapURL: data[i].mapURL
         });
 
         try {
-            gateway.save();
+            newGateway.save();
         } catch (err) {
             console.log("::: There is something wrong in adding configuration file into database : ", err)
         }
