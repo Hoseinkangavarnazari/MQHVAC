@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 const connection = require("./conn_db");
 
-var gateway = new Schema({
+var gatewaySchema = new Schema({
 
     gid: {
         type: number,
@@ -40,7 +40,7 @@ var gateway = new Schema({
         type: Boolean,
         default: false
     },
-    termostatFlag: {
+    thermostatFlag: {
         type: Boolean,
         default: false
     },
@@ -58,4 +58,4 @@ var gateway = new Schema({
 //  { -> :  referes to }in control m -> manual, ts-> termostat/schedule, t-> termostat, s->schedule
 
 
-module.exports = mongoose.model('emergencyCall', emergencyCallSchema);
+module.exports = mongoose.model('gateway', gatewaySchema);

@@ -177,4 +177,4 @@ for (log in document){
 // send this data to res
 res.send(JSON.stringify(list))
 }).sort({_id:-1}).limit(10);
-}
+} 
