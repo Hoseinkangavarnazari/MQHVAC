@@ -7,8 +7,6 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var mqttRouter = require("./routes/mqtt.routes")
 
-
-
 //------------------MQTT Handlers-------------------
 var mqtt = require('mqtt')
 const mqttBroker = "mqtt://127.0.0.1"
@@ -81,13 +79,13 @@ var webAPIRouter = require('./routes/webAPI.routes');
 app.use('/webapi', webAPIRouter);
 // --------------------------------------------------------
 
-// On localhost:3000/welcome
+// On localhost/welcome
 app.post('/temperature', function(req, res) {
     console.log(req.body);
     res.send('test');
 });
 
-// start the server in the port 3000 !
+// start the server
 app.listen(PORT, function() {
     console.log('Server application is listening port ' + PORT + ".");
 });
