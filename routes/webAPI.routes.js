@@ -11,6 +11,7 @@ webAPI_router.post('/emergencyCall', webAPI_controller.emergencyCall);
 webAPI_router.post('/readlogs', webAPI_controller.readLogs);
 
 // sign Up
+webAPI_router.post('/signUp', webAPI_controller.signUp);
 
 // login
 

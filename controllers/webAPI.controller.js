@@ -3,8 +3,9 @@ var sensorStatus = require("../models/sensorStatus.model");
 var schedule = require('../models/schedule.model');
 var emergencyCall = require('../models/emergencyCall.model')
 var logs = require('../models/log.model')
-var admin = ('../models/admin.model')
-const bcrypt = require('bcrypt-nodejs');
+var admin = require('../models/admin.model')
+
+const bcrypt = require('bcrypt');
 
 
 
@@ -34,7 +35,9 @@ exports.setSchedule = async (req, res) => {
         newSchedule.save();
         console.log(":::  Schedule has been saved into the database.")
     } catch (err) {
-        res.send({"status":"Failed to access database"});
+        res.send({
+            "status": "Failed to access database"
+        });
         // there should be a log checker
         // You should stop the whole process here
         console.log("::: There is something wrong with saving in DB", err)
@@ -44,13 +47,17 @@ exports.setSchedule = async (req, res) => {
     // publish received shchedule to broker ...................................................
     var mqtttemp = require('mqtt')
     const mqtttempBroker = "mqtt://127.0.0.1"
-    const options = {qos: 2};
-    var mqtttempClient = mqtttemp.connect(mqtttempBroker, {clientId: "mqttjs99"}, options);
+    const options = {
+        qos: 2
+    };
+    var mqtttempClient = mqtttemp.connect(mqtttempBroker, {
+        clientId: "mqttjs99"
+    }, options);
 
-    mqtttempClient.publish(req.body.GID+"/schedule",JSON.stringify(req.body),options,(error)=>{
-        if(error){
-            console.log("there was an error: ",error);
-        }else{
+    mqtttempClient.publish(req.body.GID + "/schedule", JSON.stringify(req.body), options, (error) => {
+        if (error) {
+            console.log("there was an error: ", error);
+        } else {
             console.log("Schedule published successfully");
         }
     });
@@ -59,7 +66,9 @@ exports.setSchedule = async (req, res) => {
 
 
     //send the result ..............................................................................
-    res.send({"status":"Schedule published successfully"})
+    res.send({
+        "status": "Schedule published successfully"
+    })
 }
 
 exports.updateData = async (req, res) => {
@@ -126,96 +135,131 @@ exports.emergencyCall = async (req, res) => {
     var newEmergencyCall = new emergencyCall({
         GID: req.body.GID,
         SJ: "M",
-        command:req.body.command
+        command: req.body.command
     });
 
     try {
         newEmergencyCall.save();
         console.log(":::  Emergency call has been saved into the database.")
     } catch (err) {
-        res.send({"status":"Failed to access database"});
+        res.send({
+            "status": "Failed to access database"
+        });
         // there should be a log checker
         // You should stop the whole process here
         console.log("::: There is something wrong with saving in DB", err)
     }
-    
+
     // publish received emergency call to the broker ...................................................
-        var mqtttemp = require('mqtt')
-        const mqtttempBroker = "mqtt://127.0.0.1"
-        const options = {qos: 2};
-        var mqtttempClient = mqtttemp.connect(mqtttempBroker, {clientId: "mqttjs99"}, options);
+    var mqtttemp = require('mqtt')
+    const mqtttempBroker = "mqtt://127.0.0.1"
+    const options = {
+        qos: 2
+    };
+    var mqtttempClient = mqtttemp.connect(mqtttempBroker, {
+        clientId: "mqttjs99"
+    }, options);
 
-        mqtttempClient.publish(req.body.GID+"/emergencycall",JSON.stringify(req.body),options,(error)=>{
-            if(error){
-                console.log("there was an error: ",error);
-            }else{
-                console.log("Emergency call published successfully");
-            }
-        });
-        res.send({"status":"Emergency call published successfully"})
+    mqtttempClient.publish(req.body.GID + "/emergencycall", JSON.stringify(req.body), options, (error) => {
+        if (error) {
+            console.log("there was an error: ", error);
+        } else {
+            console.log("Emergency call published successfully");
+        }
+    });
+    res.send({
+        "status": "Emergency call published successfully"
+    })
 }
 
-exports.readLogs = async (req,res)=>{
+exports.readLogs = async (req, res) => {
 
-requestedGID = req.body.GID
+    requestedGID = req.body.GID
 
-// search for latest logs from the server 
-readLogs= await logs.find({GID: requestedGID},function (err, document){
+    // search for latest logs from the server 
+    readLogs = await logs.find({
+        GID: requestedGID
+    }, function (err, document) {
 
-if(err){
-    console.log("There was an problem: ",err)
+        if (err) {
+            console.log("There was an problem: ", err)
+        }
+
+        list = []
+        for (log in document) {
+            let tempLog = {}
+            tempLog['detail'] = document[parseInt(log)].detail
+            tempLog['level'] = document[parseInt(log)].level
+            tempLog['GID'] = document[parseInt(log)].GID
+            tempLog['time'] = document[parseInt(log)].time
+            list.push(tempLog)
+        }
+
+        // send this data to res
+        res.send(JSON.stringify(list))
+    }).sort({
+        _id: -1
+    }).limit(10);
 }
-
-list = []
-for (log in document){
-    let tempLog = {}
-    tempLog['detail'] = document[parseInt(log)].detail
-    tempLog['level']= document[parseInt(log)].level
-    tempLog['GID'] = document[parseInt(log)].GID
-    tempLog['time']= document[parseInt(log)].time
-    list.push(tempLog)
-}
-
-// send this data to res
-res.send(JSON.stringify(list))
-}).sort({_id:-1}).limit(10);
-} 
-
 
 exports.signUp = async (req, res) => {
-
     requestedUsername = req.body.username;
     requestedPassword = req.body.password;
-
+    // credentials = req.body.credentials;
     // to sign up a new user you have to have credentials
-    credentials = "CREDENTIALS";
+    // originalCredentials = "CREDENTIALS";
+    // if both credentials are the same, then start the process
 
-
+    dublicatedFlag = false;
     // first check the username is unique
-
-
-    // check if the password isn't empth
-    if(password ==""){
-        res.send({status:"The password field cannot be empty."})
-        return
-    }else
-    {
-        // we need to hash the password
-    }
-
-    var newAdmin = new admin({
-        username: requestUsername,
-        password: requestedPassword
+    adminData = await admin.find({
+        username: requestedUsername
+    },(err, document)=>{
+        if (document.length > 0) {
+            res.send({
+                status: "This username has already been taken.",
+                err: err
+            })
+            dublicatedFlag = true;
+            
+        }
     });
 
-
-    try {
-        newAdmin.save();
-        console.log("A new admin is added to the system")
-    } catch (err) {
-        res.send({"status":"Failed to access database"});
-        console.log("::: There is something wrong with saving in DB", err)
+    if(dublicatedFlag== true){
+        return
     }
 
+    if (requestedPassword == "") {
+        res.send({
+            status: "The password field cannot be empty."
+        })
+        return
+    } else {
+        saltRounds = 10;
 
+        // bycrpt.hash(requestedPassword, saltRounds).then((hash)=>{
+        //  
+        // })
+
+        // bcrypt.hash(requestedPassword, saltRounds, function(err, hash) {
+
+        // });
+
+        const hash = bcrypt.hashSync(requestedPassword, saltRounds);
+
+        var newAdmin = new admin({
+            username: requestedUsername,
+            password: hash
+        });
+        try {
+            newAdmin.save();
+            console.log("A new admin is added to the system")
+            res.send({status: "The admin is added to the system"})
+        } catch (err) {
+            res.send({
+                "status": "Failed to access database"
+            });
+            console.log("::: There is something wrong with saving in DB", err)
+        }
+    }
 }

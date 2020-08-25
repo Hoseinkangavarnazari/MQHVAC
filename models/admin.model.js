@@ -3,10 +3,9 @@ var Schema = mongoose.Schema;
 
 const connection = require("./conn_db");
 
-
 var adminSchema = new Schema({
     username: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },
@@ -15,4 +14,5 @@ var adminSchema = new Schema({
         required: true
     }
 });
-module.exports = mongoose.model('admin', adminSchema);
+
+module.exports = mongoose.model('admin', adminSchema); 
