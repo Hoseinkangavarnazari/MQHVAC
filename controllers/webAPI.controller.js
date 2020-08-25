@@ -3,6 +3,8 @@ var sensorStatus = require("../models/sensorStatus.model");
 var schedule = require('../models/schedule.model');
 var emergencyCall = require('../models/emergencyCall.model')
 var logs = require('../models/log.model')
+var admin = ('../models/admin.model')
+const bcrypt = require('bcrypt-nodejs');
 
 
 
@@ -178,3 +180,42 @@ for (log in document){
 res.send(JSON.stringify(list))
 }).sort({_id:-1}).limit(10);
 } 
+
+
+exports.signUp = async (req, res) => {
+
+    requestedUsername = req.body.username;
+    requestedPassword = req.body.password;
+
+    // to sign up a new user you have to have credentials
+    credentials = "CREDENTIALS";
+
+
+    // first check the username is unique
+
+
+    // check if the password isn't empth
+    if(password ==""){
+        res.send({status:"The password field cannot be empty."})
+        return
+    }else
+    {
+        // we need to hash the password
+    }
+
+    var newAdmin = new admin({
+        username: requestUsername,
+        password: requestedPassword
+    });
+
+
+    try {
+        newAdmin.save();
+        console.log("A new admin is added to the system")
+    } catch (err) {
+        res.send({"status":"Failed to access database"});
+        console.log("::: There is something wrong with saving in DB", err)
+    }
+
+
+}

@@ -7,12 +7,10 @@ var mqtttempClient = mqtttemp.connect(mqtttempBroker, options);
 
 mqtttempClient.on("connect", () => {
     console.log("connected  " + mqtttempClient.connected);
-
-
     mqtttempClient.publish('g2/logs',JSON.stringify({
     
         "time":new Date(),
-        "GID":"g2",
+        "gid":"g2",
         "detail":"FATAl error in gateway",
         "level":"danger",
         "seen":false
@@ -31,9 +29,3 @@ mqtttempClient.on("error", (err) => {
     console.log("Can't connect" + err);
     process.exit(1)
 });
-
-
-
-
-
- 
