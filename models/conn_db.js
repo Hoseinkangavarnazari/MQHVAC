@@ -9,7 +9,7 @@ db = "mongodb://localhost:27017/hvacTest";
 const open = () => {
     let connection = mongoose.connection;
     mongoose.Promise = global.Promise;
-    mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }).catch(err => console.log(err.reason));;
+    mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }).catch(err => console.log(err.reason));;
     connection.on('open', () => {
         console.log('::: Connection with MongoDB established');
     });

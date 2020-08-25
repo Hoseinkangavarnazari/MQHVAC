@@ -6,7 +6,7 @@ var webAPI_controller = require('../controllers/webAPI.controller');
 
 
 webAPI_router.post('/updatedata', webAPI_controller.updateData);
-webAPI_router.post('/setSchedule',webAPI_controller.setSchedule)
+webAPI_router.post('/setSchedule', webAPI_controller.setSchedule)
 webAPI_router.post('/emergencyCall', webAPI_controller.emergencyCall);
 webAPI_router.post('/readlogs', webAPI_controller.readLogs);
 
@@ -16,6 +16,7 @@ webAPI_router.post('/signUp', webAPI_controller.signUp);
 // login
 
 // rename password
+webAPI_router.post('/changepass', webAPI_controller.changePass);
 
 
 
