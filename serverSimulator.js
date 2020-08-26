@@ -1,11 +1,21 @@
 // Require express and create an instance of it
-var express = require('express');
-var bodyParser = require('body-parser');
+
+
+const express = require('express');
+const session = require('express-session');
+const FileStore = require('session-file-store')(session)
+
+const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
-var server = require('http').Server(app);
-// var io = require('socket.io')(server);
-var mqttRouter = require("./routes/mqtt.routes")
+const server = require('http').Server(app);
+const mqttRouter = require("./routes/mqtt.routes")
+const { v4: uuid } = require('uuid');
+
+
+
+
+
 
 //------------------MQTT Handlers-------------------
 var mqtt = require('mqtt')
