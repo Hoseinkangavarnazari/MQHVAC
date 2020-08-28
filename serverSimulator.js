@@ -1,49 +1,39 @@
 // Require express and create an instance of it
 
-
-const express = require('express');
-const session = require('express-session');
-const FileStore = require('session-file-store')(session)
-
-const bodyParser = require('body-parser');
-const path = require('path');
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
 const app = express();
-const server = require('http').Server(app);
-const mqttRouter = require("./routes/mqtt.routes")
-const { v4: uuid } = require('uuid');
-
-
-
-
-
+const server = require("http").Server(app);
+const mqttRouter = require("./routes/mqtt.routes");
+const { v4: uuid } = require("uuid");
 
 //------------------MQTT Handlers-------------------
-var mqtt = require('mqtt')
-const mqttBroker = "mqtt://127.0.0.1"
+var mqtt = require("mqtt");
+const mqttBroker = "mqtt://127.0.0.1";
 // const mqttBroker = "mqtt://mqtt.eclipse.org"
 const options = {
-    qos: 2
+    qos: 2,
 };
 
 var mqttClient = mqtt.connect(mqttBroker, { clientId: "mqttjs99" }, options);
 
-
 // gateway initialization
-var conf = require('./conf/topicMananger');
+var conf = require("./conf/topicMananger");
 conf.checkGatewayInitialization();
-conf.subscribtion(mqttClient)
+conf.subscribtion(mqttClient);
 
-
-mqttClient.on("connect", () => { // console.log("connected  " + mqttClient.connected);
+mqttClient.on("connect", () => {
+    // console.log("connected  " + mqttClient.connected);
 });
 
 mqttClient.on("error", (err) => {
     console.log("Can't connect" + err);
-    process.exit(1)
+    process.exit(1);
 });
 
-mqttClient.on('message',(topic, message, packet)=>{
-    conf.topicHandler(topic, message, packet)
+mqttClient.on("message", (topic, message, packet) => {
+    conf.topicHandler(topic, message, packet);
 });
 
 /**
@@ -68,34 +58,38 @@ mqttClient.on('message',(topic, message, packet)=>{
 
 //....................................................
 const PORT = 2999;
-
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('public'))
+app.use(express.static("public"));
 
 //  serve dashboard page ---------------------------------
 const serverRouter = express.Router();
-serverRouter.get('/', (req, res) => {
+serverRouter.get("/", (req, res) => {
     console.log("received a request for index page");
-    res.sendFile(path.join(__dirname + '/test.html'));
-})
+    res.sendFile(path.join(__dirname + "/test.html"));
+});
 
-serverRouter.get('/setting' , (req,res)=>{
-    console.log("received a request for scheduling page")
-    res.sendFile(path.join(__dirname + '/setting.html'));
-})
-app.use('/page', serverRouter);
+serverRouter.get("/setting", (req, res) => {
+    console.log("received a request for scheduling page");
+    res.sendFile(path.join(__dirname + "/setting.html"));
+});
+app.use("/page", serverRouter);
 
 // --------------------------------------------------------
 
 // status receiver ----------------------------------------
-var webAPIRouter = require('./routes/webAPI.routes');
-app.use('/webapi', webAPIRouter);
+var webAPIRouter = require("./routes/webAPI.routes");
+app.use("/webapi", webAPIRouter);
+// --------------------------------------------------------
+
+
+// user router --------------------------------------------
+const userRouter = require("./routes/user.routes")
+app.use('/user', userRouter);
 // --------------------------------------------------------
 
 
 // start the server
 app.listen(PORT, function() {
-    console.log('Server application is listening port ' + PORT + ".");
+    console.log("Server application is listening port " + PORT + ".");
 });

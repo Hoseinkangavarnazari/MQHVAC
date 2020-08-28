@@ -5,6 +5,8 @@ Here we should enter the spec of connection to the database
 var mongoose = require('mongoose');
 db = "mongodb://localhost:27017/hvacTest";
 
+mongoose.set('useCreateIndex', true);
+
 // connect to mongo function
 const open = () => {
     let connection = mongoose.connection;
