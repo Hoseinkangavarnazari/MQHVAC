@@ -2,11 +2,15 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
 const server = require("http").Server(app);
 const mqttRouter = require("./routes/mqtt.routes");
 const { v4: uuid } = require("uuid");
+
+
+app.use(cookieParser())
 
 //------------------MQTT Handlers-------------------
 var mqtt = require("mqtt");
