@@ -9,7 +9,7 @@ const server = require("http").Server(app);
 // const mqttRouter = require("./routes/mqtt.routes");
 
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 //------------------MQTT Handlers-------------------
 var mqtt = require("mqtt");
@@ -39,7 +39,6 @@ mqttClient.on("message", (topic, message, packet) => {
     conf.topicHandler(topic, message, packet);
 });
 
-const PORT = 2999;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -57,7 +56,8 @@ app.use('/user', userRouter);
 // --------------------------------------------------------
 
 
-// start the server
+//SEVER
+const PORT = 2999;
 app.listen(PORT, function() {
     console.log("Server application is listening port " + PORT + ".");
 });

@@ -79,6 +79,8 @@ exports.updateData = async(req, res) => {
     response = [];
 
     GIDLIST = ["g1f0", "g2f0"];
+
+    // should be changed and read the list of GIDs from the database
     for (currentGID of GIDLIST) {
         sensorData = await sensorStatus
             .find({
