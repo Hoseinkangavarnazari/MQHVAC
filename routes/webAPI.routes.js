@@ -10,13 +10,13 @@ webAPI_router.post('/setSchedule', webAPI_controller.setSchedule)
 webAPI_router.post('/emergencyCall', webAPI_controller.emergencyCall);
 webAPI_router.post('/readlogs', webAPI_controller.readLogs);
 
-// sign Up
-webAPI_router.post('/signUp', webAPI_controller.signUp);
+// // sign Up
+// webAPI_router.post('/signUp', webAPI_controller.signUp);
 
-// login
+// // login
 
-// rename password
-webAPI_router.post('/changepass', webAPI_controller.changePass);
+// // rename password
+// webAPI_router.post('/changepass', webAPI_controller.changePass);
 
 
 
