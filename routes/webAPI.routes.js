@@ -1,23 +1,15 @@
 var express = require('express');
 var webAPI_router = express.Router();
-
-// Require controller modules.
+const passport = require("passport");
+const passportConfig = require("../passport");
 var webAPI_controller = require('../controllers/webAPI.controller');
-
 
 webAPI_router.post('/updatedata', webAPI_controller.updateData);
 webAPI_router.post('/setSchedule', webAPI_controller.setSchedule)
 webAPI_router.post('/emergencyCall', webAPI_controller.emergencyCall);
 webAPI_router.post('/readlogs', webAPI_controller.readLogs);
 
-// // sign Up
-// webAPI_router.post('/signUp', webAPI_controller.signUp);
-
-// // login
-
-// // rename password
-// webAPI_router.post('/changepass', webAPI_controller.changePass);
-
-
+// auth required section
+webAPI_router.post('/authrequired', passport.authenticate('jwt', { session: false }),webAPI_controller.authrequired)
 
 module.exports = webAPI_router;

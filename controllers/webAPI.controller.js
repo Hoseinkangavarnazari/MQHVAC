@@ -218,3 +218,8 @@ exports.readLogs = async(req, res) => {
         })
         .limit(10);
 };
+
+
+exports.authrequired = async(req, res) => {
+    res.send({msg:"You hit auth required"})
+}
