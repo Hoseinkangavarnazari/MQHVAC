@@ -8,6 +8,32 @@ const app = express();
 const server = require("http").Server(app);
 // const mqttRouter = require("./routes/mqtt.routes");
 
+const swaggerJSDoc = require("swagger-jsdoc")
+const swaggerUI = require("swagger-ui-express")
+
+// Auto-generator documents 
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'SarvTech API documentation',
+            version: '0.0.1',
+            description: 'All REST and MODEL documentations',
+        }
+        // ,
+        // servers: ["http://localhost:5000"]
+    },
+    apis: ["./routes/*.js"] 
+}
+
+
+swaggerDocs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs',swaggerUI.serve,swaggerUI.setup(swaggerDocs));
+
+
+// app.get('/swagger.json', (req, res) => {
+//     res.setHeader('Content-Type', 'application/json');
+//     res.send(swaggerSpec);
+// });
 
 app.use(cookieParser());
 
@@ -19,7 +45,9 @@ const options = {
     qos: 2,
 };
 
-var mqttClient = mqtt.connect(mqttBroker, { clientId: "mqttjs99" }, options);
+var mqttClient = mqtt.connect(mqttBroker, {
+    clientId: "mqttjs99"
+}, options);
 
 // gateway initialization
 var conf = require("./conf/topicMananger");
@@ -39,7 +67,9 @@ mqttClient.on("message", (topic, message, packet) => {
     conf.topicHandler(topic, message, packet);
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
@@ -58,6 +88,6 @@ app.use('/user', userRouter);
 
 //SEVER
 const PORT = 2999;
-app.listen(PORT, function() {
+app.listen(PORT, function () {
     console.log("Server application is listening port " + PORT + ".");
 });

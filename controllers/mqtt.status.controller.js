@@ -1,6 +1,6 @@
 // require the model
 var sensorStatus = require("../models/sensorStatus.model")
-var log = require("../models/log.model")
+var log = require("../models/log.model") 
 
 /* Save MQTT received sensor statuses from gateways*/
 var writeNewStatus = async (gid, msg) => {
@@ -68,4 +68,4 @@ var writeNewLog = async (gid, msg) => {
 module.exports = {
     writeNewStatus,
     writeNewLog
-}
+} 
