@@ -33,3 +33,6 @@ actuator_controller.removeSchedule);
 actuator_router.delete('/remove_all_schedules',
 passport.authenticate('jwt', { session: false }),
 actuator_controller.removeAllSchedule);
+
+
+module.exports = actuator_router;

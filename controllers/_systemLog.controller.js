@@ -1,8 +1,14 @@
 var request = require("request");
-
-
-
 var SystemLog = require("../models/_SystemLog.model");
+
+// MQTT ..........................................................
+
+/**
+ * Method: MQTT 3.1
+ */
+var saveLog = async (aid, log) => {}
+
+// MQTT ..........................................................
 
 
 // REST ...........................................................

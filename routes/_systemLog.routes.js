@@ -15,8 +15,12 @@ var systemLog_controller = require('../controllers/_systemLog.controller');
 
 // MQTT
 
-// REST
+var saveLog = (aid, log) => { 
+    systemLog_controller.saveLog(aid, log)
+ }
 
+
+// REST
 systemLog_router.post('/all_log',
 passport.authenticate('jwt', { session: false }),
 systemLog_controller.allLog);
@@ -36,4 +40,9 @@ systemLog_controller.log);
 systemLog_router.put('/seen_status',
 passport.authenticate('jwt', { session: false }),
 systemLog_controller.seenStatus);
+
+module.exports = {
+    saveLog,
+    systemLog_router
+}
 

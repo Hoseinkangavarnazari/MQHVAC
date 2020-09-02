@@ -1,6 +1,19 @@
 var request = require("request");
 var SensorStatus = require("../models/_SensorStatus.model");
 
+
+// MQTT ..........................................................
+
+/**
+ * Method: MQTT 3.1
+ */
+var saveStatus = async (aid, status) => {}
+
+// MQTT ..........................................................
+
+
+
+
 /**
  * For security reasons we will use POST method instead of GET to
  * transmit the sensors data to the client.
