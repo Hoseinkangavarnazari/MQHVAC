@@ -51,8 +51,6 @@ exports.todayHisotry = async(req, res) => {}
 exports.todayHisotryAll = async(req, res) => {}
 
 
-
-
 /**
  * TODO:
  * Send history for specific range in timeline
