@@ -1,7 +1,6 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
-
 const connection = require("./conn_db");
 
 var userSchema = new Schema({
@@ -50,7 +49,7 @@ userSchema.methods.comparePassword = function(password, cb) {
                 return cb(null, this);
             }
         }
-    });
+    }); 
 };
 
 module.exports = mongoose.model("user", userSchema);

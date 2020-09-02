@@ -7,20 +7,6 @@ var user_controller = require('../controllers/user.controller');
 
 
 
-/**
-* @swagger
-* /user/register:
-*   post:
-*     tags:
-*       - Users
-*     name: registeration
-*     summary: to register an admin
-*     responses:
-*       200:
-*         description: Admin successfully added to the database.
-*       401:
-*         description: No auth token
-*/
 userRouter.post('/register',user_controller.register);
 
 

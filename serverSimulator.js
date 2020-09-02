@@ -8,32 +8,7 @@ const app = express();
 const server = require("http").Server(app);
 // const mqttRouter = require("./routes/mqtt.routes");
 
-const swaggerJSDoc = require("swagger-jsdoc")
-const swaggerUI = require("swagger-ui-express")
 
-// Auto-generator documents 
-const swaggerOptions = {
-    swaggerDefinition: {
-        info: {
-            title: 'SarvTech API documentation',
-            version: '0.0.1',
-            description: 'All REST and MODEL documentations',
-        }
-        // ,
-        // servers: ["http://localhost:5000"]
-    },
-    apis: ["./routes/*.js"] 
-}
-
-
-swaggerDocs = swaggerJSDoc(swaggerOptions)
-app.use('/apidocs',swaggerUI.serve,swaggerUI.setup(swaggerDocs));
-
-
-// app.get('/swagger.json', (req, res) => {
-//     res.setHeader('Content-Type', 'application/json');
-//     res.send(swaggerSpec);
-// });
 
 app.use(cookieParser());
 
