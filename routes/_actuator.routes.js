@@ -4,7 +4,7 @@ var actuator_router = express.Router();
 const passport = require("passport");
 const passportConfig = require("../passport");
 
-var actuator_controller = require('../controllers/user.controller');
+var actuator_controller = require('../controllers/_actuator.controller');
 
 actuator_router.put('/edit_location',
 passport.authenticate('jwt', { session: false }),

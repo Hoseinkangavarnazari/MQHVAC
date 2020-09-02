@@ -1,5 +1,5 @@
 var request = require("request");
-var actuator = require("../models/_Actuator.model");
+var Actuator = require("../models/_Actuator.model");
 
 
 /**
