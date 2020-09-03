@@ -24,6 +24,12 @@ var mqttClient = mqtt.connect(mqttBroker, {
     clientId: "mqttjs99"
 }, options);
 
+
+// logging middleware
+
+
+
+
 // gateway initialization
 var conf = require("./conf/topicMananger");
 conf.checkGatewayInitialization();

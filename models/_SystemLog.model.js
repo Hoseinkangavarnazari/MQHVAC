@@ -17,6 +17,10 @@ var SystemLogSchema = new Schema({
         enum:['danger', 'warn', 'info'],
         default: info
     },
+    description:{
+        type: String,
+        required: true
+    },
     seen : {
         type: Boolean,
         default: false
