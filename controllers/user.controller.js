@@ -6,7 +6,11 @@ var User= require("../models/user.model")
 
 
 
-
+/**
+ * 
+ * signs the payload and setting the secretOrKey
+ * Also sets the expiration of cookies
+ */
 const signToken = userID => {
     // this is the payload
     return JWT.sign({
@@ -18,6 +22,15 @@ const signToken = userID => {
     // should match with secretOrKey
 }
 
+
+/**
+ * method: POST 
+ * Auth: LOOKED - JUST FOR SARVTECH ROOT USER
+ * url: /user/register
+ * description: 
+ * (1) check if the requested username has not already been registered
+ * (2) saves the new admin(currently we just have admin mode)
+ */
 exports.register = async (req, res) => {
 
 
@@ -74,6 +87,15 @@ exports.register = async (req, res) => {
 
 }
 
+
+/**
+ * method: POST
+ * Auth: not required
+ * url: /user/login
+ * description: 
+ * (1) Authenticates the user with passport
+ * (2) Attaches the json web token to the request using JWT
+ */
 exports.login = async (req, res) => {
     console.log("In login")
     if (req.isAuthenticated()) {
@@ -97,6 +119,15 @@ exports.login = async (req, res) => {
     }
 }
 
+
+
+/**
+ * method: GET
+ * Auth: required
+ * url: /user/logout
+ * description: 
+ * (1) Removes the attached JWT from the request
+ */
 exports.logout = async (req, res) => {
     res.clearCookie('access_token');
     res.json({
