@@ -7,7 +7,7 @@ const path = require("path");
 const app = express();
 const server = require("http").Server(app);
 // const mqttRouter = require("./routes/mqtt.routes");
-
+var logger = require("./config/logger");
 
 
 app.use(cookieParser());
@@ -31,7 +31,7 @@ var mqttClient = mqtt.connect(mqttBroker, {
 
 
 // gateway initialization
-var conf = require("./conf/topicMananger");
+var conf = require("./config/topicMananger");
 conf.checkGatewayInitialization();
 conf.subscribtion(mqttClient);
 
@@ -53,6 +53,19 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
+
+app.use((req, res, next) => {
+    // log here
+    logger.log('info',{
+        type: "HTTP",
+        url: req.url,
+        method: req.method,
+        ip: req.ip,
+        cookie: req.cookies,
+        msgBody: req.body
+        })
+    next();
+})
 
 
 // status receiver ----------------------------------------

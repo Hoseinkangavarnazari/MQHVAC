@@ -2,6 +2,8 @@
 var mqttRouter = require("../routes/mqtt.routes")
 // first check the database and see if the gateways are entered or we should add it from config file 
 
+var logger =require("../config/logger")
+
 
 /**
  * Initialization of gateways for the first time
@@ -97,6 +99,13 @@ gateway.find({},function(error,gateways){
  
 exports.topicHandler = (topic, message, packet)=>{
     console.log("Topic: ",topic)
+
+
+    logger.log('info',{
+        type: "MQTT",
+        topic: topic,
+        message: message,
+        });
 
     temp = topic.split("/")
 

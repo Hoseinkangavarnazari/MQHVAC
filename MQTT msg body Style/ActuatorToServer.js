@@ -76,10 +76,13 @@ sensor_status = {
  * 
  * Message Body example: 
  * {
-
-*}
-* Attention: There should be a valid range for reported parameters.
-             For instance non of the sensors are not allowed to send negetive numbers
+ * system_log = {
+    aid: '1',
+    time: '12/19/2012, 19:00:00',
+    level:'warn',
+    description:'Server asked for control mode schedule however there is no schedule to be set.'
+  }
+}
 */
 
 
@@ -94,11 +97,17 @@ system_log = {
     },
     level: {
         type: String,
-        enum: ['danger', 'warn', 'info'],
+        enum:['danger', 'warn', 'info'],
         default: info
     },
-    seen: {
-        type: Boolean,
-        default: false
+    description:{
+        type: String,
+        required: true
     }
+    //, there is no need to set this parameter in actuator section 
+    // However we have this key value in our model used for web/mobile interface
+    // seen: {
+    //     type: Boolean,
+    //     default: false
+    // }
 }
