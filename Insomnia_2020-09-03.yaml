@@ -1,0 +1,681 @@
+_type: export
+__export_format: 4
+__export_date: 2020-09-03T09:59:42.180Z
+__export_source: insomnia.desktop.app:v2020.3.3
+resources:
+  - _id: req_7f7bd21deff14404ad074dc75bd61a45
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: " "
+    created: 1599125082617
+    description: " * For security reasons we will use POST method instead of GET to
+
+      \ * transmit the sensors data to the client.
+
+      _____
+
+
+      Description: Seen or unseen an specific log
+
+      \ "
+    headers:
+      - id: pair_f252a21108e44c9abe5547ae12447101
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124979673
+    method: PUT
+    modified: 1599126255409
+    name: Seen status
+    parameters: []
+    parentId: fld_acc4baf623424e5d8481420626815823
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/system_log/seen_status
+    _type: request
+  - _id: fld_acc4baf623424e5d8481420626815823
+    created: 1599123681520
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1599123681520
+    modified: 1599123681520
+    name: System log
+    parentId: wrk_9ee731cf64844808968cc1cc438a8302
+    _type: request_group
+  - _id: wrk_9ee731cf64844808968cc1cc438a8302
+    created: 1599123588536
+    description: ""
+    modified: 1599123588536
+    name: SARVTECH
+    parentId: null
+    scope: null
+    _type: workspace
+  - _id: req_984ac59931c648b8b71397ebd73d7040
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599124979623
+    description: |-2
+       * For security reasons we will use POST method instead of GET to
+       * transmit the sensors data to the client.
+      _____
+
+      Description: Returns all logs related for all actuators
+    headers:
+      - id: pair_bfcc7c28c182460e8e33a43d5a0a6e74
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124979623
+    method: POST
+    modified: 1599126285113
+    name: All log
+    parameters: []
+    parentId: fld_acc4baf623424e5d8481420626815823
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/system_log/all_log
+    _type: request
+  - _id: req_041d7c0dfe824aeb9f68c297df90b881
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599125013773
+    description: |-2
+       * For security reasons we will use POST method instead of GET to
+       * transmit the sensors data to the client.
+      _____
+
+      Description: Returns unseen logs of all actuators
+    headers:
+      - id: pair_bfcc7c28c182460e8e33a43d5a0a6e74
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124945895.5
+    method: POST
+    modified: 1599126359960
+    name: Reterive all unseen
+    parameters: []
+    parentId: fld_acc4baf623424e5d8481420626815823
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/system_log/reterive_all_unseen
+    _type: request
+  - _id: req_cb5648ec43f84ee89012e255b8ae6a85
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599125043933
+    description: |-2
+       * For security reasons we will use POST method instead of GET to
+       * transmit the sensors data to the client.
+      _____
+
+      Description: Return unseen logs of requested ai
+    headers:
+      - id: pair_bfcc7c28c182460e8e33a43d5a0a6e74
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124929031.75
+    method: POST
+    modified: 1599126382705
+    name: Reterive unseen
+    parameters: []
+    parentId: fld_acc4baf623424e5d8481420626815823
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/system_log/reterive_unseen
+    _type: request
+  - _id: req_51313306bb6644be8f324073245d2a7b
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599125058550
+    description: |-2
+       * For security reasons we will use POST method instead of GET to
+       * transmit the sensors data to the client.
+      _____
+
+      Description: returns all logs related for requested aid
+    headers:
+      - id: pair_bfcc7c28c182460e8e33a43d5a0a6e74
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124920599.875
+    method: POST
+    modified: 1599126395609
+    name: Log
+    parameters: []
+    parentId: fld_acc4baf623424e5d8481420626815823
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/system_log/log
+    _type: request
+  - _id: req_0ea8de37683045b1ba32cdc60ecfc0a5
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599124756640
+    description: >-
+      Description:  
+
+      * Returns an array that contains data of each sensor for every 30 minutes in a day for requested aid
+    headers:
+      - id: pair_069e70e7d059466a9a3b2a5ede561837
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124756640
+    method: POST
+    modified: 1599126459034
+    name: Today history
+    parameters: []
+    parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/sensor_status/today_history
+    _type: request
+  - _id: fld_d4401f5964b74d3f895e6db45c3e0fe0
+    created: 1599123663208
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1599123672364
+    modified: 1599124666818
+    name: Sensor Status
+    parentId: wrk_9ee731cf64844808968cc1cc438a8302
+    _type: request_group
+  - _id: req_26131430b9db47198adf83574066cb88
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599124792766
+    description: >-
+      Description:  
+
+      * Returns an array that contains data of each sensor for every 30 minutes in a day for all actuators
+    headers:
+      - id: pair_069e70e7d059466a9a3b2a5ede561837
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124724799.5
+    method: POST
+    modified: 1599126499216
+    name: Today history all
+    parameters: []
+    parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/sensor_status/today_history_all
+    _type: request
+  - _id: req_9684f41a773c41c696dbcff6d4617d7d
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599124692959
+    description: |-
+      Description: 
+       * Finds related sensors to requested aid
+       * Returns the latest sensor status for each of them
+    headers:
+      - id: pair_4584cb0238134250a99a938dd0f27bd6
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124692959
+    method: POST
+    modified: 1599126524218
+    name: report
+    parameters: []
+    parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/sensor_status/report
+    _type: request
+  - _id: req_7215a0daef834d46b5c06fcd5ea2f554
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599124736766
+    description: >-2
+       Description:
+       * Returns the latest sensor status for each actuator and correspondigsensors
+    headers:
+      - id: pair_4584cb0238134250a99a938dd0f27bd6
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124315660.5
+    method: POST
+    modified: 1599126563034
+    name: Report all
+    parameters: []
+    parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/sensor_status/report_all
+    _type: request
+  - _id: req_f8f75c36f0164a988d3a4e62fe3962ce
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599123957426
+    description: >-2
+       * Description: 
+       * (1) Removes schedule from all actuators
+       * (2) Changes conf.control into thermostat if the current control mode is schedule or schedule&thermostat
+       * (3) publishes empty schedule into MQTT topic /+/set_schedule
+       * (4) publishes new control mode if needed in /+/control_conf
+       ____
+       
+       * Attention: '+' is a single level wildcard
+    headers:
+      - id: pair_d56f050aa347441ca0d60423540e3c37
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599123721658
+    method: DELETE
+    modified: 1599127093265
+    name: Remove All Schedule
+    parameters: []
+    parentId: fld_bc1fc579cb6941f4be20f6955d35da8f
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/actuator/remove_all_schedule
+    _type: request
+  - _id: fld_bc1fc579cb6941f4be20f6955d35da8f
+    created: 1599124023320
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1599124023320
+    modified: 1599124023320
+    name: DEL
+    parentId: fld_29edf8dc0a1c41a4b560211f0bc372e3
+    _type: request_group
+  - _id: fld_29edf8dc0a1c41a4b560211f0bc372e3
+    created: 1599123638391
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1599123638391
+    modified: 1599123638391
+    name: Actuator
+    parentId: wrk_9ee731cf64844808968cc1cc438a8302
+    _type: request_group
+  - _id: req_031a6acffcbe485ab9eace8e6da271bc
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599123936258
+    description: >-2
+       Description: 
+       * (1) Removes schedule from requested actuator
+       * (2) Changes conf.control into thermostat if the current control mode is schedule or schedule&thermostat
+       * (3) publishes empty schedule into MQTT topic /aid/set_schedule
+       * (4) publishes new control mode if needed in /aid/control_conf
+    headers:
+      - id: pair_d56f050aa347441ca0d60423540e3c37
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599123721608
+    method: DELETE
+    modified: 1599127046930
+    name: Remove Schedule
+    parameters: []
+    parentId: fld_bc1fc579cb6941f4be20f6955d35da8f
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/actuator/remove_schedule
+    _type: request
+  - _id: req_5a3451e185a1483a90a64b69e6ae0167
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599123918306
+    description: |-2
+       Description: 
+       * Returns the actuator object
+    headers:
+      - id: pair_d56f050aa347441ca0d60423540e3c37
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599123721658
+    method: GET
+    modified: 1599126957521
+    name: Spec
+    parameters: []
+    parentId: fld_d12a0aa42d554da7953688720f54c0bf
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: ""
+    _type: request
+  - _id: fld_d12a0aa42d554da7953688720f54c0bf
+    created: 1599124009632
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1599124009632
+    modified: 1599124009632
+    name: GET
+    parentId: fld_29edf8dc0a1c41a4b560211f0bc372e3
+    _type: request_group
+  - _id: req_c111da84324c4c8092fb5666ec744959
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599123882038
+    description: |-2
+       Description:
+       * (1) Updates or sets schedule for requested aid 
+       * (2) Publishes new schedule into MQTT topic:  /aid/set_schedule
+    headers:
+      - id: pair_d56f050aa347441ca0d60423540e3c37
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599123938362
+    method: PUT
+    modified: 1599127019925
+    name: Set schedule
+    parameters: []
+    parentId: fld_365562ee88d3402495061478832e48f1
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/actuator/set_schedule
+    _type: request
+  - _id: fld_365562ee88d3402495061478832e48f1
+    created: 1599123977616
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1599123977616
+    modified: 1599123977616
+    name: PUT
+    parentId: fld_29edf8dc0a1c41a4b560211f0bc372e3
+    _type: request_group
+  - _id: req_9f35fd8237b34c908a1322da0c8df422
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599123721808
+    description: |-2
+       Description: 
+       * (1) Changes the location of requested aid
+    headers:
+      - id: pair_d56f050aa347441ca0d60423540e3c37
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599123938312
+    method: PUT
+    modified: 1599126880944
+    name: Edit location
+    parameters: []
+    parentId: fld_365562ee88d3402495061478832e48f1
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/actuator/edit_location
+    _type: request
+  - _id: req_7d106e24d1a94f4f87ce1b6e6b139169
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599123853883
+    description: >-2
+       Description:
+       * (1) Changes the defined range for thermostat (min & max) for requested aid
+       * (2) Publishes into MQTT topic: /aid/set_thermostat
+    headers:
+      - id: pair_d56f050aa347441ca0d60423540e3c37
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599123938287
+    method: PUT
+    modified: 1599127004329
+    name: Set thermostat
+    parameters: []
+    parentId: fld_365562ee88d3402495061478832e48f1
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/actuator/set_thermostat
+    _type: request
+  - _id: req_e9d2cff9d95945a7b8fd42d5d8c9e2fd
+    authentication: {}
+    body: {}
+    created: 1599123820200
+    description: |-
+      Description: 
+       * (1) Changes the control configuration of requested actuator in db
+       * (2) Publishes into MQTT topic:  /aid/control_conf
+    headers: []
+    isPrivate: false
+    metaSortKey: -1599123938262
+    method: PUT
+    modified: 1599126979778
+    name: Control config
+    parameters: []
+    parentId: fld_365562ee88d3402495061478832e48f1
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/actuator/control_conf
+    _type: request
+  - _id: req_190ee79d388c44a1a536c1d3fbb22633
+    authentication: {}
+    body: {}
+    created: 1599124912168
+    description: |-
+      Description: 
+       * Removes the attached JWT from the request
+       * Auth: required
+    headers: []
+    isPrivate: false
+    metaSortKey: -1599124912168
+    method: GET
+    modified: 1599126752192
+    name: Logout
+    parameters: []
+    parentId: fld_c2866976c7d8471c94b9a8509f84985d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: ""
+    _type: request
+  - _id: fld_c2866976c7d8471c94b9a8509f84985d
+    created: 1599123627256
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1599123627256
+    modified: 1599123627256
+    name: User
+    parentId: wrk_9ee731cf64844808968cc1cc438a8302
+    _type: request_group
+  - _id: req_0534136424cb4220b55927a7741ec05f
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599124862041
+    description: |-2
+      
+       Description: 
+       * (1) check if the requested username has not already been registered
+       * (2) saves the new admin(currently we just have admin mode)
+       * Auth: LOOKED - JUST FOR SARVTECH ROOT USER
+    headers:
+      - id: pair_b0964db169fc4176bf969f9fd973d181
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124862041
+    method: POST
+    modified: 1599126707939
+    name: Register
+    parameters: []
+    parentId: fld_c2866976c7d8471c94b9a8509f84985d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/user/register
+    _type: request
+  - _id: req_81ee3a1123af42ac8b7364eaec8bdb8d
+    authentication: {}
+    body:
+      mimeType: application/json
+      text: ""
+    created: 1599124891199
+    description: |-2
+       Description:
+       * (1) Authenticates the user with passport
+       * (2) Attaches the json web token to the request using JWT
+    headers:
+      - id: pair_b0964db169fc4176bf969f9fd973d181
+        name: Content-Type
+        value: application/json
+    isPrivate: false
+    metaSortKey: -1599124809340.5
+    method: POST
+    modified: 1599126796102
+    name: Login
+    parameters: []
+    parentId: fld_c2866976c7d8471c94b9a8509f84985d
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingFollowRedirects: global
+    settingRebuildPath: true
+    settingSendCookies: true
+    settingStoreCookies: true
+    url: http://localhost:2999/user/login
+    _type: request
+  - _id: env_ef87eef3e29c23ca3967948edbfeecd5cf9cb9fc
+    color: null
+    created: 1599123588590
+    data: {}
+    dataPropertyOrder: null
+    isPrivate: false
+    metaSortKey: 1599123588590
+    modified: 1599123588590
+    name: Base Environment
+    parentId: wrk_9ee731cf64844808968cc1cc438a8302
+    _type: environment
+  - _id: jar_ef87eef3e29c23ca3967948edbfeecd5cf9cb9fc
+    cookies: []
+    created: 1599123588592
+    modified: 1599123588592
+    name: Default Jar
+    parentId: wrk_9ee731cf64844808968cc1cc438a8302
+    _type: cookie_jar
+  - _id: spc_785ced5ead3d4719bdcd5b9e08f88fd7
+    contentType: yaml
+    contents: ""
+    created: 1599123588540
+    fileName: SARVTECH
+    modified: 1599123588540
+    parentId: wrk_9ee731cf64844808968cc1cc438a8302
+    _type: api_spec
+  - _id: env_6eba1f7e3cea45cd8ade870a1f0fe3d3
+    color: "#a40000"
+    created: 1599125159816
+    data: {}
+    dataPropertyOrder: null
+    isPrivate: false
+    metaSortKey: 1599125159816
+    modified: 1599125180593
+    name: SARV env
+    parentId: env_ef87eef3e29c23ca3967948edbfeecd5cf9cb9fc
+    _type: environment
