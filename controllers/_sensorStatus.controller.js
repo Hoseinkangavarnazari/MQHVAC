@@ -7,7 +7,13 @@ var SensorStatus = require("../models/_SensorStatus.model");
 /**
  * Method: MQTT 3.1
  */
-var saveStatus = async (aid, status) => {}
+exports.saveStatus = async (aid, status) => {
+    status = JSON.parse(status)
+    console.log("aid",aid,"msg: ",status);
+
+
+
+}
 
 // MQTT ..........................................................
 

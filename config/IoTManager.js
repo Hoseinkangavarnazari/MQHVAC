@@ -81,13 +81,16 @@ function initActuator() {
  */
 exports.subscribtion= (mqttClient)=> {
     var actuatorCollection = require("../models/_Actuator.model")
+
+    // mqttClient.subscribe("1/sensor_status", { qos: 2 });
+
     // there is a problem here
     actuatorCollection.find({},function(error,actuators){
         if(error){
             console.log("Error: ",error);
         }
         actuators.forEach((actuator)=>{
-            topic = actuator.aid+"/*";
+            topic = actuator.aid+"/+";
             mqttClient.subscribe(topic, { qos: 2 });
             console.log(topic)
         });
@@ -100,11 +103,11 @@ exports.topicHandler = (topic, message, packet)=>{
     // TODO packet can be used in logging mechanism
     console.log("Topic: ",topic)
     logger.log('info',{
+        time: new Date(),
         type: "MQTT",
         topic: topic,
-        message: message,
+        message: JSON.parse(message),
         });
-
     temp = topic.split("/")
 
     aid =temp[0]

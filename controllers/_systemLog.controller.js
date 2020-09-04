@@ -6,7 +6,9 @@ var SystemLog = require("../models/_SystemLog.model");
 /**
  * Method: MQTT 3.1
  */
-var saveLog = async (aid, log) => {}
+exports.saveLog = async (aid, log) => {
+    console.log("aid",aid,"msg: ",log);
+}
 
 // MQTT ..........................................................
 

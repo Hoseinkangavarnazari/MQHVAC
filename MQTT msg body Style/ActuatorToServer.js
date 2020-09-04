@@ -15,7 +15,6 @@
  * Description : Actuator sends the sensors data.
  * Message Body example: 
  * {
-    aid : '1',
     time : '12/19/2012, 19:00:00',
     data : [
         {
@@ -35,10 +34,6 @@
 */
 
 sensor_status = {
-    aid: {
-        type: String,
-        required: true
-    },
     time: {
         type: String,
         required: true
@@ -57,7 +52,6 @@ sensor_status = {
             required: true
         }
     }]
-
 }
 
 /**
@@ -77,7 +71,6 @@ sensor_status = {
  * Message Body example: 
  * {
  * system_log = {
-    aid: '1',
     time: '12/19/2012, 19:00:00',
     level:'warn',
     description:'Server asked for control mode schedule however there is no schedule to be set.'
@@ -87,10 +80,7 @@ sensor_status = {
 
 
 system_log = {
-    aid: {
-        type: String,
-        required: true
-    },
+
     time: {
         type: String,
         required: true
