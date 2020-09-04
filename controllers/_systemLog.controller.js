@@ -1,5 +1,5 @@
 var request = require("request");
-var SystemLog = require("../models/_SystemLog.model");
+var systemLog = require("../models/_SystemLog.model");
 
 // MQTT ..........................................................
 
@@ -8,6 +8,29 @@ var SystemLog = require("../models/_SystemLog.model");
  */
 exports.saveLog = async (aid, log) => {
     console.log("aid",aid,"msg: ",log);
+
+    try {
+        // currently server time is considered
+        // let time = msg.time
+        // let time = new Date();
+        var newLog = new systemLog({
+            aid: aid,
+            time: new Date(),
+            level:log.level,
+            description: log.description
+        });
+
+    } catch (err) {
+        console.log("Something went wrong during saving new sensor data.", err)
+    }
+
+    try {
+        newLog.save();
+        console.log("Saved into the database.")
+
+    } catch (err) {
+        console.log("There is something wrong with saving to DB", err)
+    }
 }
 
 // MQTT ..........................................................
