@@ -102,11 +102,19 @@ exports.subscribtion= (mqttClient)=> {
 exports.topicHandler = (topic, message, packet)=>{
     // TODO packet can be used in logging mechanism
     console.log("Topic: ",topic)
+
+    try {
+        message= JSON.parse(message)
+      } catch (error) {
+        console.error("Problem with parsing body of message.", message);
+        // system log should be replaced
+        return;
+      }
     logger.log('info',{
         time: new Date(),
         type: "MQTT",
         topic: topic,
-        message: JSON.parse(message),
+        message: message,
         });
     temp = topic.split("/")
 
