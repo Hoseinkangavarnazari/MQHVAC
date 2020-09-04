@@ -99,8 +99,6 @@ gateway.find({},function(error,gateways){
  
 exports.topicHandler = (topic, message, packet)=>{
     console.log("Topic: ",topic)
-
-
     logger.log('info',{
         type: "MQTT",
         topic: topic,

@@ -96,15 +96,16 @@ var actuatorSchema = new Schema({
                 }
             }],
         },
-        sensorsList: {
+        sensorsList: [{
             sid: {
-                type: String
+                type: String,
+                required:true
             },
             location: {
                 type: String,
                 default: ""
             }
-        }
+        }]
     },
     mapURL: String
 });
@@ -112,7 +113,7 @@ var actuatorSchema = new Schema({
 /**
  * currently just checks if there is an avalible shcedule 
  * To do: the currectness of schedule must be checked
-*/
+ */
 actuatorSchema.methods.shceduleAvailable = function () {
     if (this.conf.schedule.length > 0) {
         return true;
@@ -129,4 +130,4 @@ actuatorSchema.methods.shceduleAvailable = function () {
  */
 
 
-module.exports = mongoose.model('Actuator', actuatorSchema);
+module.exports = mongoose.model('actuator', actuatorSchema);

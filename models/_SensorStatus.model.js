@@ -42,4 +42,4 @@ var sensorStatusSchema = new Schema({
  * (3) aid must be valid
  */ 
 
-module.exports = mongoose.model('SensorStatus', sensorStatusSchema);
+module.exports = mongoose.model('sensorstatus', sensorStatusSchema);

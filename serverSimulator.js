@@ -1,5 +1,4 @@
 // Require express and create an instance of it
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -25,27 +24,27 @@ var mqttClient = mqtt.connect(mqttBroker, {
 }, options);
 
 
-// logging middleware
-
-
-
-
 // gateway initialization
-var conf = require("./config/topicMananger");
-conf.checkGatewayInitialization();
-conf.subscribtion(mqttClient);
+// var conf = require("./config/topicMananger");
+// conf.checkGatewayInitialization();
+// conf.subscribtion(mqttClient);
 
-mqttClient.on("connect", () => {
-    // console.log("connected  " + mqttClient.connected);
-});
 
+// Actuator initialization ................................
+const IoTConfiguration = require("./config/IoTManager")
+ IoTConfiguration.initialization();
+ IoTConfiguration.subscribtion(mqttClient);
+
+
+mqttClient.on("connect", () => {/* console.log("connected  " + mqttClient.connected);*/});
 mqttClient.on("error", (err) => {
     console.log("Can't connect" + err);
     process.exit(1);
 });
 
 mqttClient.on("message", (topic, message, packet) => {
-    conf.topicHandler(topic, message, packet);
+    // conf.topicHandler(topic, message, packet);
+    IoTConfiguration.topicHandler(topic, message, packet);
 });
 
 app.use(bodyParser.urlencoded({
@@ -54,6 +53,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
+// Request logging middleware
 app.use((req, res, next) => {
     // log here
     logger.log('info',{

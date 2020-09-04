@@ -17,7 +17,7 @@ var systemLog_controller = require('../controllers/_systemLog.controller');
 
 var saveLog = (aid, log) => { 
     systemLog_controller.saveLog(aid, log)
- }
+}
 
 
 // REST

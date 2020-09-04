@@ -15,7 +15,7 @@ var SystemLogSchema = new Schema({
     level: {
         type: String,
         enum:['danger', 'warn', 'info'],
-        default: info
+        default: 'info'
     },
     description:{
         type: String,
@@ -32,4 +32,4 @@ var SystemLogSchema = new Schema({
  * pre save: The correctness of aid and time range should be checked 
  */
 
-module.exports = mongoose.model('SystemLog', SystemLogSchema);
+module.exports = mongoose.model('systemlog', SystemLogSchema);

@@ -1,0 +1,210 @@
+[{
+    "aid": "1",
+    "location": "IT & CS Dept.",
+    "conf": {
+        "controlMode": "thermostat",
+        "thermostat": {
+            "max": 30,
+            "min": 15
+        },
+        "schedule": {},
+        "sensorsList": [{
+                "sid": "a1s1",
+                "location": ""
+            },
+            {
+                "sid": "a1s2",
+                "location": ""
+            },
+            {
+                "sid": "a1s3",
+                "location": ""
+            }, {
+                "sid": "a1s4",
+                "location": ""
+            }, {
+                "sid": "a1s5",
+                "location": ""
+            }, {
+                "sid": "a1s6",
+                "location": ""
+            }
+        ]
+    },
+    "mapURL": ""
+},
+{
+    "aid": "2",
+    "location": "IT & CS Dept.",
+    "conf": {
+        "controlMode": "thermostat",
+        "thermostat": {
+            "max": 30,
+            "min": 15
+        },
+        "schedule": {},
+        "sensorsList": [{
+                "sid": "a2s1",
+                "location": ""
+            },
+            {
+                "sid": "a2s2",
+                "location": ""
+            },
+            {
+                "sid": "a2s3",
+                "location": ""
+            }, {
+                "sid": "a2s4",
+                "location": ""
+            }, {
+                "sid": "a2s5",
+                "location": ""
+            }, {
+                "sid": "a2s6",
+                "location": ""
+            }
+        ]
+    },
+    "mapURL": ""
+},
+{
+    "aid": "3",
+    "location": "IT & CS Dept.",
+    "conf": {
+        "controlMode": "thermostat",
+        "thermostat": {
+            "max": 30,
+            "min": 15
+        },
+        "schedule": {},
+        "sensorsList": [{
+                "sid": "a3s1",
+                "location": ""
+            },
+            {
+                "sid": "a3s2",
+                "location": ""
+            },
+            {
+                "sid": "a3s3",
+                "location": ""
+            }, {
+                "sid": "a3s4",
+                "location": ""
+            }, {
+                "sid": "a3s5",
+                "location": ""
+            }, {
+                "sid": "a3s6",
+                "location": ""
+            }
+        ]
+    },
+    "mapURL": ""
+},
+{
+    "aid": "4",
+    "location": "IT & CS Dept.",
+    "conf": {
+        "controlMode": "thermostat",
+        "thermostat": {
+            "max": 30,
+            "min": 15
+        },
+        "schedule": {},
+        "sensorsList": [{
+                "sid": "a4s1",
+                "location": ""
+            },
+            {
+                "sid": "a4s2",
+                "location": ""
+            },
+            {
+                "sid": "a4s3",
+                "location": ""
+            }, {
+                "sid": "a4s4",
+                "location": ""
+            }, {
+                "sid": "a4s5",
+                "location": ""
+            }, {
+                "sid": "a4s6",
+                "location": ""
+            }
+        ]
+    },
+    "mapURL": ""
+},
+{
+    "aid": "5",
+    "location": "IT & CS Dept.",
+    "conf": {
+        "controlMode": "thermostat",
+        "thermostat": {
+            "max": 30,
+            "min": 15
+        },
+        "schedule": {},
+        "sensorsList": [{
+                "sid": "a4s1",
+                "location": ""
+            },
+            {
+                "sid": "a4s2",
+                "location": ""
+            },
+            {
+                "sid": "a4s3",
+                "location": ""
+            }, {
+                "sid": "a4s4",
+                "location": ""
+            }, {
+                "sid": "a4s5",
+                "location": ""
+            }, {
+                "sid": "a4s6",
+                "location": ""
+            }
+        ]
+    },
+    "mapURL": ""
+},
+{
+    "aid": "6",
+    "location": "IT & CS Dept.",
+    "conf": {
+        "controlMode": "thermostat",
+        "thermostat": {
+            "max": 30,
+            "min": 15
+        },
+        "schedule": {},
+        "sensorsList": [{
+                "sid": "a5s1",
+                "location": ""
+            },
+            {
+                "sid": "a5s2",
+                "location": ""
+            },
+            {
+                "sid": "a5s3",
+                "location": ""
+            }, {
+                "sid": "a5s4",
+                "location": ""
+            }, {
+                "sid": "a5s5",
+                "location": ""
+            }, {
+                "sid": "a5s6",
+                "location": ""
+            }
+        ]
+    },
+    "mapURL": ""
+}]
