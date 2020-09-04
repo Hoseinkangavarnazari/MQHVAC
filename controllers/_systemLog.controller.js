@@ -51,7 +51,10 @@ exports.saveLog = async (aid, log) => {
  * description: 
  * (1) returns all logs related for all actuators
  */
-exports.allLog = async(req, res) => {}
+exports.allLog = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 /**
@@ -61,7 +64,10 @@ exports.allLog = async(req, res) => {}
  * description: 
  * (1) return unseen logs of all actuators
  */
-exports.reteriveAllUnseen = async(req, res) => {}
+exports.reteriveAllUnseen = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 /**
@@ -71,7 +77,10 @@ exports.reteriveAllUnseen = async(req, res) => {}
  * description: 
  * (1) return unseen logs of requested aid
  */
-exports.reteriveUnseen = async(req, res) => {}
+exports.reteriveUnseen = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 
@@ -82,7 +91,10 @@ exports.reteriveUnseen = async(req, res) => {}
  * description: 
  * (1) returns all logs related for requested aid
  */
-exports.log = async(req, res) => {}
+exports.log = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 /**
@@ -92,7 +104,10 @@ exports.log = async(req, res) => {}
  * description: 
  * (1) seen or unseen an specific log
  */
-exports.seenStatus = async(req, res) => {}
+exports.seenStatus = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 // REST ...........................................................

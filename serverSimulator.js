@@ -68,11 +68,29 @@ app.use((req, res, next) => {
 })
 
 
-// status receiver ----------------------------------------
-var webAPIRouter = require("./routes/webAPI.routes");
-app.use("/webapi", webAPIRouter);
+// // status receiver ----------------------------------------
+// var webAPIRouter = require("./routes/webAPI.routes");
+// app.use("/webapi", webAPIRouter);
+// // --------------------------------------------------------
+
+// systemlog router ----------------------------------------
+const systemLogModule = require("./routes/_systemLog.routes");
+// since two modules are exported from systemLog.routes we need to refer 
+// specifically to the router
+app.use("/system_log", systemLogModule.systemLog_router);
 // --------------------------------------------------------
 
+// sensor status router ----------------------------------------
+// since two modules are exported from sensorStatus.routes we need to refer 
+// specifically to the router
+const sensorStatusModule = require("./routes/_sensorStatus.routes");
+app.use("/sensor_status", sensorStatusModule.sensorStatus_router);
+// --------------------------------------------------------
+
+// Actuator router ----------------------------------------
+const actuatorModule = require("./routes/_actuator.routes");
+app.use("/actuator", actuatorModule);
+// --------------------------------------------------------
 
 // user router --------------------------------------------
 const userRouter = require("./routes/user.routes")

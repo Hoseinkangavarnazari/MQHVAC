@@ -9,7 +9,10 @@ var Actuator = require("../models/_Actuator.model");
  * description: 
  * (1) changes the location of requested aid
  */
-exports.editLocation = async(req, res) => {}
+exports.editLocation = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 /**
@@ -20,7 +23,10 @@ exports.editLocation = async(req, res) => {}
  * (1) changes the control configuration of requested actuator in db
  * (2) publishes into MQTT topic:  /aid/control_conf
  */
-exports.controlConf = async(req, res) => {}
+exports.controlConf = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 /**
@@ -31,7 +37,10 @@ exports.controlConf = async(req, res) => {}
  * (1) changes the defined range for thermostat (min & max) for requested aid
  * (2) publishes into MQTT topic: /aid/set_thermostat
  */
-exports.setThermostat = async(req, res) => {}
+exports.setThermostat = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 /**
@@ -42,7 +51,10 @@ exports.setThermostat = async(req, res) => {}
  * (1) updates or sets schedule for requested aid 
  * (2) publishes new schedule into MQTT topic:  /aid/set_schedule
  */
-exports.setSchedule = async(req, res) => {}
+exports.setSchedule = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 
@@ -52,7 +64,10 @@ exports.setSchedule = async(req, res) => {}
  * url: /actuator/spec
  * description: Returns the actuator object
  */
-exports.getSpec = async(req, res) => {}
+exports.getSpec = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 
 
@@ -67,7 +82,10 @@ exports.getSpec = async(req, res) => {}
  * (3) publishes empty schedule into MQTT topic /aid/set_schedule
  * (4) publishes new control mode if needed in /aid/control_conf
  */
-exports.removeSchedule = async(req, res) => {}
+exports.removeSchedule = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
 
 /**
  * method: DELETE
@@ -81,4 +99,7 @@ exports.removeSchedule = async(req, res) => {}
  * (4) publishes new control mode if needed in /+/control_conf
  * Attention: '+' is a single level wildcard
  */
-exports.removeAllSchedule = async(req, res) => {}
+exports.removeAllSchedule = async(req, res) => {
+    console.log("You hit the endpoint");
+    res.status(200).send("Temp response");
+}
