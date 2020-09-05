@@ -94,7 +94,7 @@ exports.controlConf = async (req, res) => {
 
     // check kon bebin jozve valid ha hast asan
     var possibleModes = ['on', 'off', 'thermostat', 'schedule', 'schedule&thermostat'];
-    if(!possibleModes.find((str)=> str === controlMode)){
+    if (!possibleModes.find((str) => str === controlMode)) {
         res.status(400).send("Invalid control mode")
         return
     }
@@ -132,15 +132,17 @@ exports.controlConf = async (req, res) => {
     }, (err, doc) => {
         if (err) {
             res.status(400).send(`An error occured in the database111. Error: ${err}`)
-        } else{
+        } else {
             res.status(200).send('The control mode of requested actuator has been updated.')
         }
     })
 
     // publish MQTT
-    topic = aid +"/control_conf";
-    msg = {"control_mode":controlMode}
-    IoTManager.MQTT_send(topic,msg)
+    topic = aid + "/control_conf";
+    msg = {
+        "control_mode": controlMode
+    }
+    IoTManager.MQTT_send(topic, msg)
 
 }
 
@@ -155,7 +157,48 @@ exports.controlConf = async (req, res) => {
  */
 exports.setThermostat = async (req, res) => {
     console.log("You hit the endpoint");
+    let aid = req.body.aid;
+    let max = req.body.max;
+    let min = req.body.min;
+
+    // type of max and min must be number otherwise system will stop :critical issue 
+
+    if (!(aid && max && min)) {
+        console.log("HEREEEEE")
+        res.status(400).send("The body of message is not standard.")
+        return
+    } else {
+        if (!(max > min && min > 0 && max > 0)) {
+            res.status(400).send("Parameters are not reasonable. Check them again.")
+        }
+    }
+    // 
+
+    // find and update
+    Actuator.findOneAndUpdate({
+        aid: aid
+    }, {
+        $set: {
+            'conf.thermostat.min': min,
+            'conf.thermostat.max': max
+        }
+    }, (err, doc) => {
+        if (err) {
+            res.status(304).send("Couldn't save into the database.")
+            return
+        }
+    })
     res.status(200).send("Temp response");
+    // in case of successful update published thermostat for actuator with mqtt
+    let topic = aid + "/set_thermostat";
+    let msg = {
+        thermostat: {
+            max: max,
+            min: min
+        }
+    }
+    IoTManager.MQTT_send(topic, msg)
+
 }
 
 
