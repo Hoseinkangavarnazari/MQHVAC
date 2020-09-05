@@ -1,12 +1,7 @@
-var request = require("request");
 var Actuator = require("../models/_Actuator.model");
-const e = require("express");
-const {
-    findOneAndUpdate,
-    update
-} = require("../models/_Actuator.model");
+const IoTManager = require("./../config/IoTManager");
 
-const IoTManager = require("./../config/IoTManager")
+
 
 /**
  * method: PUT 
@@ -164,7 +159,6 @@ exports.setThermostat = async (req, res) => {
     // type of max and min must be number otherwise system will stop :critical issue 
 
     if (!(aid && max && min)) {
-        console.log("HEREEEEE")
         res.status(400).send("The body of message is not standard.")
         return
     } else {
@@ -211,8 +205,58 @@ exports.setThermostat = async (req, res) => {
  * (2) publishes new schedule into MQTT topic:  /aid/set_schedule
  */
 exports.setSchedule = async (req, res) => {
-    console.log("You hit the endpoint");
+    console.log("here");
+    week = req.body;
+    alldays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    var timePattern = new RegExp("([01][0-9]|2[0-3]):[0-5][0-9]");
+    // we have to check that there is no confilct in the sent schedule
+    // by the admin
+    var flag_pattern = true
+    var flag_correctness = true
+    alldays.forEach(day => {
+        if (week[day] != null) {
+
+            // first we need to sort them
+            tempList = week[day];
+            for (i = 0; i < tempList.length; i++) {
+                start = tempList[i].start
+                end = tempList[i].end
+                if (!(timePattern.test(start) && timePattern.test(end))) {
+                    // there is something wrong and the whole schedule will be deleted
+                    console.log(`start: ${start} and end: ${end}`)
+                    flag_pattern = false;
+                    return;
+                }
+            }
+            tempList.sort((a, b) => (a.start > b.start) ? 1 : -1);
+
+            // after sort we can check that if the schedule is reasonable
+                preEnd = "00:00"
+                for (i = 0; i < tempList.length; i++) {
+                    start = tempList[i].start
+                    end = tempList[i].end
+                    if (!(end>start && start >= preEnd) || start == end) {
+                        // there is something wrong and the whole schedule will be deleted
+                        flag_correctness = false;
+                        return;
+                    }
+                    preEnd =end;
+                }
+                console.log(tempList)
+        }
+    })
+
+    if (!flag_pattern) {
+        res.status(400).send("Time patterns are not correct. Both start and end must match with our regex.");
+        return
+    } else if (!flag_correctness) {
+        res.status(400).send("There is a conflict in the schedule. Please check your schedule again.");
+        return
+    }
+    // console.log(week);
     res.status(200).send("Temp response");
+
+
 }
 
 
@@ -224,8 +268,26 @@ exports.setSchedule = async (req, res) => {
  * description: Returns the actuator object
  */
 exports.getSpec = async (req, res) => {
-    console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+
+    let aid = req.body.aid;
+    let doc = await Actuator.findOne({
+        aid: aid
+    });
+
+    if (!doc) {
+        res.status(404).json({
+            "err": "couldn't find requested actuator in the database."
+        })
+    }
+
+    let conf = doc.conf;
+    let location = doc.location;
+
+    // console.log(`conf: ${conf}, location : ${location}`)
+    res.status(200).json({
+        "conf": conf,
+        "location": location
+    });
 }
 
 
