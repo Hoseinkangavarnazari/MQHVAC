@@ -7,7 +7,12 @@
             "max": 30,
             "min": 15
         },
-        "schedule": {},
+        "schedule": {
+            "sunday":{
+                "start": "9:00-AM",
+                "end": "10:00-AM"
+            }
+        },
         "sensorsList": [{
                 "sid": "a1s1",
                 "location": ""

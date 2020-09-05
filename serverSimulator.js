@@ -62,7 +62,9 @@ app.use((req, res, next) => {
         method: req.method,
         ip: req.ip,
         cookie: req.cookies,
-        msgBody: req.body
+        msgBody: req.body,
+        res: res.body,
+        resStatus: res.status
         })
     next();
 })

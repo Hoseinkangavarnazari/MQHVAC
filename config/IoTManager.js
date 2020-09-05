@@ -133,3 +133,32 @@ exports.topicHandler = (topic, message, packet)=>{
 
     }
 }
+
+exports.MQTT_send= (topic,msg)=>{
+
+    var mqtttemp = require("mqtt");
+    const mqtttempBroker = "mqtt://127.0.0.1";
+    const options = {
+        qos: 2,
+    };
+    
+    var mqtttempClient = mqtttemp.connect(
+        mqtttempBroker, {
+            clientId: "mqttjs99",
+        },
+        options
+    );
+
+    mqtttempClient.publish(
+        topic,
+        JSON.stringify(msg),
+        options,
+        (error) => {
+            if (error) {
+                console.log("An error has been occured:  ", error);
+            } else {
+                console.log("Successfully published.");
+            }
+        }
+    );
+}
