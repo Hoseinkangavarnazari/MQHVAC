@@ -8,7 +8,7 @@ checkAidValid = async (reqAid) => {
     exsitenceFlag = await Actuator.find({
         "aid": reqAid
     });
-    return ( exsitenceFlag.length == 0) ? false : true
+    return (exsitenceFlag.length == 0) ? false : true
 }
 
 /**
@@ -213,11 +213,10 @@ exports.setThermostat = async (req, res) => {
  * (2) publishes new schedule into MQTT topic:  /aid/set_schedule
  */
 exports.setSchedule = async (req, res) => {
-    console.log("here");
     week = req.body;
     aid = req.body.aid;
 
-    if (! await checkAidValid(aid)) {
+    if (!await checkAidValid(aid)) {
         res.status(404).send("The requeseted aid is not db.");
         return;
     }
@@ -274,7 +273,8 @@ exports.setSchedule = async (req, res) => {
     Actuator.findOneAndUpdate({
         aid: aid
     }, {
-        $set: {'conf.schedule': week
+        $set: {
+            'conf.schedule': week
         }
     }, (err, doc) => {
         if (err) {
@@ -282,14 +282,11 @@ exports.setSchedule = async (req, res) => {
             return
         }
     })
-    
-    // Publish in MQTT 
-    
-    topic = aid + "/set_schedule";
 
+    // Publish in MQTT 
+    topic = aid + "/set_schedule";
     IoTManager.MQTT_send(topic, week)
 
-    // console.log(week);
     res.status(200).send("Successfully saved into database and pubished.");
 }
 
@@ -338,8 +335,35 @@ exports.getSpec = async (req, res) => {
  * (4) publishes new control mode if needed in /aid/control_conf
  */
 exports.removeSchedule = async (req, res) => {
-    console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+
+    let aid = req.body.aid;
+    let schedule = {};
+    let doc = await Actuator.findOneAndUpdate({
+        aid: aid
+    }, {
+        $set: {
+            'conf.schedule': schedule
+        }
+    }, (err, doc) => {
+
+        if (err) {
+            res.status(404).send("Something went worng with database. Contact with administrator.");
+        } else if (!doc) {
+            res.status(404).send("Requested actuator not found.");
+        } else {
+
+                topic = aid + "/set_schedule"
+                IoTManager.MQTT_send(topic, schedule)
+                res.status(200).send("The schedule successfully updated.");
+
+        }
+
+    });
+
+
+
+    //check if it is available update otherwise check 
+
 }
 
 /**
