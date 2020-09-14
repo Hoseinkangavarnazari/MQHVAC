@@ -268,13 +268,29 @@ exports.setSchedule = async (req, res) => {
         res.status(400).send("There is a conflict in the schedule. Please check your schedule again.");
         return
     }
-    // console.log(week);
-    res.status(200).send("Temp response");
 
+    delete week.aid;
     // save in database
+    Actuator.findOneAndUpdate({
+        aid: aid
+    }, {
+        $set: {'conf.schedule': week
+        }
+    }, (err, doc) => {
+        if (err) {
+            res.status(304).send("Couldn't save into the database.")
+            return
+        }
+    })
+    
     // Publish in MQTT 
+    
+    topic = aid + "/set_schedule";
 
+    IoTManager.MQTT_send(topic, week)
 
+    // console.log(week);
+    res.status(200).send("Successfully saved into database and pubished.");
 }
 
 
