@@ -3,6 +3,14 @@ const IoTManager = require("./../config/IoTManager");
 
 
 
+// Checks if the requested actuator is available.
+checkAidValid = async (reqAid) => {
+    exsitenceFlag = await Actuator.find({
+        "aid": reqAid
+    });
+    return ( exsitenceFlag.length == 0) ? false : true
+}
+
 /**
  * method: PUT 
  * Auth: required
@@ -207,6 +215,13 @@ exports.setThermostat = async (req, res) => {
 exports.setSchedule = async (req, res) => {
     console.log("here");
     week = req.body;
+    aid = req.body.aid;
+
+    if (! await checkAidValid(aid)) {
+        res.status(404).send("The requeseted aid is not db.");
+        return;
+    }
+
     alldays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     var timePattern = new RegExp("([01][0-9]|2[0-3]):[0-5][0-9]");
     // we have to check that there is no confilct in the sent schedule
@@ -231,18 +246,18 @@ exports.setSchedule = async (req, res) => {
             tempList.sort((a, b) => (a.start > b.start) ? 1 : -1);
 
             // after sort we can check that if the schedule is reasonable
-                preEnd = "00:00"
-                for (i = 0; i < tempList.length; i++) {
-                    start = tempList[i].start
-                    end = tempList[i].end
-                    if (!(end>start && start >= preEnd) || start == end) {
-                        // there is something wrong and the whole schedule will be deleted
-                        flag_correctness = false;
-                        return;
-                    }
-                    preEnd =end;
+            preEnd = "00:00"
+            for (i = 0; i < tempList.length; i++) {
+                start = tempList[i].start
+                end = tempList[i].end
+                if (!(end > start && start >= preEnd) || start == end) {
+                    // there is something wrong and the whole schedule will be deleted
+                    flag_correctness = false;
+                    return;
                 }
-                console.log(tempList)
+                preEnd = end;
+            }
+            console.log(tempList)
         }
     })
 
@@ -255,6 +270,9 @@ exports.setSchedule = async (req, res) => {
     }
     // console.log(week);
     res.status(200).send("Temp response");
+
+    // save in database
+    // Publish in MQTT 
 
 
 }
