@@ -338,45 +338,42 @@ exports.removeSchedule = async (req, res) => {
 
     let aid = req.body.aid;
     let schedule = {};
-    let doc = await Actuator.findOneAndUpdate({
+    let needChangeControlMode = false;
+    let controlMode = "";
+
+
+
+    let doc = await Actuator.findOne({
         aid: aid
-    }, {
-        $set: {
-            'conf.schedule': schedule
-        }
-    }, (err, doc) => {
-
-        if (err) {
-            res.status(404).send("Something went worng with database. Contact with administrator.");
-        } else if (!doc) {
-            res.status(404).send("Requested actuator not found.");
-        } else {
-                topic = aid + "/set_schedule"
-                IoTManager.MQTT_send(topic, schedule)
-
-                if(doc.conf.controlMode == 'schedule' || doc.conf.controlMode == 'schedule&thermostat'){
-
-                    // we have to change update the control mode in database so ...
-                    // there is a problem that I couldn't handle here.
-                    // write and aysnc function
-                    controlMode = "thermostat";
-                    // change control in database
-                    // await Actuator.findOneAndUpdate({aid:aid},{
-                    //     "$set":{
-                    //         'conf.controlMode':controlMode
-                    //     }
-                    // },(err)=>{
-
-                    // }
-                    // );
-
-                    res.status(200).send("The schedule successfully updated and control mode has been changed to thermostat.");
-                }else{
-
-                    res.status(200).send("The schedule successfully updated.");
-                }
+    }, (err) => {
+        if (err !== null) {
+            console.log(`Error: ${err}`)
         }
     });
+
+    if (doc == null) {
+        res.status(404).send("Couldn't find requested actuator in the database");
+        return;
+    } else if (doc.conf.controlMode == 'schedule' || doc.conf.controlMode == 'schedule&thermostat') {
+        controlMode = "thermostat"
+    } else {
+        controlMode = doc.conf.controlMode
+    }
+
+    await Actuator.findOneAndUpdate({
+        aid: aid
+    }, {
+        '$set': {
+            'conf.controlMode': controlMode,
+            'conf.schedule': schedule
+        }
+    }, (err) => {
+        console.log(`Error: ${err}`);
+    });
+
+    topic = aid + "/set_schedule";
+    IoTManager.MQTT_send(topic, schedule);
+    res.status(200).send("Schedule removed successfully.")
 }
 
 /**
