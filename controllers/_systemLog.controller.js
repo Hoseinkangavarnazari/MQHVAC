@@ -52,7 +52,6 @@ exports.saveLog = async (aid, log) => {
  * (1) returns all logs related for all actuators
  */
 exports.allLog = async (req, res) => {
-    console.log("You hit the endpoint");
     actuators = await Actuator.find({});
 
     var logStorage = {};
@@ -85,8 +84,27 @@ exports.allLog = async (req, res) => {
  * (1) return unseen logs of all actuators
  */
 exports.reteriveAllUnseen = async (req, res) => {
-    console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+    actuators = await Actuator.find({});
+
+    var logStorage = {};
+    for (var i = 0; i < actuators.length; i++) {
+        logStorage[actuators[i].aid] =[]
+    }
+
+    doc = await systemLog.find({});
+    if (doc.length >= 0) {
+        for (var i = 0; i < doc.length; i++) {
+            if (doc[i].aid in logStorage && doc[i].seen == false) {
+               logStorage[doc[i].aid].push(doc[i])
+            }
+        }
+
+        res.status(200).send(logStorage);
+    } else {
+        res.status(404).send({
+            msg: "No log found."
+        });
+    }
 }
 
 
