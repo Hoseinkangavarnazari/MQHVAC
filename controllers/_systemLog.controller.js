@@ -1,13 +1,13 @@
 var request = require("request");
 var systemLog = require("../models/_SystemLog.model");
-
+var Actuator = require("../models/_Actuator.model");
 // MQTT ..........................................................
 
 /**
  * Method: MQTT 3.1
  */
 exports.saveLog = async (aid, log) => {
-    console.log("aid",aid,"msg: ",log);
+    console.log("aid", aid, "msg: ", log);
 
     try {
         // currently server time is considered
@@ -16,7 +16,7 @@ exports.saveLog = async (aid, log) => {
         var newLog = new systemLog({
             aid: aid,
             time: new Date(),
-            level:log.level,
+            level: log.level,
             description: log.description
         });
 
@@ -51,9 +51,29 @@ exports.saveLog = async (aid, log) => {
  * description: 
  * (1) returns all logs related for all actuators
  */
-exports.allLog = async(req, res) => {
+exports.allLog = async (req, res) => {
     console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+    actuators = await Actuator.find({});
+
+    var logStorage = {};
+    for (var i = 0; i < actuators.length; i++) {
+        logStorage[actuators[i].aid] =[]
+    }
+
+    doc = await systemLog.find({});
+    if (doc.length >= 0) {
+        for (var i = 0; i < doc.length; i++) {
+            if (doc[i].aid in logStorage) {
+               logStorage[doc[i].aid].push(doc[i])
+            }
+        }
+
+        res.status(200).send(logStorage);
+    } else {
+        res.status(404).send({
+            msg: "No log found."
+        });
+    }
 }
 
 
@@ -64,7 +84,7 @@ exports.allLog = async(req, res) => {
  * description: 
  * (1) return unseen logs of all actuators
  */
-exports.reteriveAllUnseen = async(req, res) => {
+exports.reteriveAllUnseen = async (req, res) => {
     console.log("You hit the endpoint");
     res.status(200).send("Temp response");
 }
@@ -77,7 +97,7 @@ exports.reteriveAllUnseen = async(req, res) => {
  * description: 
  * (1) return unseen logs of requested aid
  */
-exports.reteriveUnseen = async(req, res) => {
+exports.reteriveUnseen = async (req, res) => {
     console.log("You hit the endpoint");
     res.status(200).send("Temp response");
 }
@@ -91,7 +111,7 @@ exports.reteriveUnseen = async(req, res) => {
  * description: 
  * (1) returns all logs related for requested aid
  */
-exports.log = async(req, res) => {
+exports.log = async (req, res) => {
     console.log("You hit the endpoint");
     res.status(200).send("Temp response");
 }
@@ -104,7 +124,7 @@ exports.log = async(req, res) => {
  * description: 
  * (1) seen or unseen an specific log
  */
-exports.seenStatus = async(req, res) => {
+exports.seenStatus = async (req, res) => {
     console.log("You hit the endpoint");
     res.status(200).send("Temp response");
 }
