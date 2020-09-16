@@ -1,4 +1,4 @@
-var logger =require("../config/logger")
+var logger = require("../config/logger")
 
 const sensorStatusRouter = require("../routes/_sensorStatus.routes");
 const systemLogRouter = require("../routes/_systemLog.routes");
@@ -79,19 +79,21 @@ function initActuator() {
  * Description: Subscribes all necessary actuators due to the actuators collection
  *              in the database.
  */
-exports.subscribtion= (mqttClient)=> {
+exports.subscribtion = (mqttClient) => {
     var actuatorCollection = require("../models/_Actuator.model")
 
     // mqttClient.subscribe("1/sensor_status", { qos: 2 });
 
     // there is a problem here
-    actuatorCollection.find({},function(error,actuators){
-        if(error){
-            console.log("Error: ",error);
+    actuatorCollection.find({}, function (error, actuators) {
+        if (error) {
+            console.log("Error: ", error);
         }
-        actuators.forEach((actuator)=>{
-            topic = actuator.aid+"/+";
-            mqttClient.subscribe(topic, { qos: 2 });
+        actuators.forEach((actuator) => {
+            topic = actuator.aid + "/+";
+            mqttClient.subscribe(topic, {
+                qos: 2
+            });
             console.log(topic)
         });
     });
@@ -99,27 +101,27 @@ exports.subscribtion= (mqttClient)=> {
 
 
 
-exports.topicHandler = (topic, message, packet)=>{
+exports.topicHandler = (topic, message, packet) => {
     // TODO packet can be used in logging mechanism
-    console.log("Topic: ",topic)
+    console.log("Topic: ", topic)
 
     try {
-        message= JSON.parse(message)
-      } catch (error) {
+        message = JSON.parse(message)
+    } catch (error) {
         console.error("Problem with parsing body of message.", message);
         // system log should be replaced
         return;
-      }
-    logger.log('info',{
+    }
+    logger.log('info', {
         time: new Date(),
         type: "MQTT",
         topic: topic,
         message: message,
-        });
+    });
     temp = topic.split("/")
 
-    aid =temp[0]
-    subTopic=temp[1]
+    aid = temp[0]
+    subTopic = temp[1]
 
 
     // avalesho ta slash bardar ke esme gateway hast ono estekhraj kon chon mikhay ke estefadash koni va pas bedi bedakhel
@@ -129,19 +131,53 @@ exports.topicHandler = (topic, message, packet)=>{
         case "sensor_status":
             return sensorStatusRouter.saveStatus(aid, message)
         case "system_log":
-            return systemLogRouter.saveLog(aid,message)
+            return systemLogRouter.saveLog(aid, message)
 
     }
 }
 
-exports.MQTT_send= (topic,msg)=>{
+exports.MQTT_send = (topic, msg) => {
+    var mqtttemp = require("mqtt");
+    const mqtttempBroker = "mqtt://127.0.0.1";
+    const options = {
+        qos: 2,
+    };
+    try {
+        var mqtttempClient = mqtttemp.connect(
+            mqtttempBroker, {
+                clientId: "mqttjs99",
+            },
+            options
+        );
+
+        mqtttempClient.publish(
+            topic,
+            JSON.stringify(msg),
+            options,
+            (error) => {
+                if (error) {
+                    console.log("An error has been occured:  ", error);
+                } else {
+                    console.log("Successfully published.");
+                }
+            }
+        );
+    } catch (error) {
+        if (error) {
+            console.log(`Error: ${err}`)
+        }
+    }
+
+}
+
+exports.MQTT_multiple_send= (topics, msg)=>{
 
     var mqtttemp = require("mqtt");
     const mqtttempBroker = "mqtt://127.0.0.1";
     const options = {
         qos: 2,
     };
-    
+
     var mqtttempClient = mqtttemp.connect(
         mqtttempBroker, {
             clientId: "mqttjs99",
@@ -149,16 +185,26 @@ exports.MQTT_send= (topic,msg)=>{
         options
     );
 
-    mqtttempClient.publish(
-        topic,
-        JSON.stringify(msg),
-        options,
-        (error) => {
-            if (error) {
-                console.log("An error has been occured:  ", error);
-            } else {
-                console.log("Successfully published.");
-            }
+    try {
+        for ( i = 0 ; i < topics.length ; i++){
+            mqtttempClient.publish(
+                topics[i],
+                JSON.stringify(msg),
+                options,
+                (error) => {
+                    if (error) {
+                        console.log("An error has been occured:  ", error);
+                    } else {
+                        console.log("Successfully published.");
+                    }
+                }
+            );
         }
-    );
+        
+    } catch (error) {
+        if (error) {
+            console.log(`Error: ${err}`)
+        }
+    }
+    // mqtttempClient.end();
 }

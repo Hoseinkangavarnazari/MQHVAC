@@ -338,10 +338,7 @@ exports.removeSchedule = async (req, res) => {
 
     let aid = req.body.aid;
     let schedule = {};
-    let needChangeControlMode = false;
     let controlMode = "";
-
-
 
     let doc = await Actuator.findOne({
         aid: aid
@@ -389,7 +386,53 @@ exports.removeSchedule = async (req, res) => {
  * Attention: '+' is a single level wildcard
  */
 exports.removeAllSchedule = async (req, res) => {
-    console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
 
+    // first find all aids
+    doc = await Actuator.find();
+
+    if (doc.length == 0) {
+        res.status(404).send("There are no actuators in database. Contact administrator.");
+        return
+    }
+
+    actuatorsAid = [];
+    actuatorsControlMode = [];
+
+    doc.forEach(element => {
+        actuatorsAid.push(element.aid);
+        if (element.conf.controlMode == "schedule" || element.conf.controlMode == "schedule&thermostat") {
+            actuatorsControlMode.push("thermostat");
+        } else {
+            actuatorsControlMode.push(element.conf.controlMode);
+        }
+    });
+    schedule = {};
+
+    console.log(actuatorsAid.length);
+    res.status(200).send("Successfully changed and published.");
+
+    for (i = 0; i < actuatorsAid.length; i++) {
+        console.log(i);
+        await Actuator.findOneAndUpdate({
+            aid: actuatorsAid[i]
+        }, {
+            '$set': {
+                'conf.controlMode': actuatorsControlMode[i],
+                'conf.schedule': schedule
+            }
+        }, (err) => {
+            if (err != null) {
+                console.log(`Error: ${err}`);
+            }
+        })
+
+    }
+
+    topics = []
+    for (i = 0; i < actuatorsAid.length; i++) {
+    tempTopic =actuatorsAid[i] + "/set_schedule";
+    topics.push(tempTopic);
+    }
+    console.log(topics)
+    IoTManager.MQTT_multiple_send(topics, schedule);
 }
