@@ -158,8 +158,33 @@ exports.reteriveUnseen = async (req, res) => {
  * (1) returns all logs related for requested aid
  */
 exports.log = async (req, res) => {
-    console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+    let aid = req.body.aid;
+    actuator = await Actuator.find({
+        aid: aid
+    });
+    if (actuator.length == 0) {
+        res.status(404).send("Requested actuator doesn't exists in db.");
+        return;
+    } else {
+
+        var logStorage = {};
+        logStorage[aid] = []
+
+        doc = await systemLog.find({
+            aid: aid
+        });
+        if (doc.length >= 0) {
+            for (var i = 0; i < doc.length; i++) {
+                    logStorage[aid].push(doc[i])
+            }
+
+            res.status(200).send(logStorage);
+        } else {
+            res.status(404).send({
+                msg: "No log found."
+            });
+        }
+    }
 }
 
 
