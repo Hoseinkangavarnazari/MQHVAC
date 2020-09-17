@@ -1,5 +1,23 @@
 var request = require("request");
-var sensorStatus = require("../models/_SensorStatus.model");
+var SensorStatus = require("../models/_SensorStatus.model");
+var Actuator = require("../models/_Actuator.model")
+
+// gerneral time lib for
+
+changeTime = (time) => {
+
+    // let fullDateStr = "12/12/2012, 19:00";
+    try {
+    dateAndTime = time.split(", ");
+    [day , month , year ]= dateAndTime[0].split("/");
+    [hour, min] = dateAndTime[1].split(":")
+    return new Date(year, month, day, hour, min)
+    }
+    catch (e){
+        console.log(`Error ${e}`)
+    }
+
+}
 
 
 // MQTT ..........................................................
@@ -12,7 +30,8 @@ exports.saveStatus = async (aid, msg) => {
     try {
         // currently server time is considered
         // let time = msg.time
-        let time = new Date();
+        // let time = new Date();
+        let time = changeTime(msg.time);
         let data = []
 
         for (var i = 0; i < msg.data.length; i++) {
@@ -24,7 +43,7 @@ exports.saveStatus = async (aid, msg) => {
             data.push(tempdata);
         }
 
-        var newStatus = new sensorStatus({
+        var newStatus = new SensorStatus({
             aid: aid,
             time: time,
             data: data

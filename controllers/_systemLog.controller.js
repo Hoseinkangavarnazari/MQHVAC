@@ -175,7 +175,7 @@ exports.log = async (req, res) => {
         });
         if (doc.length >= 0) {
             for (var i = 0; i < doc.length; i++) {
-                    logStorage[aid].push(doc[i])
+                logStorage[aid].push(doc[i])
             }
 
             res.status(200).send(logStorage);
@@ -196,8 +196,36 @@ exports.log = async (req, res) => {
  * (1) seen or unseen an specific log
  */
 exports.seenStatus = async (req, res) => {
-    console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+
+    seenStatus = req.body.seen;
+    if (typeof seenStatus != "boolean") {
+        res.status(400).send("The received seen status is not a boolean.")
+        return;
+    }
+
+    requestedID = req.body._id;
+
+    let doc = await systemLog.findByIdAndUpdate(requestedID, {
+        '$set': {
+            'seen': seenStatus
+        }
+    }, (err, doc) => {
+        if (err) {
+            res.status(404).send(`Error:${err}`);
+            return
+        } else if (doc == null) {
+            res.status(404).send("There is no such log in our database.");
+            return
+        } else {
+            res.status(200).send("Seen status updated successfully.")
+        }
+
+    })
+
+
+
+
+
 }
 
 
