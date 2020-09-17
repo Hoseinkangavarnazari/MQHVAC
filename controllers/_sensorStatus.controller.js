@@ -84,30 +84,26 @@ exports.saveStatus = async (aid, msg) => {
  * (2) returns the latest sensor status for each of them
  */
 exports.report = async (req, res) => {
-    console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
-}
+    // similar implementation as report all
+    // don't change it let them be identical
 
+    aid = req.body.aid
 
-/**
- * method: POST 
- * Auth: required
- * url: /sensor_status/report_all
- * description: 
- * (1) returns the latest sensor status for each actuator and correspondig
- *     sensors
- */
-exports.reportAll = async (req, res) => {
-    console.log("You hit the endpoint");
     // use the data if they are for 30 minutes we had to get the 300 latest because of speed.
     // For example for 6 gateways with  1 min frequency : in 30 min -> 30 * 6 = 180  
     //  we have doubled it to make sure we can receive usefull information.
-    let data = await SensorStatus.find().sort({
+    let data = await SensorStatus.find({aid: aid}).sort({
         _id: -1
-    }).limit(360);
+    }).limit(10);
 
     // make all gateways and correspondig sensors.
-    let actuators = await Actuator.find();
+    let actuators = await Actuator.find({aid: aid});
+
+    if(actuators.length == 0){
+        res.status(404).send("Requested Actuator doesn't exists in our database.");
+        return;
+    }
+
     let responseMessage = {}
 
     for (var i = 0; i < actuators.length; i++) {
@@ -148,15 +144,86 @@ exports.reportAll = async (req, res) => {
             }
         }
     });
+    for (var tempActuator in responseMessage) {
+        for (var tempSensor in responseMessage[tempActuator]) {
+            if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
+                if (responseMessage[tempActuator][tempSensor].count > 0) {
+                    responseMessage[tempActuator][tempSensor].temperature /= responseMessage[tempActuator][tempSensor].count;
+                    responseMessage[tempActuator][tempSensor].humidity /= responseMessage[tempActuator][tempSensor].count;
+                } else {
+                    responseMessage[tempActuator][tempSensor].temperature /= NaN;
+                    responseMessage[tempActuator][tempSensor].humidity /= NaN;
+                }
+            }
+        }
+    }
 
-    // get average of responseMessage
+    res.status(200).send(responseMessage);
+}
 
-    // responseMessage.forEach(tempActuator => {
-    //     tempActuator.forEach(tempSensor => {
 
-    //     })
-    // })
+/**
+ * method: POST 
+ * Auth: required
+ * url: /sensor_status/report_all
+ * description: 
+ * (1) returns the latest sensor status for each actuator and correspondig
+ *     sensors
+ */
+exports.reportAll = async (req, res) => {
+    console.log("You hit the endpoint");
+    // use the data if they are for 30 minutes we had to get the 300 latest because of speed.
+    // For example for 6 gateways with  1 min frequency : in 30 min -> 30 * 6 = 180  
+    //  we have doubled it to make sure we can receive usefull information.
+    let data = await SensorStatus.find().sort({
+        _id: -1
+    }).limit(360);
 
+    // make all gateways and correspondig sensors.
+    let actuators = await Actuator.find();
+    let responseMessage = {}
+
+    for (var i = 0; i < actuators.length; i++) {
+        responseMessage[actuators[i].aid] = {};
+        for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
+            responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
+                humidity: 0,
+                temperature: 0,
+                count: 0
+            }
+        }
+    }
+
+
+    // looks for a data reported at most 30 minutes before.
+    var beforeTime = moment().subtract(30 * 60, 'second');
+    var afterTime = moment();
+
+    // add all data within the time range.
+    data.forEach(element => {
+        var elemTime = moment(element.time);
+        if (elemTime.isBetween(beforeTime, afterTime)) {
+            console.log(`Valid range sensorTime: ${elemTime}`)
+            let tempAid = element.aid;
+            if (element.data == null) {
+                return;
+            }
+
+            for (var i = 0; i < element.data.length; i++) {
+                let tempSid = element.data[i].sid;
+
+                if (typeof responseMessage[tempAid][tempSid] != "undefined") {
+                    responseMessage[tempAid][tempSid].temperature += element.data[i].temperature;
+                    responseMessage[tempAid][tempSid].humidity += element.data[i].humidity;
+                    responseMessage[tempAid][tempSid].count += 1;
+                } else {
+                    console.log(`*** INVALID tempaid : ${tempAid} tempsid: ${tempSid}`)
+                }
+            }
+        }
+    });
+
+    // get average
     for (var tempActuator in responseMessage) {
         for (var tempSensor in responseMessage[tempActuator]) {
             if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
