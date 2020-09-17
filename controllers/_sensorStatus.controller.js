@@ -1,19 +1,21 @@
 var request = require("request");
 var SensorStatus = require("../models/_SensorStatus.model");
 var Actuator = require("../models/_Actuator.model")
+var moment = require('moment');
 
 // gerneral time lib for
 
 changeTime = (time) => {
 
-    // let fullDateStr = "12/12/2012, 19:00";
+    // let fullDateStr = "month/day/year, 19:00";
     try {
-    dateAndTime = time.split(", ");
-    [day , month , year ]= dateAndTime[0].split("/");
-    [hour, min] = dateAndTime[1].split(":")
-    return new Date(year, month, day, hour, min)
-    }
-    catch (e){
+        dateAndTime = time.split(", ");
+        [month, day, year] = dateAndTime[0].split("/");
+        [hour, min] = dateAndTime[1].split(":")
+        // console.log(new Date(year, month, day, hour, min))
+        // in javascript month are in range 0 to 11
+        return new Date(year, month-1, day, hour, min)
+    } catch (e) {
         console.log(`Error ${e}`)
     }
 
@@ -28,11 +30,15 @@ changeTime = (time) => {
 exports.saveStatus = async (aid, msg) => {
     console.log("aid", aid, "msg: ", msg);
     try {
-        // currently server time is considered
-        // let time = msg.time
-        // let time = new Date();
-        let time = changeTime(msg.time);
+        // the main solution
+        // time = changeTime(msg.time);
+
+        // test solution
+        // let tt = new Date();
+        // let time = new Date(tt.getFullYear(), tt.getMonth(), tt.getDate(),tt.getHours(), tt.getMinutes())  
         let data = []
+
+        let time = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
 
         for (var i = 0; i < msg.data.length; i++) {
             var tempdata = {
@@ -96,7 +102,54 @@ exports.report = async (req, res) => {
  */
 exports.reportAll = async (req, res) => {
     console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+    // use the data if they are for 30 minutes we had to get the 300 latest because of speed.
+    // For example for 6 gateways with  1 min frequency : in 30 min -> 30 * 6 = 180  
+    //  we have doubled it to make sure we can receive usefull information.
+    let data = await SensorStatus.find().sort({
+        _id: -1
+    }).limit(360);
+
+    // make all gateways and correspondig sensors.
+    let actuators = await Actuator.find();
+    let responseMessage = {}
+
+    for (var i = 0; i < actuators.length; i++) {
+        responseMessage[actuators[i].aid] = {};
+        for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
+            responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
+                humidity: -100,
+                temperature: -100,
+                count: 0
+            }
+        }
+    }
+
+    // how you want to fill them? 
+
+    // var d1 = new Date();
+    // var minTime = new Date(d1);
+    // minTime.setMinutes(d1.getMinutes() - 60);
+    // console.log(minTime.toTimeString());
+
+    var beforeTime = moment().subtract(1*60, 'second');
+    var afterTime = moment();
+
+    data.forEach(element => {
+        var elemTime = moment(element.time);
+        if(elemTime.isBetween(beforeTime, afterTime)){
+            console.log(`Valid range sensorTime: ${elemTime}`)
+        }else
+        {
+            console.log(`Not in range sensorTime: ${elemTime}`)
+        }
+
+
+    });
+    // console.log(data)
+
+
+
+    res.status(200).send(responseMessage);
 }
 
 
