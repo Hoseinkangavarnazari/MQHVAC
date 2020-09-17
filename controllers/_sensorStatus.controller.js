@@ -14,7 +14,7 @@ changeTime = (time) => {
         [hour, min] = dateAndTime[1].split(":")
         // console.log(new Date(year, month, day, hour, min))
         // in javascript month are in range 0 to 11
-        return new Date(year, month-1, day, hour, min)
+        return new Date(year, month - 1, day, hour, min)
     } catch (e) {
         console.log(`Error ${e}`)
     }
@@ -33,9 +33,6 @@ exports.saveStatus = async (aid, msg) => {
         // the main solution
         // time = changeTime(msg.time);
 
-        // test solution
-        // let tt = new Date();
-        // let time = new Date(tt.getFullYear(), tt.getMonth(), tt.getDate(),tt.getHours(), tt.getMinutes())  
         let data = []
 
         let time = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
@@ -117,37 +114,62 @@ exports.reportAll = async (req, res) => {
         responseMessage[actuators[i].aid] = {};
         for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
             responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
-                humidity: -100,
-                temperature: -100,
+                humidity: 0,
+                temperature: 0,
                 count: 0
             }
         }
     }
 
-    // how you want to fill them? 
 
-    // var d1 = new Date();
-    // var minTime = new Date(d1);
-    // minTime.setMinutes(d1.getMinutes() - 60);
-    // console.log(minTime.toTimeString());
-
-    var beforeTime = moment().subtract(1*60, 'second');
+    // looks for a data reported at most 30 minutes before.
+    var beforeTime = moment().subtract(30 * 60, 'second');
     var afterTime = moment();
 
     data.forEach(element => {
         var elemTime = moment(element.time);
-        if(elemTime.isBetween(beforeTime, afterTime)){
+        if (elemTime.isBetween(beforeTime, afterTime)) {
             console.log(`Valid range sensorTime: ${elemTime}`)
-        }else
-        {
-            console.log(`Not in range sensorTime: ${elemTime}`)
+            let tempAid = element.aid;
+            if (element.data == null) {
+                return;
+            }
+
+            for (var i = 0; i < element.data.length; i++) {
+                let tempSid = element.data[i].sid;
+
+                if (typeof responseMessage[tempAid][tempSid] != "undefined") {
+                    responseMessage[tempAid][tempSid].temperature += element.data[i].temperature;
+                    responseMessage[tempAid][tempSid].humidity += element.data[i].humidity;
+                    responseMessage[tempAid][tempSid].count += 1;
+                } else {
+                    console.log(`*** INVALID tempaid : ${tempAid} tempsid: ${tempSid}`)
+                }
+            }
         }
-
-
     });
-    // console.log(data)
 
+    // get average of responseMessage
 
+    // responseMessage.forEach(tempActuator => {
+    //     tempActuator.forEach(tempSensor => {
+
+    //     })
+    // })
+
+    for (var tempActuator in responseMessage) {
+        for (var tempSensor in responseMessage[tempActuator]) {
+            if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
+                if (responseMessage[tempActuator][tempSensor].count > 0) {
+                    responseMessage[tempActuator][tempSensor].temperature /= responseMessage[tempActuator][tempSensor].count;
+                    responseMessage[tempActuator][tempSensor].humidity /= responseMessage[tempActuator][tempSensor].count;
+                } else {
+                    responseMessage[tempActuator][tempSensor].temperature /= NaN;
+                    responseMessage[tempActuator][tempSensor].humidity /= NaN;
+                }
+            }
+        }
+    }
 
     res.status(200).send(responseMessage);
 }
