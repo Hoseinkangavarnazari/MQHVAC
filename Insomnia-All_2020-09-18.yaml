@@ -1,13 +1,17 @@
 _type: export
 __export_format: 4
-__export_date: 2020-09-17T12:24:05.981Z
+__export_date: 2020-09-18T12:02:07.935Z
 __export_source: insomnia.desktop.app:v2020.3.3
 resources:
   - _id: req_0534136424cb4220b55927a7741ec05f
     authentication: {}
     body:
       mimeType: application/json
-      text: ""
+      text: |-
+        {
+            "username": "sarvTech33",
+            "password": "sarvTechPassword"
+        }
     created: 1599124862041
     description: |-2
       
@@ -15,6 +19,19 @@ resources:
        * (1) check if the requested username has not already been registered
        * (2) saves the new admin(currently we just have admin mode)
        * Auth: LOOKED - JUST FOR SARVTECH ROOT USER
+       
+      __Request body__:
+       
+       ```
+       {
+          "username": "sarvTech33",
+          "password": "sarvTechPassword"
+      }
+       ```
+       
+       __Attention__:
+
+      Authentication required.
     headers:
       - id: pair_b0964db169fc4176bf969f9fd973d181
         name: Content-Type
@@ -22,7 +39,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124862041
     method: POST
-    modified: 1599126707939
+    modified: 1600430022368
     name: Register
     parameters: []
     parentId: fld_c2866976c7d8471c94b9a8509f84985d
@@ -62,10 +79,19 @@ resources:
             "password": "sarvTechPassword"
         }
     created: 1599124891199
-    description: |-2
+    description: |+2
        Description:
        * (1) Authenticates the user with passport
        * (2) Attaches the json web token to the request using JWT
+       
+      __Request body__:
+      ```
+      {
+          "username": "sarvTech3",
+          "password": "sarvTechPassword"
+      }
+      ```
+
     headers:
       - id: pair_b0964db169fc4176bf969f9fd973d181
         name: Content-Type
@@ -73,7 +99,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124809340.5
     method: POST
-    modified: 1599223765544
+    modified: 1600430016443
     name: Login
     parameters: []
     parentId: fld_c2866976c7d8471c94b9a8509f84985d
@@ -115,23 +141,30 @@ resources:
       mimeType: application/json
       text: |-2
          {
-        	 "aid":"3"
+        	 "aid":"4"
          }
     created: 1599124692959
     description: |-
       Description: 
        * Finds related sensors to requested aid
-       * Returns the average of 30 minutes.
+       * Returns the averaged data of corresponding sensors in last 30 minutes.
+       
+       ___
+       
+        __Attention:__
+       
+       Authentication required.
+
        
        
-       __request body__: 
+       __Request body__: 
        ```
        {
        "aid":"3"
        }
        ```
        
-       __response__:
+       __Response body__:
        
       ```
       {
@@ -176,7 +209,7 @@ resources:
       code 404: "equested actuator is not available in our data base"
       ```
 
-      * Returns NaN if there is no infromation about specific sensor
+      * Returns NaN if there is no infromation about specific sensor.
     headers:
       - id: pair_4584cb0238134250a99a938dd0f27bd6
         name: Content-Type
@@ -184,7 +217,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124692959
     method: POST
-    modified: 1600345208085
+    modified: 1600430196099
     name: Report
     parameters: []
     parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
@@ -215,9 +248,15 @@ resources:
     description: >-2
        Description:
        * Returns the latest sensor status for each actuator and correspondig sensors
+       ____
        
-        __request body__: 
+        __Attention:__
+       
+       Authentication required.
 
+
+       
+      __Request body__: 
         
       ```
        {}
@@ -225,7 +264,7 @@ resources:
 
       ```
        
-       __response__:
+       __Response body__:
 
        
       ```
@@ -311,7 +350,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124315660.5
     method: POST
-    modified: 1600345422450
+    modified: 1600430166973
     name: Report all
     parameters: []
     parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
@@ -327,12 +366,201 @@ resources:
     authentication: {}
     body:
       mimeType: application/json
-      text: " {}"
+      text: |-2
+         {
+        	 "aid":"4"
+         }
     created: 1599124756640
     description: >-
       Description:  
 
-      * Returns an array that contains data of each sensor for every 30 minutes in a day for requested aid
+      * Returns an array that contains data of each sensor for every 30 minutes in a day for requested aid.
+
+      ____
+
+       __Attention:__
+       
+       Authentication required.
+
+
+      __Request body:__
+
+
+      ```
+
+      {
+
+      "aid":"4"
+
+      }
+
+      ```
+
+
+      __Response body:__
+
+      * Atention: each array has 48 elements, index i reperesents the average value from 30*i to 30*(i+1) minutes
+        In other words, index zero referes to average value starting from 00:00:00 to 00:29:59 , likewise index one         refers to 00:30:00 to 00:59:59 and so on.
+      * The count array shows that on that specific time range how many values are received from server, therefore
+        where count is equal to zero, shows no data has been received in that specific time range
+
+      ```
+
+      {
+        "4": {
+          "a4s1": {
+            "humidity": [
+              "16.00",
+              "16.04",
+              "16.00",
+              "16.00",
+              "15.30",
+              "15.00",
+              "14.69",
+              "14.28",
+              "14.00",
+              "14.00",
+              "14.00",
+              "14.00",
+              "14.00",
+              "13.87",
+              "14.00",
+              "13.95",
+              "13.88",
+              "13.97",
+              "14.00",
+              "13.47",
+              "13.00",
+              "12.33",
+              "12.00",
+              "12.00",
+              "12.00",
+              "12.00",
+              "11.77",
+              "11.03",
+              "11.00",
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "temperature": [
+              "30.08",
+              "29.89",
+              "29.88",
+              "29.81",
+              "29.77",
+              "29.73",
+              "29.66",
+              "29.58",
+              "29.50",
+              "29.43",
+              "29.40",
+              "29.33",
+              "29.30",
+              "29.20",
+              "29.13",
+              "29.09",
+              "29.08",
+              "29.04",
+              "29.07",
+              "29.17",
+              "29.24",
+              "29.32",
+              "29.40",
+              "29.54",
+              "29.67",
+              "29.75",
+              "29.83",
+              "30.01",
+              "30.12",
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "count": [
+              85,
+              84,
+              80,
+              80,
+              83,
+              80,
+              83,
+              88,
+              76,
+              82,
+              84,
+              85,
+              86,
+              82,
+              85,
+              85,
+              85,
+              87,
+              87,
+              88,
+              86,
+              73,
+              77,
+              87,
+              90,
+              86,
+              87,
+              71,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+      ```
     headers:
       - id: pair_069e70e7d059466a9a3b2a5ede561837
         name: Content-Type
@@ -340,7 +568,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124756640
     method: POST
-    modified: 1599223848720
+    modified: 1600430245082
     name: Today history
     parameters: []
     parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
@@ -362,6 +590,349 @@ resources:
       Description:  
 
       * Returns an array that contains data of each sensor for every 30 minutes in a day for all actuators
+
+
+      ____
+
+       __Attention:__
+       
+       Authentication required.
+
+
+      __Request body:__
+
+
+      ```
+
+      {}
+
+      <!-- Intentionally left blank-->
+
+      ```
+
+
+      __Response body:__
+
+      * Atention: each array has 48 elements, index i reperesents the average value from 30*i to 30*(i+1) minutes
+        In other words, index zero referes to average value starting from 00:00:00 to 00:29:59 , likewise index one         refers to 00:30:00 to 00:59:59 and so on.
+      * The count array shows that on that specific time range how many values are received from server, therefore
+        where count is equal to zero, shows no data has been received in that specific time range
+        
+        * The mentioned request body is an example of what you can receive. Here, there are only two actuators 
+          however, you will receive these data for all actuators and related sensors
+
+      ```
+
+      {
+        "1": {
+          "a1s1": {
+            "humidity": [
+              "16.00",
+              "16.04",
+              "16.00",
+              "16.00",
+              "15.30",
+              "15.00",
+              "14.69",
+              "14.28",
+              "14.00",
+              "14.00",
+              "14.00",
+              "14.00",
+              "14.00",
+              "13.87",
+              "14.00",
+              "13.95",
+              "13.88",
+              "13.97",
+              "14.00",
+              "13.47",
+              "13.00",
+              "12.33",
+              "12.00",
+              "12.00",
+              "12.00",
+              "12.00",
+              "11.77",
+              "11.03",
+              "11.00",
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "temperature": [
+              "30.08",
+              "29.89",
+              "29.88",
+              "29.81",
+              "29.77",
+              "29.73",
+              "29.66",
+              "29.58",
+              "29.50",
+              "29.43",
+              "29.40",
+              "29.33",
+              "29.30",
+              "29.20",
+              "29.13",
+              "29.09",
+              "29.08",
+              "29.04",
+              "29.07",
+              "29.17",
+              "29.24",
+              "29.32",
+              "29.40",
+              "29.54",
+              "29.67",
+              "29.75",
+              "29.83",
+              "30.01",
+              "30.12",
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "count": [
+              85,
+              84,
+              80,
+              80,
+              83,
+              80,
+              83,
+              88,
+              76,
+              82,
+              84,
+              85,
+              86,
+              82,
+              85,
+              85,
+              85,
+              87,
+              87,
+              88,
+              86,
+              73,
+              77,
+              87,
+              90,
+              86,
+              87,
+              71,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "4": {
+          "a4s1": {
+            "humidity": [
+              "16.00",
+              "16.04",
+              "16.00",
+              "16.00",
+              "15.30",
+              "15.00",
+              "14.69",
+              "14.28",
+              "14.00",
+              "14.00",
+              "14.00",
+              "14.00",
+              "14.00",
+              "13.87",
+              "14.00",
+              "13.95",
+              "13.88",
+              "13.97",
+              "14.00",
+              "13.47",
+              "13.00",
+              "12.33",
+              "12.00",
+              "12.00",
+              "12.00",
+              "12.00",
+              "11.77",
+              "11.03",
+              "11.00",
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "temperature": [
+              "30.08",
+              "29.89",
+              "29.88",
+              "29.81",
+              "29.77",
+              "29.73",
+              "29.66",
+              "29.58",
+              "29.50",
+              "29.43",
+              "29.40",
+              "29.33",
+              "29.30",
+              "29.20",
+              "29.13",
+              "29.09",
+              "29.08",
+              "29.04",
+              "29.07",
+              "29.17",
+              "29.24",
+              "29.32",
+              "29.40",
+              "29.54",
+              "29.67",
+              "29.75",
+              "29.83",
+              "30.01",
+              "30.12",
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "count": [
+              85,
+              84,
+              80,
+              80,
+              83,
+              80,
+              83,
+              88,
+              76,
+              82,
+              84,
+              85,
+              86,
+              82,
+              85,
+              85,
+              85,
+              87,
+              87,
+              88,
+              86,
+              73,
+              77,
+              87,
+              90,
+              86,
+              87,
+              71,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ```
     headers:
       - id: pair_069e70e7d059466a9a3b2a5ede561837
         name: Content-Type
@@ -369,7 +940,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124724799.5
     method: POST
-    modified: 1599223854016
+    modified: 1600430257021
     name: Today history all
     parameters: []
     parentId: fld_d4401f5964b74d3f895e6db45c3e0fe0
@@ -389,31 +960,36 @@ resources:
     created: 1599124979623
     description: >-2
        * For security reasons we will use POST method instead of GET to
-       * transmit the sensors data to the client.
+
+      __Description__: Returns all logs related for all actuators
+                       There are 3 levels of logs. 
+                      * (1) danger (High Priority)
+                      * (2) warn (Mid Priority)
+                      * (3) info (Low Priority) just like reports
+
+                      
       _____
 
 
-      __Description__: Returns all logs related for all actuators
+      __Attention__:
 
 
-      __requestBody__:
+      Authentication required.
+
+
+      __Request body__:
 
 
       ```
 
-      {
-
-
-      }
-
+      {}
 
       <!--Intentionally is empty. -->
 
-
       ```
 
 
-      __responseBody__:
+      __Response body__:
 
 
       ```
@@ -474,7 +1050,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124979623
     method: POST
-    modified: 1600257227929
+    modified: 1600430378294
     name: All log
     parameters: []
     parentId: fld_acc4baf623424e5d8481420626815823
@@ -504,31 +1080,28 @@ resources:
     created: 1599125013773
     description: >-2
        * For security reasons we will use POST method instead of GET to
-       * transmit the sensors data to the client.
-      _____
 
 
       Description: Returns unseen logs of all actuators
 
+       __Attention:__
+       
+       Authentication required.
 
-      __requestBody__:
+
+      __Request body__:
 
 
       ```
 
-      {
-
-
-      }
-
+      {}
 
       <!--Intentionally is empty. -->
 
-
       ```
 
 
-      __responseBody__:
+      __Response body__:
 
 
       ```
@@ -589,7 +1162,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124945895.5
     method: POST
-    modified: 1600258141168
+    modified: 1600430326860
     name: Reterive all unseen
     parameters: []
     parentId: fld_acc4baf623424e5d8481420626815823
@@ -612,10 +1185,14 @@ resources:
     created: 1599125043933
     description: |-2
        * For security reasons we will use POST method instead of GET to
-       * transmit the sensors data to the client.
-      _____
-
+       
       Description: Return unseen logs of requested aid
+      ___
+
+       __Attention:__
+       
+       Authentication required.
+
 
       __requestBody__:
 
@@ -623,7 +1200,6 @@ resources:
       {
         "aid":"1"
       }
-
       ```
 
       __responseBody__:
@@ -660,7 +1236,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124929031.75
     method: POST
-    modified: 1600260690304
+    modified: 1600430300676
     name: Reterive unseen
     parameters: []
     parentId: fld_acc4baf623424e5d8481420626815823
@@ -684,10 +1260,15 @@ resources:
     created: 1599125058550
     description: |-2
        * For security reasons we will use POST method instead of GET to
-       * transmit the sensors data to the client.
-      _____
 
       Description: returns all logs related for requested aid
+
+      ___
+
+       __Attention:__
+       
+       Authentication required.
+
 
       __requestBody__:
 
@@ -695,7 +1276,6 @@ resources:
       {
         "aid":"1"
       }
-
       ```
 
       __responseBody__:
@@ -732,7 +1312,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124920599.875
     method: POST
-    modified: 1600260715284
+    modified: 1600430283419
     name: Log
     parameters: []
     parentId: fld_acc4baf623424e5d8481420626815823
@@ -754,14 +1334,26 @@ resources:
         		"seen": true
          }
     created: 1599125082617
-    description: |-2
+    description: >-2
        * For security reasons we will use POST method instead of GET to
-       * transmit the sensors data to the client.
-      _____
 
-      Description: Seen or unseen an specific log
 
-      __requestBody__: 
+      __Description__: Seen or unseen an specific log.
+
+
+      You need to send the correct id. You have received this data. Available in the body of responses for logs.
+
+      ___
+
+
+      __Attention__:
+
+
+      Authentication required.
+
+
+      __Request body__: 
+
       ```
        {
       	 "_id": "5f5229464dde064350a719bc",
@@ -769,12 +1361,18 @@ resources:
        }
       ```
 
-      __responses__:
+
+      __Response body__:
+
 
       ```
-      Code 200: "Seen status updated successfully."
+
+      Code 200: "Seen status updated successfully."("string")
+
       Code 404: Database error -- false parse ("string")
-      Code 404: "There is no such log in our database."
+
+      Code 404: "There is no such log in our database."("string")
+
       ```
     headers:
       - id: pair_f252a21108e44c9abe5547ae12447101
@@ -783,7 +1381,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124979673
     method: PUT
-    modified: 1600325351376
+    modified: 1600430502294
     name: Seen status
     parameters: []
     parentId: fld_acc4baf623424e5d8481420626815823
@@ -807,31 +1405,37 @@ resources:
          		}
          }
     created: 1599123721808
-    description: |2
+    description: |-2
        Description: 
        * (1) Changes the location of requested aid or sid 
        
-       correct Body to change aid : 
-       
+       __Request body__: 
+       ```
       	 "actuator": {
       		 "aid":"1",
       		 "location":"New actuator location  location"
        		}
-          
-        correct Body to change aid : 
+         ``` 
+        __Response body__: 
        
+       ```
       	 "sensor":{
       		 "sid":"a1s1",
       		 "location":"New sensor location"
            }
+      ```
+
+      __Attention__:
+
+      Authentication required.
     headers:
       - id: pair_d56f050aa347441ca0d60423540e3c37
         name: Content-Type
         value: application/json
     isPrivate: false
-    metaSortKey: -1599123938312
+    metaSortKey: -1599123938299.5
     method: PUT
-    modified: 1599284755498
+    modified: 1600430070391
     name: Edit location
     parameters:
       - description: ""
@@ -877,28 +1481,60 @@ resources:
         	 "controlMode": "schedule"
          }
     created: 1599123820200
-    description: >
+    description: >-
       Description: 
        * (1) Changes the control configuration of requested actuator in db
        * (2) Publishes into MQTT topic:  /aid/control_conf
 
        
-      Message body example: 
+      __Request body__: 
        
+       ```
+       {
       	 "aid":"1",
       	 "controlMode": "schedule&thermostat"
+       }
+       ```
 
        
-      Attention:
+      __Attention__:
+
+
+      * Authentication required.
 
 
       * There are only 5 possible control mode:
 
 
-      ['on', 'off', 'thermostat', 'schedule', 'schedule&thermostat']
+      | Control Mode | Description |
+
+      | -----------  | ----------- |
+
+      | thermostat          | Turns on when temperature goes beyond max/ turns off when temperature is lower than minimum. This is the defult control mode of the system.      |
+
+      | schedule            | Works based on the schedule.        |
+
+      | schedule&thermostat | Works based on the schedule and tries to keep temperature in valid range (correspond to restrictions defined in thermostat.)       |
+
+      | on                  | Force on.        |
+
+      | off                 | Force off.      |
+
+
 
 
       * The 'schedule' and 'schedule&thermostat' only works if there is a scheule for requested actuator
+
+
+
+      __Response body__:
+        
+        ```
+        status 404: "No such actuator in database." (stirng)
+        status 400: "Invalid control mode" (stirng)
+        status 400: "The body of message is not standard." (stirng)
+        status 200: "No such actuator in database." (stirng)
+        ```
     headers:
       - id: pair_6c840fd861bb427c9e7cd98981ed3cb9
         name: Content-Type
@@ -906,7 +1542,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599123938262
     method: PUT
-    modified: 1599488043549
+    modified: 1600430037797
     name: Control config
     parameters: []
     parentId: fld_365562ee88d3402495061478832e48f1
@@ -938,27 +1574,10 @@ resources:
 
       \\ 
 
-      \ __Attention__:\ 
-
-      \\ 
-
-      \ * values must be resonable
-
-      \ e.g.\ 
-
-      \     ```
-
-      \       max > min\ 
-
-      \       min > 0\ 
-
-      \       max > 0
-
-      \       ```
 
       \ \ 
 
-      \  __Message body example__ (all fields are required):
+      \  __Request Body__:
 
       \   ```
 
@@ -972,7 +1591,45 @@ resources:
 
       \\ 
 
-      \ \ 
+      \   __Attention__:\ 
+
+
+      \ * Authentication required.
+
+      \\ 
+
+      \ * values must be resonable
+
+      \ e.g.\ 
+
+      \    \ 
+
+      \     ```
+
+      \       max > min\ 
+
+      \       min > 0\ 
+
+      \       max > 0
+
+      \     ```
+
+      \      \ 
+
+      \ __Response Body__
+
+      \ ```
+
+      \ status 400: \"The body of message is not standard.\" (string)
+
+      \ status 400: \"Parameters are not reasonable. Check them again.\"
+      (string)
+
+      \ status 304: \"Couldn't save into the database.\" (string)
+
+      \ status 200: \"Successfully updated and published.\" (string)
+
+      \ ```
 
       \  "
     headers:
@@ -982,7 +1639,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599123938287
     method: PUT
-    modified: 1599294192578
+    modified: 1600430063310
     name: Set thermostat
     parameters: []
     parentId: fld_365562ee88d3402495061478832e48f1
@@ -1018,13 +1675,23 @@ resources:
     created: 1599123882038
     description: " Description:
 
-      \ * (1) Updates or sets schedule for requested aid\ 
+      \ * (1) Updates or sets new schedule for a requested actuator
+      (aid)\ 
 
-      \ * (2) Publishes new schedule into MQTT topic:  /aid/set_schedule
+      \   This schedule shows how the actuator will work, but if you want
+      to activate this schedule\ 
 
-      \\ 
+      \   you must change the control config to \"schedule\" or
+      \"schedule&thermostat\"
 
-      \ __Request Body Example__:\ 
+      \   for more information please see the documentation of Control
+      config API
+
+      \ * (2) Publishes new schedule into the following MQTT
+      topic:  /aid/set_schedule
+
+
+      __Request body__:\ 
 
       \\ 
 
@@ -1075,11 +1742,14 @@ resources:
 
       \\ 
 
-      \ __Attention__:
+      __Attention__:
+
+
+      * Authentication required.
 
       \\ 
 
-      \ Time regex --:--\ 
+      * Time regex --:--\ 
 
       \\ 
 
@@ -1101,13 +1771,16 @@ resources:
 
       \ ```
 
+      \ If the requested schedule has conflicts, the sever WON'T accept
+      it.
+
       \\ 
 
       \ __MQTT__:
 
       \\ 
 
-      \ * Publish\ 
+      \ * Method: Publish\ 
 
       \ * Topic: aid/set_schedule
 
@@ -1163,7 +1836,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599123938362
     method: PUT
-    modified: 1600248793742
+    modified: 1600430091846
     name: Set schedule
     parameters: []
     parentId: fld_365562ee88d3402495061478832e48f1
@@ -1187,8 +1860,13 @@ resources:
     description: |-2
        Description: 
        * Returns the actuator object
+       * You can use this data to show the actuators data.
        
-        __Example Message body:__ 
+       __Attention__:
+
+      Authentication required.
+       
+        __Request body:__ 
         
         ```
          {
@@ -1196,7 +1874,7 @@ resources:
          }
         ```
         
-        __Example of received msg__:
+        __Response body__:
         
         ```
         {
@@ -1243,7 +1921,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599123721658
     method: GET
-    modified: 1599294933376
+    modified: 1600430108678
     name: Spec
     parameters: []
     parentId: fld_d12a0aa42d554da7953688720f54c0bf
@@ -1271,22 +1949,32 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"aid": "2"
+        	"aid": "21"
         }
     created: 1599123936258
     description: >-2
        Description: 
-       * (1) Removes schedule from requested actuator
+       * (1) Removes schedule from the requested actuator in database.
        * (2) Changes conf.control into thermostat if the current control mode is schedule or schedule&thermostat
        * (3) publishes empty schedule into MQTT topic /aid/set_schedule
        * (4) publishes new control mode if needed in /aid/control_conf
        
-       __reqestMessageBody__:
+       __Attention__:
+
+      Authentication required.
+       
+      __Reqest body__:
        
        ```
        {
       	"aid": "2"
       }
+       ```
+       
+       __Response body__:
+        ```
+       * status 404: No Actuator in database (string)
+       * status 200: Successfully published (string)
        ```
     headers:
       - id: pair_d56f050aa347441ca0d60423540e3c37
@@ -1295,7 +1983,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599123721608
     method: DELETE
-    modified: 1600249529943
+    modified: 1600430124311
     name: Remove Schedule
     parameters: []
     parentId: fld_bc1fc579cb6941f4be20f6955d35da8f
@@ -1325,20 +2013,35 @@ resources:
     created: 1599123957426
     description: " * Description:\ 
 
-      \ * (1) Removes schedule from all actuators
+      \ * (1) Removes schedule from all actuators in database.
 
       \ * (2) Changes conf.control into thermostat if the current control
       mode is schedule or schedule&thermostat
 
-      \ * (3) publishes empty schedule into MQTT topic /+/set_schedule
+      \ * (3) Publishes empty schedule into MQTT topic /+/set_schedule
 
-      \ * (4) publishes new control mode if needed in /+/control_conf
+      \ * (4) Publishes new control mode if needed in /+/control_conf
 
       \ ____
 
+      \ __Attention:__
+
       \\ 
 
-      \ __requestBody__: none
+      \ Authentication required.
+
+
+      \ __requestBody__:
+
+      \\ 
+
+      \ ```
+
+      \ {}
+
+      <!--Intentionally left blank-->
+
+      \ ```
 
       \\ 
 
@@ -1346,9 +2049,13 @@ resources:
 
       \\ 
 
-      \ * (404): No Actuator in database
+      \ ```
 
-      \ * (200): successfully published
+      \ * status 404: No Actuator in database
+
+      \ * status 200: Successfully published
+
+      \ ```
 
       \ "
     headers:
@@ -1358,7 +2065,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599123721658
     method: DELETE
-    modified: 1600249487481
+    modified: 1600430151707
     name: Remove All Schedule
     parameters: []
     parentId: fld_bc1fc579cb6941f4be20f6955d35da8f
@@ -1389,13 +2096,13 @@ resources:
           - SameSite=Strict
         hostOnly: true
         httpOnly: true
-        id: "5303753345960687"
+        id: "874588430853164"
         key: access_token
-        lastAccessed: 2020-09-17T11:53:52.755Z
+        lastAccessed: 2020-09-18T11:04:17.540Z
         path: /
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJJQVNCU0hWQUMiLCJzdWIiOiI1ZjRhMjc4MjNjYTNlNjBiNDBjMzU1ZDciLCJpYXQiOjE2MDAzNDM2MzIsImV4cCI6MTYwMDM0NzIzMn0.6y7qQGQgJbEbRvkef026o2KISgFXY5C2WSPH8d68q1E
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJJQVNCU0hWQUMiLCJzdWIiOiI1ZjRhMjc4MjNjYTNlNjBiNDBjMzU1ZDciLCJpYXQiOjE2MDA0MjcwNTcsImV4cCI6MTYwMDQzMDY1N30.vnVX52eJT4edASpnkWU71gWduV2ORynbC9t6VC1vcCE
     created: 1599123588592
-    modified: 1600343632755
+    modified: 1600427057540
     name: Default Jar
     parentId: wrk_9ee731cf64844808968cc1cc438a8302
     _type: cookie_jar

@@ -98,7 +98,7 @@ exports.controlConf = async (req, res) => {
     // check kon bebin jozve valid ha hast asan
     var possibleModes = ['on', 'off', 'thermostat', 'schedule', 'schedule&thermostat'];
     if (!possibleModes.find((str) => str === controlMode)) {
-        res.status(400).send("Invalid control mode")
+        res.status(400).send("Invalid control mode.")
         return
     }
 
@@ -109,6 +109,11 @@ exports.controlConf = async (req, res) => {
     let doc = await Actuator.findOne({
         aid: aid
     })
+
+    if(doc === null){
+        res.status(404).send("No such actuator in database.");
+        return;
+    }
 
     if (controlMode == "schedule" || controlMode == "schedule&thermostat") {
         // check if there is an schedule for that
@@ -159,7 +164,6 @@ exports.controlConf = async (req, res) => {
  * (2) publishes into MQTT topic: /aid/set_thermostat
  */
 exports.setThermostat = async (req, res) => {
-    console.log("You hit the endpoint");
     let aid = req.body.aid;
     let max = req.body.max;
     let min = req.body.min;
@@ -190,7 +194,7 @@ exports.setThermostat = async (req, res) => {
             return
         }
     })
-    res.status(200).send("Temp response");
+    
     // in case of successful update published thermostat for actuator with mqtt
     let topic = aid + "/set_thermostat";
     let msg = {
@@ -200,6 +204,8 @@ exports.setThermostat = async (req, res) => {
         }
     }
     IoTManager.MQTT_send(topic, msg)
+
+    res.status(200).send("Successfully updated and published.");
 
 }
 
