@@ -38,10 +38,14 @@ exports.saveStatus = async (aid, msg) => {
         let time = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
 
         for (var i = 0; i < msg.data.length; i++) {
+            //drop objects with no data
+            if (msg.data[i].temperature == "" || msg.data[i].humidity == "") {
+                continue;
+            }
             var tempdata = {
                 sid: msg.data[i].sid,
-                temperature: msg.data[i].temperature,
-                humidity: msg.data[i].humidity
+                temperature: Number(msg.data[i].temperature),
+                humidity: Number(msg.data[i].humidity)
             };
             data.push(tempdata);
         }
@@ -92,14 +96,18 @@ exports.report = async (req, res) => {
     // use the data if they are for 30 minutes we had to get the 300 latest because of speed.
     // For example for 6 gateways with  1 min frequency : in 30 min -> 30 * 6 = 180  
     //  we have doubled it to make sure we can receive usefull information.
-    let data = await SensorStatus.find({aid: aid}).sort({
+    let data = await SensorStatus.find({
+        aid: aid
+    }).sort({
         _id: -1
     }).limit(10);
 
     // make all gateways and correspondig sensors.
-    let actuators = await Actuator.find({aid: aid});
+    let actuators = await Actuator.find({
+        aid: aid
+    });
 
-    if(actuators.length == 0){
+    if (actuators.length == 0) {
         res.status(404).send("Requested Actuator doesn't exists in our database.");
         return;
     }
@@ -266,7 +274,93 @@ exports.todayHisotry = async (req, res) => {
  */
 exports.todayHisotryAll = async (req, res) => {
     console.log("You hit the endpoint");
-    res.status(200).send("Temp response");
+
+    let actuators = await Actuator.find();
+    let responseMessage = {}
+
+    for (var i = 0; i < actuators.length; i++) {
+        responseMessage[actuators[i].aid] = {};
+        for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
+            responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
+                // we split the day into 48 half an hour
+                humidity: Array(48).fill(0),
+                temperature: Array(48).fill(0),
+                count: Array(48).fill(0)
+            }
+        }
+    }
+
+    // you need to look at all the data you have 
+    // if your frequency is every 5 minutes in every hour about 12 messages from each gateway
+    // each day you have about 24*12*6 = 1728 messages
+    // with this type of calculation, I consider about 1200 more messages as safety margin 
+    // i.e., totally 3000 messages
+    // I will look at latests 3000 messages in sensorStatus collection in order to provide this report]
+    // TODO :  this method can be optimized
+    let data = await SensorStatus.find().sort({
+        _id: -1
+    }).limit(3000);
+
+    var today = moment();
+    data.forEach(element => {
+        // First check if this is for today
+
+
+        if (today.isSame(moment(element.time), 'day')) {
+
+            tempAid = element.aid;
+            time = moment(element.time)
+            minutesPassedToday = time.hours() * 60 + time.minutes()
+            index = getCorrectInterval(minutesPassedToday);
+            // for each sids
+            sensorsData = element.data;
+            if (sensorsData == null) {
+                return;
+            }
+
+            for (var i = 0; i < sensorsData.length; i++) {
+                let tempSid = sensorsData[i].sid;
+
+                if (typeof responseMessage[tempAid][tempSid] != "undefined") {
+                    responseMessage[tempAid][tempSid].temperature[index] += sensorsData[i].temperature;
+                    responseMessage[tempAid][tempSid].humidity[index] += sensorsData[i].humidity;
+                    responseMessage[tempAid][tempSid].count[index] += 1;
+                } else {
+                    console.log(`*** INVALID tempaid : ${tempAid} tempsid: ${tempSid}`)
+                }
+            }
+
+        } else {
+            return;
+        }
+    })
+
+    // make the average
+    // get average
+    for (var tempActuator in responseMessage) {
+        for (var tempSensor in responseMessage[tempActuator]) {
+            if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
+                for (var i = 0; i < 48; i++) {
+                    if (responseMessage[tempActuator][tempSensor].count[i] > 0) {
+                        responseMessage[tempActuator][tempSensor].temperature[i] /= responseMessage[tempActuator][tempSensor].count[i];
+                        responseMessage[tempActuator][tempSensor].humidity[i] /= responseMessage[tempActuator][tempSensor].count[i];
+                        //  round the values
+                        responseMessage[tempActuator][tempSensor].temperature[i] = responseMessage[tempActuator][tempSensor].temperature[i].toPrecision(4);
+                        responseMessage[tempActuator][tempSensor].humidity[i] = responseMessage[tempActuator][tempSensor].humidity[i].toPrecision(4);
+
+                    } else {
+                        responseMessage[tempActuator][tempSensor].temperature[i] /= NaN;
+                        responseMessage[tempActuator][tempSensor].humidity[i] /= NaN;
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
+    res.status(200).send(responseMessage);
 }
 
 
@@ -274,3 +368,8 @@ exports.todayHisotryAll = async (req, res) => {
  * TODO:
  * Send history for specific range in timeline
  */
+
+
+function getCorrectInterval(x) {
+    return Math.floor(x / 30);
+}
