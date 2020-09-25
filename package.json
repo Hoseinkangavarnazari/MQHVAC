@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "nodemon serverSimulator.js",
-        "dev:server": "nodemon --ignore sessions/ serverSimulator.js"
+        "dev:server": "nodemon --ignore sessions/ serverSimulator.js",
+        "build":"pkg serverSimulator.js --target node12-win-x64"
     },
     "author": "",
     "license": "ISC",

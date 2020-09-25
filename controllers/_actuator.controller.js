@@ -148,6 +148,7 @@ exports.controlConf = async (req, res) => {
     // publish MQTT
     topic = aid + "/control_conf";
     msg = {
+        "SJ":"control",
         "control_mode": controlMode
     }
     IoTManager.MQTT_send(topic, msg)
@@ -197,11 +198,17 @@ exports.setThermostat = async (req, res) => {
     
     // in case of successful update published thermostat for actuator with mqtt
     let topic = aid + "/set_thermostat";
+    // let msg = {
+    //     thermostat: {
+    //         max: max,
+    //         min: min
+    //     }
+    // }
+
     let msg = {
-        thermostat: {
-            max: max,
-            min: min
-        }
+        max:max,
+        min:min,
+        SJ:"thermostat"
     }
     IoTManager.MQTT_send(topic, msg)
 
@@ -291,6 +298,7 @@ exports.setSchedule = async (req, res) => {
 
     // Publish in MQTT 
     topic = aid + "/set_schedule";
+    week.SJ = "SCH";
     IoTManager.MQTT_send(topic, week)
 
     res.status(200).send("Successfully saved into database and pubished.");
@@ -375,6 +383,7 @@ exports.removeSchedule = async (req, res) => {
     });
 
     topic = aid + "/set_schedule";
+    schedule.SJ = "SCH";
     IoTManager.MQTT_send(topic, schedule);
     res.status(200).send("Schedule removed successfully.")
 }
@@ -440,5 +449,6 @@ exports.removeAllSchedule = async (req, res) => {
     topics.push(tempTopic);
     }
     console.log(topics)
+    schedule.SJ = "SCH";
     IoTManager.MQTT_multiple_send(topics, schedule);
 }

@@ -5,47 +5,16 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
 const server = require("http").Server(app);
-// const mqttRouter = require("./routes/mqtt.routes");
 var logger = require("./config/logger");
-
+// process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 app.use(cookieParser());
-
-//------------------MQTT Handlers-------------------
-var mqtt = require("mqtt");
-const mqttBroker = "mqtt://127.0.0.1";
-// const mqttBroker = "mqtt://mqtt.eclipse.org"
-const options = {
-    qos: 2,
-};
-
-var mqttClient = mqtt.connect(mqttBroker, {
-    clientId: "mqttjs99"
-}, options);
-
-
-// gateway initialization
-// var conf = require("./config/topicMananger");
-// conf.checkGatewayInitialization();
-// conf.subscribtion(mqttClient);
-
 
 // Actuator initialization ................................
 const IoTConfiguration = require("./config/IoTManager")
  IoTConfiguration.initialization();
- IoTConfiguration.subscribtion(mqttClient);
+ IoTConfiguration.subscribtion();
 
-
-mqttClient.on("connect", () => {/* console.log("connected  " + mqttClient.connected);*/});
-mqttClient.on("error", (err) => {
-    console.log("Can't connect" + err);
-    process.exit(1);
-});
-
-mqttClient.on("message", (topic, message, packet) => {
-    // conf.topicHandler(topic, message, packet);
-    IoTConfiguration.topicHandler(topic, message, packet);
-});
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -68,12 +37,6 @@ app.use((req, res, next) => {
         })
     next();
 })
-
-
-// // status receiver ----------------------------------------
-// var webAPIRouter = require("./routes/webAPI.routes");
-// app.use("/webapi", webAPIRouter);
-// // --------------------------------------------------------
 
 // systemlog router ----------------------------------------
 const systemLogModule = require("./routes/_systemLog.routes");
