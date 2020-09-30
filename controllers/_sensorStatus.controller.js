@@ -68,35 +68,26 @@ exports.saveStatus = async (aid, msg) => {
 
         //  add this data into new model .......................................
 
-        let todayReportExistance = await Report.find({
+        let todayReportExistance = await Report.findOne({
             aid: aid,
             y: year,
             m: month,
             d: day
         });
 
-        if (todayReportExistance.length == 0) {
+        if (todayReportExistance == null) {
 
-
+            //first intialize the newdata Section
             let requestedActuator = await Actuator.findOne({
                 aid: aid
             })
             // check if it is not null
             sensorsList = requestedActuator.conf.sensorsList;
-
             let newdata = []
             for (i = 0; i < sensorsList.length; i++) {
                 let temp = {};
                 temp.avgTemperature = 0;
                 temp.avgHumidity = 0;
-                // temp.temperature = Array(48).fill({
-                //     value: 0,
-                //     count: 0
-                // });
-                // temp.humidity = Array(48).fill({
-                //     value: 0,
-                //     count: 0
-                // });
 
                 temp.temperature = Array(48).fill().map(u => ({
                     value: 0,
@@ -108,16 +99,12 @@ exports.saveStatus = async (aid, msg) => {
                     count: 0
                 }));
 
-                // temp.humidity = Array(48).fill().map({
-                //     value: 0,
-                //     count: 0
-                // });
                 temp.sid = sensorsList[i].sid;
                 newdata.push(temp);
                 delete temp;
             }
 
-            // add the newly received data to new data 
+            // Add new data to initialized data
             let timeIndex = Math.floor((hour * 60 + minute) / 30)
             console.log("INDEX", timeIndex)
             for (var i = 0; i < msg.data.length; i++) {
@@ -145,9 +132,25 @@ exports.saveStatus = async (aid, msg) => {
                 newdata[itu].humidity[timeIndex].count = newCount;
 
                 // compute the average temperature and humidity for given sensor
+                hCount = 0;
+                tCount = 0;
+                hSum = 0;
+                tSum = 0;
+                for (var j = 0; j < 48; j++) {
+                    if (newdata[itu].humidity[j].count > 0) {
+                        hCount += 1;
+                        hSum = newdata[itu].humidity[j].value;
+                    }
+                    if (newdata[itu].temperature[j].count > 0) {
+                        tCount += 1;
+                        tSum = newdata[itu].temperature[j].value;
+                    }
+                }
 
+                newdata[itu].avgHumidity = hSum / hCount;
+                newdata[itu].avgTemperature = tSum / tCount;
             }
-            console.log(newdata)
+
             var newReport = new Report({
                 y: year,
                 m: month,
@@ -156,20 +159,84 @@ exports.saveStatus = async (aid, msg) => {
                 time: time,
                 data: newdata
             })
+
+            try {
+                newReport.save();
+                console.log("Saved into the database.")
+
+            } catch (err) {
+                console.log("There is something wrong with saving to DB", err)
+            }
+
         } else {
+
+            updatedData = todayReportExistance.data;
             // update the value
             // use today report existance to manage your updates
+            let timeIndex = Math.floor((hour * 60 + minute) / 30)
+            for (var i = 0; i < msg.data.length; i++) {
+                // //drop objects with no data
+                if (msg.data[i].temperature == "" || msg.data[i].humidity == "") {
+                    continue;
+                }
+                // itu : index to update
+                itu = updatedData.findIndex(el => el.sid == msg.data[i].sid);
+
+                tempValue = updatedData[itu].temperature[timeIndex].value;
+                tempCount = updatedData[itu].temperature[timeIndex].count;
+                newCount = tempCount + 1;
+                updatedData[itu].temperature[timeIndex].value = (tempCount * tempValue + msg.data[i].temperature) / newCount;
+                updatedData[itu].temperature[timeIndex].count = newCount;
+
+                delete tempValue;
+                delete tempCount;
+                delete newCount;
+
+                tempValue = updatedData[itu].humidity[timeIndex].value;
+                tempCount = updatedData[itu].humidity[timeIndex].count;
+                newCount = tempCount + 1;
+                updatedData[itu].humidity[timeIndex].value = (tempCount * tempValue + msg.data[i].humidity) / newCount;
+                updatedData[itu].humidity[timeIndex].count = newCount;
+
+                // compute the average temperature and humidity for given sensor
+                hCount = 0;
+                tCount = 0;
+                hSum = 0;
+                tSum = 0;
+                for (var j = 0; j < 48; j++) {
+                    if (updatedData[itu].humidity[j].count > 0) {
+                        hCount += 1;
+                        hSum = updatedData[itu].humidity[j].value;
+                    }
+                    if (updatedData[itu].temperature[j].count > 0) {
+                        tCount += 1;
+                        tSum = updatedData[itu].temperature[j].value;
+                    }
+                }
+                updatedData[itu].avgHumidity = hSum / hCount;
+                updatedData[itu].avgTemperature = tSum / tCount;
+            }
+            try {
+                await Report.findOneAndUpdate({
+                    y: year,
+                    m: month,
+                    d: day,
+                    aid: aid
+                }, {
+                    data: updatedData
+                })
+
+                console.log("Saved into the database.")
+            } catch (err) {
+                console.log("There is something wrong with saving to DB", err)
+            }
         }
-
-
     } catch (err) {
         console.log("Something went wrong during saving new sensor data.", err)
     }
-
     try {
         newStatus.save();
         console.log("Saved into the database.")
-
     } catch (err) {
         console.log("There is something wrong with saving to DB", err)
     }
