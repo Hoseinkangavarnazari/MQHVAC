@@ -40,6 +40,8 @@ exports.saveStatus = async (aid, msg) => {
         // because it counts from 0 to 11 and I have shifted it 
         let month = moment().jMonth() + 1;
         let day = moment().jDate();
+        let hour = moment().hour();
+        let minute = moment().minute();
 
         for (var i = 0; i < msg.data.length; i++) {
             //drop objects with no data
@@ -72,7 +74,6 @@ exports.saveStatus = async (aid, msg) => {
             m: month,
             d: day
         });
-        console.log(todayReportExistance)
 
         if (todayReportExistance.length == 0) {
 
@@ -88,21 +89,65 @@ exports.saveStatus = async (aid, msg) => {
                 let temp = {};
                 temp.avgTemperature = 0;
                 temp.avgHumidity = 0;
-                temp.temperature = Array(48).fill({
+                // temp.temperature = Array(48).fill({
+                //     value: 0,
+                //     count: 0
+                // });
+                // temp.humidity = Array(48).fill({
+                //     value: 0,
+                //     count: 0
+                // });
+
+                temp.temperature = Array(48).fill().map(u => ({
                     value: 0,
                     count: 0
-                });
-                temp.humidity = Array(48).fill({
+                }));
+
+                temp.humidity = Array(48).fill().map(u => ({
                     value: 0,
                     count: 0
-                });
+                }));
+
+                // temp.humidity = Array(48).fill().map({
+                //     value: 0,
+                //     count: 0
+                // });
                 temp.sid = sensorsList[i].sid;
                 newdata.push(temp);
                 delete temp;
             }
 
-            console.log(newdata)
+            // add the newly received data to new data 
+            let timeIndex = Math.floor((hour * 60 + minute) / 30)
+            console.log("INDEX", timeIndex)
+            for (var i = 0; i < msg.data.length; i++) {
+                // //drop objects with no data
+                if (msg.data[i].temperature == "" || msg.data[i].humidity == "") {
+                    continue;
+                }
+                // itu : index to update
+                itu = newdata.findIndex(el => el.sid == msg.data[i].sid);
 
+                tempValue = newdata[itu].temperature[timeIndex].value;
+                tempCount = newdata[itu].temperature[timeIndex].count;
+                newCount = tempCount + 1;
+                newdata[itu].temperature[timeIndex].value = (tempCount * tempValue + msg.data[i].temperature) / newCount;
+                newdata[itu].temperature[timeIndex].count = newCount;
+
+                delete tempValue;
+                delete tempCount;
+                delete newCount;
+
+                tempValue = newdata[itu].humidity[timeIndex].value;
+                tempCount = newdata[itu].humidity[timeIndex].count;
+                newCount = tempCount + 1;
+                newdata[itu].humidity[timeIndex].value = (tempCount * tempValue + msg.data[i].humidity) / newCount;
+                newdata[itu].humidity[timeIndex].count = newCount;
+
+                // compute the average temperature and humidity for given sensor
+
+            }
+            console.log(newdata)
             var newReport = new Report({
                 y: year,
                 m: month,
@@ -111,8 +156,6 @@ exports.saveStatus = async (aid, msg) => {
                 time: time,
                 data: newdata
             })
-
-
         } else {
             // update the value
             // use today report existance to manage your updates
