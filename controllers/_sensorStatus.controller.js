@@ -631,14 +631,46 @@ function getCorrectInterval(x) {
 }
 
 
+/**
+ * method: POST 
+ * Auth: required
+ * url: /sensor_status/range_report
+ * description: 
+ * (1) 
+ */
 exports.rangeReport = async (req, res) => {
-
+    res.send("you hit renge report");
 }
 
+/**
+ * method: POST 
+ * Auth: required
+ * url: /sensor_status/day_report
+ * description: 
+ * (1) 
+ */
 exports.dayReport = async (req, res) => {
-
+    res.send("you hit day report");
+}
+/**
+ * method: POST 
+ * Auth: required
+ * url: /sensor_status/month_report
+ * description: 
+ * (1) 
+ */
+exports.monthReport = async (req, res) => {
+    res.send("you hit Month report");
 }
 
-exports.monthReport = async (req, res) => {
 
+/**
+ * method: POST 
+ * Auth: required
+ * url: /sensor_status/latest_report
+ * description: 
+ * (1) 
+ */
+exports.latestReport = async (req, res) => {
+    res.send("you hit the latest report.")
 }

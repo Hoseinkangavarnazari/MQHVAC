@@ -20,8 +20,6 @@ checkAidValid = async (reqAid) => {
  * (2) edit location of sid 
  */
 exports.editLocation = async (req, res) => {
-    console.log("You hit the endpoint");
-    // console.log(req.body)
     if (req.body.hasOwnProperty("sensor")) {
         // az roye sid mishe aid ro daravord pas aval ono select bayad bokone va edame majara ro sid morede nazar
         const sid = req.body.sensor.sid;
@@ -30,7 +28,7 @@ exports.editLocation = async (req, res) => {
         const location = req.body.sensor.location;
 
         if (!aid || !sid || !location) {
-            res.status(400).send("The body of message is not standard.")
+            res.status(400).send("900")
         }
 
         // find it and update
@@ -54,7 +52,7 @@ exports.editLocation = async (req, res) => {
         const location = req.body.actuator.location;
 
         if (!location || !aid) {
-            res.status(406).send("The location or actuator field can not be empty");
+            res.status(406).send("900");
         }
 
         let doc = await Actuator.findOneAndUpdate({
@@ -66,18 +64,18 @@ exports.editLocation = async (req, res) => {
         });
 
         if (doc == null) {
-            res.status(404).send("Requested actuator not found.");
+            res.status(404).send("101");
         } else {
             if (doc.location == location) {
-                res.status(200).send("The location successfully updated.");
+                res.status(200).send("001");
             } else {
                 // where it can find the requested actuator but couldn't change the value of it.
-                res.status(400).send("Something went worng. Contact with administrator.")
+                res.status(400).send("102");
             }
         }
 
     } else {
-        res.status(400).send("Body of message is not properly defined.");
+        res.status(400).send("900");
     }
 }
 
@@ -98,12 +96,12 @@ exports.controlConf = async (req, res) => {
     // check kon bebin jozve valid ha hast asan
     var possibleModes = ['on', 'off', 'thermostat', 'schedule', 'schedule&thermostat'];
     if (!possibleModes.find((str) => str === controlMode)) {
-        res.status(400).send("Invalid control mode.")
+        res.status(400).send("901")
         return
     }
 
     if (!aid || !controlMode) {
-        res.status(400).send("The body of message is not standard.")
+        res.status(400).send("900")
     }
 
     let doc = await Actuator.findOne({
@@ -111,7 +109,7 @@ exports.controlConf = async (req, res) => {
     })
 
     if(doc === null){
-        res.status(404).send("No such actuator in database.");
+        res.status(404).send("101");
         return;
     }
 
@@ -126,7 +124,7 @@ exports.controlConf = async (req, res) => {
             }
         });
         if (!flag) {
-            res.status(406).send("There is no schedule available for requested actuator.")
+            res.status(406).send("902")
             return;
         }
     }
@@ -139,9 +137,9 @@ exports.controlConf = async (req, res) => {
         }
     }, (err, doc) => {
         if (err) {
-            res.status(400).send(`An error occured in the database111. Error: ${err}`)
+            res.status(400).send(`100`)
         } else {
-            res.status(200).send('The control mode of requested actuator has been updated.')
+            res.status(200).send('001')
         }
     })
 
@@ -172,11 +170,11 @@ exports.setThermostat = async (req, res) => {
     // type of max and min must be number otherwise system will stop :critical issue 
 
     if (!(aid && max && min)) {
-        res.status(400).send("The body of message is not standard.")
+        res.status(400).send("900")
         return
     } else {
         if (!(max > min && min > 0 && max > 0)) {
-            res.status(400).send("Parameters are not reasonable. Check them again.")
+            res.status(400).send("903")
         }
     }
     // 
@@ -191,7 +189,7 @@ exports.setThermostat = async (req, res) => {
         }
     }, (err, doc) => {
         if (err) {
-            res.status(304).send("Couldn't save into the database.")
+            res.status(304).send("100")
             return
         }
     })
@@ -212,7 +210,7 @@ exports.setThermostat = async (req, res) => {
     }
     IoTManager.MQTT_send(topic, msg)
 
-    res.status(200).send("Successfully updated and published.");
+    res.status(200).send("001");
 
 }
 
@@ -230,7 +228,7 @@ exports.setSchedule = async (req, res) => {
     aid = req.body.aid;
 
     if (!await checkAidValid(aid)) {
-        res.status(404).send("The requeseted aid is not db.");
+        res.status(404).send("101");
         return;
     }
 
@@ -274,10 +272,10 @@ exports.setSchedule = async (req, res) => {
     })
 
     if (!flag_pattern) {
-        res.status(400).send("Time patterns are not correct. Both start and end must match with our regex.");
+        res.status(400).send("904");
         return
     } else if (!flag_correctness) {
-        res.status(400).send("There is a conflict in the schedule. Please check your schedule again.");
+        res.status(400).send("905");
         return
     }
 
@@ -291,7 +289,7 @@ exports.setSchedule = async (req, res) => {
         }
     }, (err, doc) => {
         if (err) {
-            res.status(304).send("Couldn't save into the database.")
+            res.status(304).send("102")
             return
         }
     })
@@ -301,7 +299,7 @@ exports.setSchedule = async (req, res) => {
     week.SJ = "SCH";
     IoTManager.MQTT_send(topic, week)
 
-    res.status(200).send("Successfully saved into database and pubished.");
+    res.status(200).send("001");
 }
 
 
@@ -320,9 +318,7 @@ exports.getSpec = async (req, res) => {
     });
 
     if (!doc) {
-        res.status(404).json({
-            "err": "couldn't find requested actuator in the database."
-        })
+        res.status(404).send("101")
     }
 
     let conf = doc.conf;
@@ -363,7 +359,7 @@ exports.removeSchedule = async (req, res) => {
     });
 
     if (doc == null) {
-        res.status(404).send("Couldn't find requested actuator in the database");
+        res.status(404).send("101");
         return;
     } else if (doc.conf.controlMode == 'schedule' || doc.conf.controlMode == 'schedule&thermostat') {
         controlMode = "thermostat"
@@ -379,13 +375,13 @@ exports.removeSchedule = async (req, res) => {
             'conf.schedule': schedule
         }
     }, (err) => {
-        console.log(`Error: ${err}`);
+        console.log(`102`);
     });
 
     topic = aid + "/set_schedule";
     schedule.SJ = "SCH";
     IoTManager.MQTT_send(topic, schedule);
-    res.status(200).send("Schedule removed successfully.")
+    res.status(200).send("001")
 }
 
 /**
@@ -406,7 +402,7 @@ exports.removeAllSchedule = async (req, res) => {
     doc = await Actuator.find();
 
     if (doc.length == 0) {
-        res.status(404).send("There are no actuators in database. Contact administrator.");
+        res.status(404).send("103");
         return
     }
 
@@ -424,7 +420,7 @@ exports.removeAllSchedule = async (req, res) => {
     schedule = {};
 
     console.log(actuatorsAid.length);
-    res.status(200).send("Successfully changed and published.");
+    res.status(200).send("001");
 
     for (i = 0; i < actuatorsAid.length; i++) {
         console.log(i);
@@ -437,7 +433,7 @@ exports.removeAllSchedule = async (req, res) => {
             }
         }, (err) => {
             if (err != null) {
-                console.log(`Error: ${err}`);
+                console.log(`102: Something went worng in database. Contact with administrator.`);
             }
         })
 
