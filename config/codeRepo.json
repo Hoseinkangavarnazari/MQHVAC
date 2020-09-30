@@ -29,6 +29,12 @@
             "FA": "هیچ عملگری در سیستم دیتابیس ثبت نشده است. با مدیر سیستم تماس بگیرید."
         }
     },
+    "104": {
+        "description": {
+            "EN": "No log found.",
+            "FA": "لاگی در سیستم یافت نشده است."
+        }
+    },
     "900": {
         "description": {
             "EN": "Couldn't Parse received request. Please verify the request format and try again.",

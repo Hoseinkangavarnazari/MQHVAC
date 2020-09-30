@@ -282,7 +282,7 @@ exports.report = async (req, res) => {
     });
 
     if (actuators.length == 0) {
-        res.status(404).send("Requested Actuator doesn't exists in our database.");
+        res.status(404).send("101");
         return;
     }
 

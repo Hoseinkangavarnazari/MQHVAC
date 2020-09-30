@@ -69,9 +69,7 @@ exports.allLog = async (req, res) => {
 
         res.status(200).send(logStorage);
     } else {
-        res.status(404).send({
-            msg: "No log found."
-        });
+        res.status(404).send("104");
     }
 }
 
@@ -101,9 +99,7 @@ exports.reteriveAllUnseen = async (req, res) => {
 
         res.status(200).send(logStorage);
     } else {
-        res.status(404).send({
-            msg: "No log found."
-        });
+        res.status(404).send("104");
     }
 }
 
@@ -122,7 +118,7 @@ exports.reteriveUnseen = async (req, res) => {
         aid: aid
     });
     if (actuator.length == 0) {
-        res.status(404).send("Requested actuator doesn't exists in db.");
+        res.status(404).send("101");
         return;
     } else {
 
@@ -141,92 +137,82 @@ exports.reteriveUnseen = async (req, res) => {
 
             res.status(200).send(logStorage);
         } else {
-            res.status(404).send({
-                msg: "No log found."
-            });
+            res.status(404).send("104");
         }
-    }
-}
+    }}
 
 
 
-/**
- * method: POST 
- * Auth: required
- * url: /system_log/log
- * description: 
- * (1) returns all logs related for requested aid
- */
-exports.log = async (req, res) => {
-    let aid = req.body.aid;
-    actuator = await Actuator.find({
-        aid: aid
-    });
-    if (actuator.length == 0) {
-        res.status(404).send("Requested actuator doesn't exists in db.");
-        return;
-    } else {
-
-        var logStorage = {};
-        logStorage[aid] = []
-
-        doc = await systemLog.find({
+    /**
+     * method: POST 
+     * Auth: required
+     * url: /system_log/log
+     * description: 
+     * (1) returns all logs related for requested aid
+     */
+    exports.log = async (req, res) => {
+        let aid = req.body.aid;
+        actuator = await Actuator.find({
             aid: aid
         });
-        if (doc.length >= 0) {
-            for (var i = 0; i < doc.length; i++) {
-                logStorage[aid].push(doc[i])
-            }
-
-            res.status(200).send(logStorage);
+        if (actuator.length == 0) {
+            res.status(404).send("101");
+            return;
         } else {
-            res.status(404).send({
-                msg: "No log found."
+
+            var logStorage = {};
+            logStorage[aid] = []
+
+            doc = await systemLog.find({
+                aid: aid
             });
+            if (doc.length >= 0) {
+                for (var i = 0; i < doc.length; i++) {
+                    logStorage[aid].push(doc[i])
+                }
+
+                res.status(200).send(logStorage);
+            } else {
+                res.status(404).send("104");
+            }
         }
     }
-}
 
 
-/**
- * method: PUT 
- * Auth: required
- * url: /system_log/seen_status
- * description: 
- * (1) seen or unseen an specific log
- */
-exports.seenStatus = async (req, res) => {
+    /**
+     * method: PUT 
+     * Auth: required
+     * url: /system_log/seen_status
+     * description: 
+     * (1) seen or unseen an specific log
+     */
+    exports.seenStatus = async (req, res) => {
 
-    seenStatus = req.body.seen;
-    if (typeof seenStatus != "boolean") {
-        res.status(400).send("The received seen status is not a boolean.")
-        return;
+        seenStatus = req.body.seen;
+        if (typeof seenStatus != "boolean") {
+            res.status(400).send("900")
+            return;
+        }
+
+        requestedID = req.body._id;
+
+        let doc = await systemLog.findByIdAndUpdate(requestedID, {
+            '$set': {
+                'seen': seenStatus
+            }
+        }, (err, doc) => {
+            if (err) {
+                res.status(404).send(`102`);
+                return
+            } else if (doc == null) {
+                res.status(404).send("104");
+                return
+            } else {
+                res.status(200).send("001")
+            }
+        });
     }
 
-    requestedID = req.body._id;
-
-    let doc = await systemLog.findByIdAndUpdate(requestedID, {
-        '$set': {
-            'seen': seenStatus
-        }
-    }, (err, doc) => {
-        if (err) {
-            res.status(404).send(`Error:${err}`);
-            return
-        } else if (doc == null) {
-            res.status(404).send("There is no such log in our database.");
-            return
-        } else {
-            res.status(200).send("Seen status updated successfully.")
-        }
-
-    })
-
-
-
-
-
-}
 
 
 // REST ...........................................................
