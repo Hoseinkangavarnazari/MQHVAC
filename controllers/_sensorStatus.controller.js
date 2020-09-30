@@ -1,8 +1,8 @@
 var request = require("request");
 var SensorStatus = require("../models/_SensorStatus.model");
 var Actuator = require("../models/_Actuator.model")
-var moment = require('moment');
-
+var Report = require("../models/_Report.model")
+var moment = require('moment-jalaali');
 // gerneral time lib for
 
 changeTime = (time) => {
@@ -35,7 +35,11 @@ exports.saveStatus = async (aid, msg) => {
 
         let data = []
 
-        let time = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+        let time = moment(new Date()).format("jYYYY-jMM-jDD HH:mm:ss");
+        let year = moment().jYear();
+        // because it counts from 0 to 11 and I have shifted it 
+        let month = moment().jMonth() + 1;
+        let day = moment().jDate();
 
         for (var i = 0; i < msg.data.length; i++) {
             //drop objects with no data
@@ -51,10 +55,70 @@ exports.saveStatus = async (aid, msg) => {
         }
 
         var newStatus = new SensorStatus({
+            y: year,
+            m: month,
+            d: day,
             aid: aid,
             time: time,
             data: data
         });
+
+
+        //  add this data into new model .......................................
+
+        let todayReportExistance = await Report.find({
+            aid: aid,
+            y: year,
+            m: month,
+            d: day
+        });
+        console.log(todayReportExistance)
+
+        if (todayReportExistance.length == 0) {
+
+
+            let requestedActuator = await Actuator.findOne({
+                aid: aid
+            })
+            // check if it is not null
+            sensorsList = requestedActuator.conf.sensorsList;
+
+            let newdata = []
+            for (i = 0; i < sensorsList.length; i++) {
+                let temp = {};
+                temp.avgTemperature = 0;
+                temp.avgHumidity = 0;
+                temp.temperature = Array(48).fill({
+                    value: 0,
+                    count: 0
+                });
+                temp.humidity = Array(48).fill({
+                    value: 0,
+                    count: 0
+                });
+                temp.sid = sensorsList[i].sid;
+                newdata.push(temp);
+                delete temp;
+            }
+
+            console.log(newdata)
+
+            var newReport = new Report({
+                y: year,
+                m: month,
+                d: day,
+                aid: aid,
+                time: time,
+                data: newdata
+            })
+
+
+        } else {
+            // update the value
+            // use today report existance to manage your updates
+        }
+
+
     } catch (err) {
         console.log("Something went wrong during saving new sensor data.", err)
     }
@@ -262,12 +326,14 @@ exports.todayHisotry = async (req, res) => {
 
     let aid = req.body.aid;
 
-    let actuators = await Actuator.find({aid:aid});
+    let actuators = await Actuator.find({
+        aid: aid
+    });
     if (actuators.length == 0) {
         res.status(404).send("Requested Actuator doesn't exists in our database.");
         return;
     }
-    
+
     let responseMessage = {}
     for (var i = 0; i < actuators.length; i++) {
         responseMessage[actuators[i].aid] = {};
@@ -287,7 +353,9 @@ exports.todayHisotry = async (req, res) => {
     // with this type of calculation, I consider about 1000 messages as safety margin 
     // ** In this version I considered 3000 because at the moment the round time is 5 seconds
     // TODO :  this method can be optimized
-    let data = await SensorStatus.find({aid:aid}).sort({
+    let data = await SensorStatus.find({
+        aid: aid
+    }).sort({
         _id: -1
     }).limit(3000);
 
@@ -450,4 +518,17 @@ exports.todayHisotryAll = async (req, res) => {
 
 function getCorrectInterval(x) {
     return Math.floor(x / 30);
+}
+
+
+exports.rangeReport = async (req, res) => {
+
+}
+
+exports.dayReport = async (req, res) => {
+
+}
+
+exports.monthReport = async (req, res) => {
+
 }

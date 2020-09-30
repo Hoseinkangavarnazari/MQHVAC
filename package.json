@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "nodemon serverSimulator.js",
         "dev:server": "nodemon --ignore sessions/ serverSimulator.js",
-        "build":"pkg serverSimulator.js --target node12-win-x64"
+        "build": "pkg serverSimulator.js --target node12-win-x64"
     },
     "author": "",
     "license": "ISC",
@@ -19,6 +19,7 @@
         "jquery": "^3.5.1",
         "jsonwebtoken": "^8.5.1",
         "moment": "^2.28.0",
+        "moment-jalaali": "^0.9.2",
         "mongoose": "^5.10.0",
         "mqtt": "^4.1.0",
         "passport": "^0.4.1",
