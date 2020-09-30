@@ -8,6 +8,9 @@ const connection = require("./conn_db");
  * Or from sensors itself (in case of one sensor - one acctuator)
  */
 var sensorStatusSchema = new Schema({
+    y:Number,
+    m:Number,
+    d:Number,
     aid : {
         type: String,
         required: true

@@ -1,0 +1,26 @@
+{
+    "001": {
+        "description": {
+            "EN": "Operation successfully completed.",
+            "FA": ".عملیات با موفقیت انجام شد"
+        }
+    },
+    "100": {
+        "description": {
+            "EN": "A problem occurred in connection with database.",
+            "FA": "اشکالی در ارتباط با دیتابیس رخ داده است."
+        }
+    },
+    "101": {
+        "description": {
+            "EN": "Requested aid could not be found.",
+            "FA": "عملگر درخواستی در دیتابیس موجود نیست."
+        }
+    },
+    "900": {
+        "description": {
+            "EN": "Couldn't Parse received request. Please verify the request format and try again.",
+            "FA": " مشکلی در پردازش اطلاعات رخ داده است. لطفا فرمت فایل ارسالی را چک کنید و دوباره بررسی کنید"
+        }
+    }
+}
