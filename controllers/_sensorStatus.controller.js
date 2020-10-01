@@ -3,6 +3,7 @@ var SensorStatus = require("../models/_SensorStatus.model");
 var Actuator = require("../models/_Actuator.model")
 var Report = require("../models/_Report.model")
 var moment = require('moment-jalaali');
+
 // gerneral time lib for
 
 changeTime = (time) => {
@@ -630,40 +631,6 @@ function getCorrectInterval(x) {
     return Math.floor(x / 30);
 }
 
-
-/**
- * method: POST 
- * Auth: required
- * url: /sensor_status/range_report
- * description: 
- * (1) 
- */
-exports.rangeReport = async (req, res) => {
-    // Parse Information
-    aidList = req.body.aidList;
-    Ystart = req.body.start.y;
-    Mstart = req.body.start.m;
-    Yend = req.body.end.y;
-    Mend = req.body.end.m;
-
-    // check received data if they are resonable or not !
-    if (aidList.length == 0) {
-        res.status(404).send("101");
-        return;
-    } else {
-        if (Ystart == null || Mstart == null || Yend == null || Mend == null) {
-            res.status(400).send("900")
-            return;
-        }
-        if (Ystart > Yend || (Ystart == Yend && Mstart > Mend) || Mstart > 12 || Mend > 12 || Mstart < 0 || Mend < 0 || Ystart < 1390 || Yend < 1390) {
-            res.status(400).send("903");
-            return;
-        }
-    }
-
-    res.send("you hit renge report");
-}
-
 /**
  * method: POST 
  * Auth: required
@@ -682,6 +649,74 @@ exports.dayReport = async (req, res) => {
  * (1) 
  */
 exports.monthReport = async (req, res) => {
+    // Parse Information
+    aidList = req.body.aidList;
+    y = Math.floor(req.body.y);
+    m = Math.floor(req.body.m);
+    let daysInMonth = 0;
+
+    if (m > 6) {
+        daysInMonth = 30;
+    } else {
+        daysInMonth = 31
+    }
+    // check received data if they are resonable or not !
+    if (aidList.length == 0) {
+        res.status(404).send("101");
+        return;
+    } else {
+        if (y == null || m == null) {
+            res.status(400).send("900")
+            return;
+        }
+        if (m > 12 || m <= 0 || y < 1390 || y > 1450) {
+            res.status(400).send("903");
+            return;
+        }
+    }
+    actuatorLists = await Actuator.find({});
+
+    if (actuatorLists.length == 0) {
+        res.status(404).send("103");
+        return;
+    }
+    // The initialization.
+    var data = []
+    for (var i = 0; i < actuatorLists.length; i++) {
+        if (aidList.includes(actuatorLists[i].aid)) {
+            let tempAid = {};
+            tempAid.aid = actuatorLists[i].aid;
+            tempAid.data = []
+            for (var j = 0; j < actuatorLists[i].conf.sensorsList.length; j++) {
+                let tempSid = {};
+                tempSid.sid = actuatorLists[i].conf.sensorsList[j].sid;
+                tempSid.humidity = Array(daysInMonth).fill(0);
+                tempSid.temperature = Array(daysInMonth).fill(0);
+                tempAid.data.push(tempSid);
+                delete tempSid;
+            }
+            data.push(tempAid)
+            delete tempAid;
+        } else {
+            continue;
+        }
+    }
+    relatedReports = await Report.find({
+        y: y,
+        m: m
+    });
+
+    for (var i = 0; i < relatedReports.length; i++) {
+        if (aidList.includes(relatedReports[i].aid)) {
+            tempAid = relatedReports[i].aid;
+            d = relatedReports[i].d;
+            for (var j = 0; j < relatedReports[i].data.length; j++) {
+                tempSid = relatedReports[i].data[j].sid;
+                tempH = relatedReports[i].data[j].avgHumidity;
+                tempT = relatedReports[i].data[j].avgTemperature;
+            }
+        }
+    }
     res.send("you hit Month report");
 }
 

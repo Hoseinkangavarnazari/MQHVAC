@@ -32,10 +32,6 @@ sensorStatus_router.post('/today_history_all',
 passport.authenticate('jwt', { session: false }),
 sensorStatus_controller.todayHisotryAll);
 
-sensorStatus_router.post('/range_report',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.rangeReport);
-
 sensorStatus_router.post('/day_report',
 passport.authenticate('jwt', { session: false }),
 sensorStatus_controller.dayReport);
