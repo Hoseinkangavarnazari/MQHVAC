@@ -639,6 +639,28 @@ function getCorrectInterval(x) {
  * (1) 
  */
 exports.rangeReport = async (req, res) => {
+    // Parse Information
+    aidList = req.body.aidList;
+    Ystart = req.body.start.y;
+    Mstart = req.body.start.m;
+    Yend = req.body.end.y;
+    Mend = req.body.end.m;
+
+    // check received data if they are resonable or not !
+    if (aidList.length == 0) {
+        res.status(404).send("101");
+        return;
+    } else {
+        if (Ystart == null || Mstart == null || Yend == null || Mend == null) {
+            res.status(400).send("900")
+            return;
+        }
+        if (Ystart > Yend || (Ystart == Yend && Mstart > Mend) || Mstart > 12 || Mend > 12 || Mstart < 0 || Mend < 0 || Ystart < 1390 || Yend < 1390) {
+            res.status(400).send("903");
+            return;
+        }
+    }
+
     res.send("you hit renge report");
 }
 
