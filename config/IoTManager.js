@@ -20,7 +20,7 @@ var mqtt = require("mqtt");
 
 // const mqttBroker = "mqtt://mqtt.eclipse.org"
 
-const mqttBroker = "mqtts://localhost:1883";
+const mqttBroker = "mqtt://localhost:1883";
 
 const options = {
     qos: 2,
