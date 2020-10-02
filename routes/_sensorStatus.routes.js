@@ -13,24 +13,24 @@ var saveStatus = (aid, status) => {
     sensorStatus_controller.saveStatus(aid, status);
  }
 
-// REST
-sensorStatus_router.post('/report',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.report);
+// // REST
+// sensorStatus_router.post('/report',
+// passport.authenticate('jwt', { session: false }),
+// sensorStatus_controller.report);
 
-sensorStatus_router.post('/report_all',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.reportAll);
-
-
-sensorStatus_router.post('/today_history',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.todayHisotry);
+// sensorStatus_router.post('/report_all',
+// passport.authenticate('jwt', { session: false }),
+// sensorStatus_controller.reportAll);
 
 
-sensorStatus_router.post('/today_history_all',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.todayHisotryAll);
+// sensorStatus_router.post('/today_history',
+// passport.authenticate('jwt', { session: false }),
+// sensorStatus_controller.todayHisotry);
+
+
+// sensorStatus_router.post('/today_history_all',
+// passport.authenticate('jwt', { session: false }),
+// sensorStatus_controller.todayHisotryAll);
 
 sensorStatus_router.post('/day_report',
 passport.authenticate('jwt', { session: false }),
