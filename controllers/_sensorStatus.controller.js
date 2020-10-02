@@ -3,9 +3,6 @@ var SensorStatus = require("../models/_SensorStatus.model");
 var Actuator = require("../models/_Actuator.model")
 var Report = require("../models/_Report.model")
 var moment = require('moment-jalaali');
-const {
-    response
-} = require("express");
 
 // gerneral time lib for
 
@@ -833,5 +830,72 @@ exports.monthReport = async (req, res) => {
  * (1) 
  */
 exports.latestReport = async (req, res) => {
-    res.send("you hit the latest report.")
+    aidList = req.body.aidList;
+    let y = moment().jYear();
+    // because it counts from 0 to 11 and I have shifted it 
+    let m = moment().jMonth() + 1;
+    let d = moment().jDate();
+    let hour = moment().hour();
+    let minute = moment().minute();
+    let timeIndex = Math.floor((hour * 60 + minute)/ 30);
+
+    actuatorLists = await Actuator.find({});
+
+    if (actuatorLists.length == 0) {
+        res.status(404).send("103");
+        return;
+    }
+
+    
+    var data = []
+    for (var i = 0; i < actuatorLists.length; i++) {
+        if (aidList.includes(actuatorLists[i].aid)) {
+            let tempAid = {};
+            tempAid.aid = actuatorLists[i].aid;
+            tempAid.data = []
+            for (var j = 0; j < actuatorLists[i].conf.sensorsList.length; j++) {
+                let tempSid = {};
+                tempSid.sid = actuatorLists[i].conf.sensorsList[j].sid;
+                tempSid.H = 0;
+                tempSid.T = 0;
+                tempAid.data.push(tempSid);
+                delete tempSid;
+            }
+            data.push(tempAid)
+            delete tempAid;
+        } else {
+            continue;
+        }
+    }
+
+    relatedReports = await Report.find({
+        y: y,
+        m: m,
+        d: d
+    });
+
+
+    for (var i = 0; i < relatedReports.length; i++) {
+        if (aidList.includes(relatedReports[i].aid)) {
+            tempAid = relatedReports[i].aid;
+            // find related aid index in data 
+            indexAID = data.findIndex(el => el.aid == tempAid);
+            d = relatedReports[i].d;
+            for (var j = 0; j < relatedReports[i].data.length; j++) {
+                tempSid = relatedReports[i].data[j].sid;
+                // find related sid index in data[indexAID]
+                indexSID = data[indexAID].data.findIndex(el => el.sid == tempSid);
+                data[indexAID].data[indexSID].T= relatedReports[i].data[j].temperature[timeIndex];
+                data[indexAID].data[indexSID].H = relatedReports[i].data[j].humidity[timeIndex];
+            }
+        }
+    }
+
+    let response = {};
+    response.data = data;
+    response.m = m;
+    response.y = y;
+    response.d = d;
+    response.h= hour;
+    res.status(200).send(response);
 }
