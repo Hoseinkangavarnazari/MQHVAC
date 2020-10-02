@@ -4,20 +4,29 @@ const sensorStatusRouter = require("../routes/_sensorStatus.routes");
 const systemLogRouter = require("../routes/_systemLog.routes");
 
 var mqtt = require("mqtt");
-const fs = require('fs');
-var caFile = fs.readFileSync("Cert/ca.crt");
 
-const mqttBroker = "mqtts://localhost:8883";
+//secure connection
+// const fs = require('fs');
+// var caFile = fs.readFileSync("Cert/ca.crt");
+// const mqttBroker = "mqtts://localhost:8883";
+// const options = {
+//     qos: 2,
+//     // port: 8883
+//     rejectUnauthorized : false,
+//     tls: true,
+//     ca: caFile,
+//     clientId: "mqttjs99"
+// };
+
 // const mqttBroker = "mqtt://mqtt.eclipse.org"
+
+const mqttBroker = "mqtts://localhost:1883";
 
 const options = {
     qos: 2,
-    // port: 8883
-    rejectUnauthorized : false,
-    tls: true,
-    ca: caFile,
-    clientId: "mqttjs99"
 };
+
+
 
 var mqttClient = mqtt.connect(mqttBroker, options);
 
