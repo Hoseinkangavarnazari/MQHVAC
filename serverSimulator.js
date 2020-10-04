@@ -17,6 +17,7 @@ const IoTConfiguration = require("./config/IoTManager")
  IoTConfiguration.initialization();
  IoTConfiguration.subscribtion();
 
+// app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -66,7 +67,7 @@ app.use('/user', userRouter);
 
 
 //SEVER
-const PORT = 2999;
+const PORT = 5999;
 app.listen(PORT, function () {
     console.log("Server application is listening port " + PORT + ".");
 });
