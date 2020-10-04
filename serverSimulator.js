@@ -65,7 +65,10 @@ const userRouter = require("./routes/user.routes")
 app.use('/user', userRouter);
 // --------------------------------------------------------
 
-
+app.get("/*", function (req, res, next) {
+    res.sendFile(path.join(__dirname, "../public/index.html"));
+  });
+  
 //SEVER
 const PORT = 2999;
 app.listen(PORT, function () {
