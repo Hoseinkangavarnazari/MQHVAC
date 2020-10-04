@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2020-10-02T12:33:40.920Z
+__export_date: 2020-10-02T12:47:35.973Z
 __export_source: insomnia.desktop.app:v2020.3.3
 resources:
   - _id: req_0534136424cb4220b55927a7741ec05f
@@ -1609,7 +1609,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599124809340.5
     method: POST
-    modified: 1601633007922
+    modified: 1601642527472
     name: Login
     parameters: []
     parentId: fld_520efc5162464a9f986e734e74c6b39b
@@ -1619,7 +1619,7 @@ resources:
     settingRebuildPath: true
     settingSendCookies: true
     settingStoreCookies: true
-    url: http://localhost:2999/user/login
+    url: http://185.181.10.81:2999/user/login
     _type: request
   - _id: req_8b3a194715db4b7f95d735160098c14d
     authentication: {}
@@ -3425,7 +3425,7 @@ resources:
         			"end": "05:30"
         		}
         	]
-        }bv
+        }
     created: 1601623137832
     description: " Description:
 
@@ -3590,7 +3590,7 @@ resources:
     isPrivate: false
     metaSortKey: -1599123938362
     method: PUT
-    modified: 1601632452353
+    modified: 1601642764834
     name: Set schedule
     parameters: []
     parentId: fld_6c1f2064cf0141d4945cc49de30a6296
@@ -4715,7 +4715,7 @@ resources:
           - SameSite=Strict
         hostOnly: true
         httpOnly: true
-        id: "7759255907056746"
+        id: "7626912619603496"
         key: access_token
         lastAccessed: 2020-10-02T10:46:50.849Z
         path: /
@@ -4726,13 +4726,13 @@ resources:
           - SameSite=Strict
         hostOnly: true
         httpOnly: true
-        id: "7579482068189489"
+        id: "15983963898108478"
         key: access_token
-        lastAccessed: 2020-10-02T07:23:13.398Z
+        lastAccessed: 2020-10-02T12:42:09.916Z
         path: /
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJJQVNCU0hWQUMiLCJzdWIiOiI1Zjc2ZDQ5MzIzZTNhYTVkNzk2ZTIzNmQiLCJpYXQiOjE2MDE2MjMzOTMsImV4cCI6MTYwMTYyNjk5M30.btkqUFvnTM6Tp5lUVpkcGZdFJJ6C36PQycquf7GBxWw
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJJQVNCU0hWQUMiLCJzdWIiOiI1Zjc2ZDQ5MzIzZTNhYTVkNzk2ZTIzNmQiLCJpYXQiOjE2MDE2NDI1MjksImV4cCI6MTYwMTY0NjEyOX0.mDEJqqDz1IOISWMFGAKmd-AOgkcvzJy9xz5XKYesBw8
     created: 1601623137803
-    modified: 1601635610849
+    modified: 1601642529917
     name: Default Jar
     parentId: wrk_31c3d7d7284b4b4694e48dfb1bf1e7a9
     _type: cookie_jar

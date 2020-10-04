@@ -3,12 +3,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+var cors = require('cors');
 const app = express();
 const server = require("http").Server(app);
 var logger = require("./config/logger");
 // process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 app.use(cookieParser());
+app.use(cors());
 
 // Actuator initialization ................................
 const IoTConfiguration = require("./config/IoTManager")
