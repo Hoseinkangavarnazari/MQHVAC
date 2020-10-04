@@ -67,7 +67,7 @@ app.use('/user', userRouter);
 
 
 //SEVER
-const PORT = 5999;
+const PORT = 2999;
 app.listen(PORT, function () {
     console.log("Server application is listening port " + PORT + ".");
 });
