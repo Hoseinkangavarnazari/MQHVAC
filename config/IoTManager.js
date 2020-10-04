@@ -28,7 +28,7 @@ const options = {
 
 
 
-var mqttClient = mqtt.connect(mqttBroker, options);
+var mqttClient = mqtt.connect(mqttBroker, {clientId: "ESP8266Client-"}, options);
 
 mqttClient.on("connect", () => {
     /* console.log("connected  " + mqttClient.connected);*/ });
