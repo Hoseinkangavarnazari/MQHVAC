@@ -119,7 +119,7 @@ exports.saveStatus = async (aid, msg) => {
                 tempValue = newdata[itu].temperature[timeIndex].value;
                 tempCount = newdata[itu].temperature[timeIndex].count;
                 newCount = tempCount + 1;
-                newdata[itu].temperature[timeIndex].value = (tempCount * tempValue + msg.data[i].temperature) / newCount;
+                newdata[itu].temperature[timeIndex].value = (tempCount * tempValue + Number(msg.data[i].temperature)) / newCount;
                 newdata[itu].temperature[timeIndex].count = newCount;
 
                 delete tempValue;
@@ -129,7 +129,7 @@ exports.saveStatus = async (aid, msg) => {
                 tempValue = newdata[itu].humidity[timeIndex].value;
                 tempCount = newdata[itu].humidity[timeIndex].count;
                 newCount = tempCount + 1;
-                newdata[itu].humidity[timeIndex].value = (tempCount * tempValue + msg.data[i].humidity) / newCount;
+                newdata[itu].humidity[timeIndex].value = (tempCount * tempValue + Number(msg.data[i].humidity)) / newCount;
                 newdata[itu].humidity[timeIndex].count = newCount;
 
                 // compute the average temperature and humidity for given sensor
@@ -140,11 +140,11 @@ exports.saveStatus = async (aid, msg) => {
                 for (var j = 0; j < 48; j++) {
                     if (newdata[itu].humidity[j].count > 0) {
                         hCount += 1;
-                        hSum = newdata[itu].humidity[j].value;
+                        hSum += newdata[itu].humidity[j].value;
                     }
                     if (newdata[itu].temperature[j].count > 0) {
                         tCount += 1;
-                        tSum = newdata[itu].temperature[j].value;
+                        tSum += newdata[itu].temperature[j].value;
                     }
                 }
 
@@ -183,10 +183,15 @@ exports.saveStatus = async (aid, msg) => {
                 // itu : index to update
                 itu = updatedData.findIndex(el => el.sid == msg.data[i].sid);
 
+                if(itu < 0) {
+                    continue;
+                }
+
+                // here when itu is -1 there is problem
                 tempValue = updatedData[itu].temperature[timeIndex].value;
                 tempCount = updatedData[itu].temperature[timeIndex].count;
                 newCount = tempCount + 1;
-                updatedData[itu].temperature[timeIndex].value = (tempCount * tempValue + msg.data[i].temperature) / newCount;
+                updatedData[itu].temperature[timeIndex].value = (tempCount * tempValue + Number(msg.data[i].temperature)) / newCount;
                 updatedData[itu].temperature[timeIndex].count = newCount;
 
                 delete tempValue;
@@ -196,7 +201,7 @@ exports.saveStatus = async (aid, msg) => {
                 tempValue = updatedData[itu].humidity[timeIndex].value;
                 tempCount = updatedData[itu].humidity[timeIndex].count;
                 newCount = tempCount + 1;
-                updatedData[itu].humidity[timeIndex].value = (tempCount * tempValue + msg.data[i].humidity) / newCount;
+                updatedData[itu].humidity[timeIndex].value = (tempCount * tempValue + Number(msg.data[i].humidity)) / newCount;
                 updatedData[itu].humidity[timeIndex].count = newCount;
 
                 // compute the average temperature and humidity for given sensor
