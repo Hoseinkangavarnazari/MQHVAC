@@ -211,12 +211,13 @@ exports.saveStatus = async (aid, msg) => {
                 tSum = 0;
                 for (var j = 0; j < 48; j++) {
                     if (updatedData[itu].humidity[j].count > 0) {
+                        // the counting is correct we grap the average 
                         hCount += 1;
-                        hSum = updatedData[itu].humidity[j].value;
+                        hSum += updatedData[itu].humidity[j].value;
                     }
                     if (updatedData[itu].temperature[j].count > 0) {
                         tCount += 1;
-                        tSum = updatedData[itu].temperature[j].value;
+                        tSum += updatedData[itu].temperature[j].value;
                     }
                 }
                 updatedData[itu].avgHumidity = hSum / hCount;
