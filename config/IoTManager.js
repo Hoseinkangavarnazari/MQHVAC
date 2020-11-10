@@ -45,7 +45,7 @@ mqttClient.on("message", (topic, message, packet) => {
 /**
  * Initialization of gateways for the first time
  */
-exports.initialization = () => {
+exports.initialization =  () => {
     const mongoose = require('mongoose');
     const mongoURI = "mongodb://localhost:27017/hvacTest";
     const conn = mongoose.createConnection(mongoURI, {
@@ -70,8 +70,9 @@ exports.initialization = () => {
             }
 
             if (existenceFlag == true) {
-                console.log("Actuators has been already created.");
+                console.log("Initialization : Actuators has been already created.");
                 conn.close();
+                return subscribtion();
             } else {
 
                 console.log("Initialization : Configuring the Actuators...");
@@ -86,7 +87,7 @@ exports.initialization = () => {
 /**
  * Reads from actuators.json and insert the data into the database
  */
-function initActuator() {
+initActuator = async ()=> {
     // load gateways json file
     const data = require('./actuators.json');
     var Actuator = require("../models/_Actuator.model")
@@ -103,12 +104,14 @@ function initActuator() {
         });
 
         try {
-            newActuator.save();
+           await newActuator.save();
         } catch (err) {
             console.log("::: There is something wrong in adding configuration file into database : ", err);
             // system log error level
         }
     }
+
+    subscribtion();
 }
 
 
@@ -117,11 +120,10 @@ function initActuator() {
  * Description: Subscribes all necessary actuators due to the actuators collection
  *              in the database.
  */
-exports.subscribtion = () => {
+function subscribtion  ()  {
     var actuatorCollection = require("../models/_Actuator.model")
 
     // mqttClient.subscribe("1/sensor_status", { qos: 2 });
-
     // there is a problem here
     actuatorCollection.find({}, function (error, actuators) {
         if (error) {

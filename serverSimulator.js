@@ -15,7 +15,7 @@ app.use(cors());
 // Actuator initialization ................................
 const IoTConfiguration = require("./config/IoTManager")
  IoTConfiguration.initialization();
- IoTConfiguration.subscribtion();
+//  IoTConfiguration.subscribtion();
 
 // app.use(express.static(__dirname + '/public'));
 
