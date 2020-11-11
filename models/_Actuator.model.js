@@ -28,9 +28,15 @@ var actuatorSchema = new Schema({
             enum: ['on', 'off', 'thermostat', 'schedule', 'schedule&thermostat'],
             default: 'thermostat'
         },
+        actuateMode: {
+            type: String,
+            required: true,
+            enum: ['heating', 'cooling'],
+            default: 'heating'
+        },
         thermostat: {
             max: {
-                type: Number,
+                type: Number, 
                 default: 30
             },
             min: {

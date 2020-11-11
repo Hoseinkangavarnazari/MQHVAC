@@ -101,3 +101,20 @@ system_log = {
     //     default: false
     // }
 }
+
+/**
+ * Topic : ergent_action
+ * Publisher: Actuator
+ * Subscriber: Server
+ * Description : Sends an message whenever due to some problem actuator decided to change it's mode
+ *                         
+ * 
+ * Message Body example: 
+ * {
+ * system_log = {
+    time: '12/19/2012, 19:00:00',
+    type:1,
+    description:'All sensors are down. Changing mode to manual off.'
+  }
+}
+*/

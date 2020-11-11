@@ -35,6 +35,12 @@
             "FA": "لاگی در سیستم یافت نشده است."
         }
     },
+    "200": {
+        "description": {
+            "EN": "The operation was successful.",
+            "FA": "عملیات موفقیت آمیز بود."
+        }
+    },
     "900": {
         "description": {
             "EN": "Couldn't Parse received request. Please verify the request format and try again.",

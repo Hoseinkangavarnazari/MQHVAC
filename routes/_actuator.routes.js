@@ -22,6 +22,12 @@ actuator_router.put('/set_schedule',
 passport.authenticate('jwt', { session: false }),
 actuator_controller.setSchedule);
 
+
+actuator_router.put('/actuate_mode',
+passport.authenticate('jwt', { session: false }),
+actuator_controller.actuateMode);
+
+
 actuator_router.post('/spec',
 passport.authenticate('jwt', { session: false }),
 actuator_controller.getSpec);

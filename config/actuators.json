@@ -3,6 +3,7 @@
     "location": "IT & CS Dept.",
     "conf": {
         "controlMode": "thermostat",
+        "actuateMode":"heating",
         "thermostat": {
             "max": 30,
             "min": 15
@@ -43,6 +44,7 @@
     "location": "IT & CS Dept.",
     "conf": {
         "controlMode": "thermostat",
+        "actuateMode":"heating",
         "thermostat": {
             "max": 30,
             "min": 15
@@ -78,6 +80,7 @@
     "location": "IT & CS Dept.",
     "conf": {
         "controlMode": "thermostat",
+        "actuateMode":"heating",
         "thermostat": {
             "max": 30,
             "min": 15
@@ -113,6 +116,7 @@
     "location": "IT & CS Dept.",
     "conf": {
         "controlMode": "thermostat",
+        "actuateMode":"heating",
         "thermostat": {
             "max": 30,
             "min": 15
@@ -148,6 +152,7 @@
     "location": "IT & CS Dept.",
     "conf": {
         "controlMode": "thermostat",
+        "actuateMode":"heating",
         "thermostat": {
             "max": 30,
             "min": 15
@@ -183,6 +188,7 @@
     "location": "IT & CS Dept.",
     "conf": {
         "controlMode": "thermostat",
+        "actuateMode":"heating",
         "thermostat": {
             "max": 30,
             "min": 15

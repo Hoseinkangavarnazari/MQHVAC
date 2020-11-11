@@ -108,7 +108,7 @@ exports.controlConf = async (req, res) => {
         aid: aid
     })
 
-    if(doc === null){
+    if (doc === null) {
         res.status(404).send("101");
         return;
     }
@@ -146,7 +146,7 @@ exports.controlConf = async (req, res) => {
     // publish MQTT
     topic = aid + "/control_conf";
     msg = {
-        "SJ":"control",
+        "SJ": "control",
         "control_mode": controlMode
     }
     IoTManager.MQTT_send(topic, msg)
@@ -193,7 +193,7 @@ exports.setThermostat = async (req, res) => {
             return
         }
     })
-    
+
     // in case of successful update published thermostat for actuator with mqtt
     let topic = aid + "/set_thermostat";
     // let msg = {
@@ -204,9 +204,9 @@ exports.setThermostat = async (req, res) => {
     // }
 
     let msg = {
-        max:max,
-        min:min,
-        SJ:"thermostat"
+        max: max,
+        min: min,
+        SJ: "thermostat"
     }
     IoTManager.MQTT_send(topic, msg)
 
@@ -332,7 +332,7 @@ exports.getSpec = async (req, res) => {
 }
 
 
- 
+
 /**
  * method: DELETE
  * Auth: required
@@ -441,10 +441,69 @@ exports.removeAllSchedule = async (req, res) => {
 
     topics = []
     for (i = 0; i < actuatorsAid.length; i++) {
-    tempTopic =actuatorsAid[i] + "/set_schedule";
-    topics.push(tempTopic);
+        tempTopic = actuatorsAid[i] + "/set_schedule";
+        topics.push(tempTopic);
     }
     console.log(topics)
     schedule.SJ = "SCH";
     IoTManager.MQTT_multiple_send(topics, schedule);
+}
+
+
+
+/**
+ * method: PUT
+ * Auth: required
+ * url: /actuator/actuate_mode
+ * description: 
+ * (1)  Changes the actuate mode: two options are available [heating, cooling]
+ * (2) Publishes new actuate mode into the following MQTT topic: actuate_mode
+ */
+exports.actuateMode = async (req, res) => {
+    // check the incoming is heating or cooling 
+    let mode = req.body.actuate_mode;
+
+    if ((mode == null) || (mode !== "heating" && mode !== "cooling")) {
+        //  There is a problem with "mode".
+        res.status(400).send("900");
+        return;
+    }
+
+    // change the value in database for all actuators[i].
+    // First find all aids
+
+    // first find all aids
+    doc = await Actuator.find();
+
+    if (doc.length == 0) {
+        // There is no actuator in the system. 
+        res.status(404).send("103");
+        return;
+    };
+
+    let actuatorsAid = [];
+
+    doc.forEach(element => {
+        actuatorsAid.push(element.aid);
+    });
+
+    for (i = 0; i < actuatorsAid.length; i++) {
+        await Actuator.findOneAndUpdate({
+            aid: actuatorsAid[i]
+        }, {
+            '$set': {
+                'conf.actuateMode': mode
+            }
+        }, (err) => {
+            if (err != null) {
+                console.log(`102: Something went worng in database. Contact with administrator.`);
+            }
+        })
+    };
+
+    // publish to topic
+    IoTManager.MQTT_send("actuate_mode", {
+        "actuate_mode": mode
+    });
+    res.status(200).send("200");
 }
