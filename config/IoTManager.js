@@ -2,6 +2,7 @@ var logger = require("../config/logger")
 
 const sensorStatusRouter = require("../routes/_sensorStatus.routes");
 const systemLogRouter = require("../routes/_systemLog.routes");
+const actuatorRouter = require("../routes/_actuator.routes");
 
 var mqtt = require("mqtt");
 
@@ -28,10 +29,13 @@ const options = {
 
 
 
-var mqttClient = mqtt.connect(mqttBroker, {clientId: "ESP8266Client-"}, options);
+var mqttClient = mqtt.connect(mqttBroker, {
+    clientId: "ESP8266Client-"
+}, options);
 
 mqttClient.on("connect", () => {
-    /* console.log("connected  " + mqttClient.connected);*/ });
+    /* console.log("connected  " + mqttClient.connected);*/
+});
 mqttClient.on("error", (err) => {
     console.log("Can't connect" + err);
     process.exit(1);
@@ -45,7 +49,7 @@ mqttClient.on("message", (topic, message, packet) => {
 /**
  * Initialization of gateways for the first time
  */
-exports.initialization =  () => {
+exports.initialization = () => {
     const mongoose = require('mongoose');
     const mongoURI = "mongodb://localhost:27017/hvacTest";
     const conn = mongoose.createConnection(mongoURI, {
@@ -87,7 +91,7 @@ exports.initialization =  () => {
 /**
  * Reads from actuators.json and insert the data into the database
  */
-initActuator = async ()=> {
+initActuator = async () => {
     // load gateways json file
     const data = require('./actuators.json');
     var Actuator = require("../models/_Actuator.model")
@@ -104,7 +108,7 @@ initActuator = async ()=> {
         });
 
         try {
-           await newActuator.save();
+            await newActuator.save();
         } catch (err) {
             console.log("::: There is something wrong in adding configuration file into database : ", err);
             // system log error level
@@ -120,7 +124,7 @@ initActuator = async ()=> {
  * Description: Subscribes all necessary actuators due to the actuators collection
  *              in the database.
  */
-function subscribtion  ()  {
+function subscribtion() {
     var actuatorCollection = require("../models/_Actuator.model")
 
     // mqttClient.subscribe("1/sensor_status", { qos: 2 });
@@ -137,6 +141,14 @@ function subscribtion  ()  {
             console.log(topic)
         });
     });
+
+    let topicList = ["ergent_action"];
+
+    for (x in topicList) {
+        mqttClient.subscribe(topicList[x], {
+            qos: 2
+        });
+    };  
 }
 
 
@@ -158,8 +170,13 @@ topicHandler = (topic, message, packet) => {
         topic: topic,
         message: message,
     });
-    temp = topic.split("/")
 
+    if(topic == "ergent_action"){
+        return actuatorRouter.ergentAction(message);
+    }
+
+
+    temp = topic.split("/")
     aid = temp[0]
     subTopic = temp[1]
 

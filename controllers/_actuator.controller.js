@@ -2,6 +2,21 @@ var Actuator = require("../models/_Actuator.model");
 const IoTManager = require("./../config/IoTManager");
 
 
+exports.ergentAction = async (msg) => {
+    console.log("In ergent action.",msg);
+
+    // parse the message
+
+    // change database for that aid
+
+    // based on type which is now 1 decide what to do 
+
+    // create a danger level log
+    
+    //  finish!
+}
+
+
 
 // Checks if the requested actuator is available.
 checkAidValid = async (reqAid) => {

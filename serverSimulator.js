@@ -57,7 +57,7 @@ app.use("/sensor_status", sensorStatusModule.sensorStatus_router);
 
 // Actuator router ----------------------------------------
 const actuatorModule = require("./routes/_actuator.routes");
-app.use("/actuator", actuatorModule);
+app.use("/actuator", actuatorModule.actuator_router);
 // --------------------------------------------------------
 
 // user router --------------------------------------------
