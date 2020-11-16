@@ -29,10 +29,7 @@ exports.ergentAction = async (msg) => {
                 return;
             }
         })
-
         // create a danger level log
-
-       
 
         try {
             var newLog = new SystemLog({
@@ -562,7 +559,8 @@ exports.actuateMode = async (req, res) => {
 
     // publish to topic
     IoTManager.MQTT_send("actuate_mode", {
-        "actuate_mode": mode
+        "actuate_mode": mode ,
+        "SJ":"actuate_mode"
     });
     res.status(200).send("200");
 }
