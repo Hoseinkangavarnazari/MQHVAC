@@ -8,8 +8,8 @@ var actuator_controller = require('../controllers/_actuator.controller');
 
 
 // MQTT ..............................
+// Rerports when all the sensors are gone
 var ergentAction = (msg) => { 
-
     actuator_controller.ergentAction(msg);
  }
 

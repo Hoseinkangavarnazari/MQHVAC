@@ -1,19 +1,63 @@
 var Actuator = require("../models/_Actuator.model");
+var SystemLog = require("../models/_SystemLog.model");
 const IoTManager = require("./../config/IoTManager");
 
 
 exports.ergentAction = async (msg) => {
-    console.log("In ergent action.",msg);
+    console.log("In ergent action.", msg);
 
     // parse the message
+    aid = msg.aid
+    type = msg.type
+    description = msg.description
 
-    // change database for that aid
 
-    // based on type which is now 1 decide what to do 
+    // All sensors are gone and the mode changes to manual off since we cannot 
+    // properly control actuators that are using "thermostat" or "schedule&thermostat"
+    if (type == 1) {
 
-    // create a danger level log
+        // change database for that aid
+        Actuator.findOneAndUpdate({
+            aid: aid
+        }, {
+            $set: {
+                'conf.controlMode': 'off'
+            }
+        }, (err, doc) => {
+            if (err) {
+                console.log(`Couldn't update the control mode of ${aid} to manual off.`)
+                return;
+            }
+        })
+
+        // create a danger level log
+
+       
+
+        try {
+            var newLog = new SystemLog({
+                aid: aid,
+                time: new Date(),
+                level: 'danger',
+                description: description
+            });
+
+            console.log(newLog);
     
-    //  finish!
+        } catch (err) {
+            console.log("Something went wrong during saving new sensor data.", err)
+        }
+    
+        try {
+            newLog.save();
+            console.log("Saved into the database.")
+    
+        } catch (err) {
+            console.log("There is something wrong with saving to DB", err)
+        }
+
+    }
+
 }
 
 

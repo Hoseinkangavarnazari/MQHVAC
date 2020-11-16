@@ -118,3 +118,9 @@ system_log = {
   }
 }
 */
+
+system_log = {
+    "aid": 1,
+    "type":1,
+    "description":'All sensors are down. Changing mode to manual off.'
+  }
