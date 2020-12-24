@@ -1,0 +1,31 @@
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+ :-moz-placeholder {
+    /* Firefox 18- */
+    text-align: center;
+}
+
+ ::-moz-placeholder {
+    /* Firefox 19+ */
+    text-align: center;
+}
+
+ :-ms-input-placeholder {
+    text-align: center;
+}
+
+input {
+    text-align: center;
+    border: 1px solid rgb(53, 160, 119);
+    border-radius: 10px;
+}
+
+#mainTitle {
+    border: 1px solid rgb(53, 160, 119);
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    background-color: rgb(115, 172, 101);
+}
