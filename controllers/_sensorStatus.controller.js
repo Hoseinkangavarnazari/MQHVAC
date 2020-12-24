@@ -13,8 +13,8 @@ changeTime = (time) => {
         dateAndTime = time.split(", ");
         [month, day, year] = dateAndTime[0].split("/");
         [hour, min] = dateAndTime[1].split(":")
-        // console.log(new Date(year, month, day, hour, min))
-        // in javascript month are in range 0 to 11
+            // console.log(new Date(year, month, day, hour, min))
+            // in javascript month are in range 0 to 11
         return new Date(year, month - 1, day, hour, min)
     } catch (e) {
         console.log(`Error ${e}`)
@@ -28,7 +28,7 @@ changeTime = (time) => {
 /**
  * Method: MQTT 3.1
  */
-exports.saveStatus = async (aid, msg) => {
+exports.saveStatus = async(aid, msg) => {
     console.log("aid", aid, "msg: ", msg);
     try {
         // the main solution
@@ -80,9 +80,9 @@ exports.saveStatus = async (aid, msg) => {
 
             //first intialize the newdata Section
             let requestedActuator = await Actuator.findOne({
-                aid: aid
-            })
-            // check if it is not null
+                    aid: aid
+                })
+                // check if it is not null
             sensorsList = requestedActuator.conf.sensorsList;
             let newdata = []
             for (i = 0; i < sensorsList.length; i++) {
@@ -183,7 +183,7 @@ exports.saveStatus = async (aid, msg) => {
                 // itu : index to update
                 itu = updatedData.findIndex(el => el.sid == msg.data[i].sid);
 
-                if(itu < 0) {
+                if (itu < 0) {
                     continue;
                 }
 
@@ -644,106 +644,106 @@ exports.saveStatus = async (aid, msg) => {
  * description: 
  * (1) Returns the data for requested date, returns the average of each 30 minutes in a day.
  */
-exports.dayReport = async (req, res) => {
-    aidList = req.body.aidList;
-    y = Math.floor(req.body.y);
-    m = Math.floor(req.body.m);
-    d = Math.floor(req.body.d);
+exports.dayReport = async(req, res) => {
+        aidList = req.body.aidList;
+        y = Math.floor(req.body.y);
+        m = Math.floor(req.body.m);
+        d = Math.floor(req.body.d);
 
-    if (m > 6) {
-        daysInMonth = 30;
-    } else {
-        daysInMonth = 31
-    }
-
-    // check received data if they are resonable or not !
-    if (aidList.length == 0) {
-        res.status(404).send("101");
-        return;
-    } else {
-        if (y == null || m == null) {
-            res.status(400).send("900")
-            return;
-        }
-        if (m > 12 || m <= 0 || y < 1390 || y > 1450 || d > 31 || d < 1) {
-            res.status(400).send("903");
-            return;
-        }
-    }
-    actuatorLists = await Actuator.find({});
-
-    if (actuatorLists.length == 0) {
-        res.status(404).send("103");
-        return;
-    }
-
-    var data = []
-    for (var i = 0; i < actuatorLists.length; i++) {
-        if (aidList.includes(actuatorLists[i].aid)) {
-            let tempAid = {};
-            tempAid.aid = actuatorLists[i].aid;
-            tempAid.data = []
-            for (var j = 0; j < actuatorLists[i].conf.sensorsList.length; j++) {
-                let tempSid = {};
-                tempSid.sid = actuatorLists[i].conf.sensorsList[j].sid;
-                tempSid.avgH = 0;
-                tempSid.avgT = 0;
-                // every 30 min in a day
-                tempSid.humidity = [];
-                tempSid.temperature = [];
-                tempAid.data.push(tempSid);
-                delete tempSid;
-            }
-            data.push(tempAid)
-            delete tempAid;
+        if (m > 6) {
+            daysInMonth = 30;
         } else {
-            continue;
+            daysInMonth = 31
         }
-    }
 
-    relatedReports = await Report.find({
-        y: y,
-        m: m,
-        d: d
-    });
-
-
-    for (var i = 0; i < relatedReports.length; i++) {
-        if (aidList.includes(relatedReports[i].aid)) {
-            tempAid = relatedReports[i].aid;
-            // find related aid index in data 
-            indexAID = data.findIndex(el => el.aid == tempAid);
-            d = relatedReports[i].d;
-            for (var j = 0; j < relatedReports[i].data.length; j++) {
-                tempSid = relatedReports[i].data[j].sid;
-                tempH = relatedReports[i].data[j].avgHumidity;
-                tempT = relatedReports[i].data[j].avgTemperature;
-                // find related sid index in data[indexAID]
-                indexSID = data[indexAID].data.findIndex(el => el.sid == tempSid);
-                data[indexAID].data[indexSID].temperature = relatedReports[i].data[j].temperature;
-                data[indexAID].data[indexSID].humidity = relatedReports[i].data[j].humidity;
-                data[indexAID].data[indexSID].avgH = relatedReports[i].data[j].avgHumidity;
-                data[indexAID].data[indexSID].avgT = relatedReports[i].data[j].avgTemperature;
+        // check received data if they are resonable or not !
+        if (aidList.length == 0) {
+            res.status(404).send("101");
+            return;
+        } else {
+            if (y == null || m == null) {
+                res.status(400).send("900")
+                return;
+            }
+            if (m > 12 || m <= 0 || y < 1390 || y > 1450 || d > 31 || d < 1) {
+                res.status(400).send("903");
+                return;
             }
         }
-    }
+        actuatorLists = await Actuator.find({});
 
-    let response = {};
-    response.data = data;
-    response.m = m;
-    response.y = y;
-    response.d = d;
-    res.status(200).send(response);
-    // res.send("you hit day report");
-}
-/**
- * method: POST 
- * Auth: required
- * url: /sensor_status/month_report
- * description: 
- * (1) Returns the data for requested month, returns the average of the day
- */
-exports.monthReport = async (req, res) => {
+        if (actuatorLists.length == 0) {
+            res.status(404).send("103");
+            return;
+        }
+
+        var data = []
+        for (var i = 0; i < actuatorLists.length; i++) {
+            if (aidList.includes(actuatorLists[i].aid)) {
+                let tempAid = {};
+                tempAid.aid = actuatorLists[i].aid;
+                tempAid.data = []
+                for (var j = 0; j < actuatorLists[i].conf.sensorsList.length; j++) {
+                    let tempSid = {};
+                    tempSid.sid = actuatorLists[i].conf.sensorsList[j].sid;
+                    tempSid.avgH = 0;
+                    tempSid.avgT = 0;
+                    // every 30 min in a day
+                    tempSid.humidity = [];
+                    tempSid.temperature = [];
+                    tempAid.data.push(tempSid);
+                    delete tempSid;
+                }
+                data.push(tempAid)
+                delete tempAid;
+            } else {
+                continue;
+            }
+        }
+
+        relatedReports = await Report.find({
+            y: y,
+            m: m,
+            d: d
+        });
+
+
+        for (var i = 0; i < relatedReports.length; i++) {
+            if (aidList.includes(relatedReports[i].aid)) {
+                tempAid = relatedReports[i].aid;
+                // find related aid index in data 
+                indexAID = data.findIndex(el => el.aid == tempAid);
+                d = relatedReports[i].d;
+                for (var j = 0; j < relatedReports[i].data.length; j++) {
+                    tempSid = relatedReports[i].data[j].sid;
+                    tempH = relatedReports[i].data[j].avgHumidity;
+                    tempT = relatedReports[i].data[j].avgTemperature;
+                    // find related sid index in data[indexAID]
+                    indexSID = data[indexAID].data.findIndex(el => el.sid == tempSid);
+                    data[indexAID].data[indexSID].temperature = relatedReports[i].data[j].temperature;
+                    data[indexAID].data[indexSID].humidity = relatedReports[i].data[j].humidity;
+                    data[indexAID].data[indexSID].avgH = relatedReports[i].data[j].avgHumidity;
+                    data[indexAID].data[indexSID].avgT = relatedReports[i].data[j].avgTemperature;
+                }
+            }
+        }
+
+        let response = {};
+        response.data = data;
+        response.m = m;
+        response.y = y;
+        response.d = d;
+        res.status(200).send(response);
+        // res.send("you hit day report");
+    }
+    /**
+     * method: POST 
+     * Auth: required
+     * url: /sensor_status/month_report
+     * description: 
+     * (1) Returns the data for requested month, returns the average of the day
+     */
+exports.monthReport = async(req, res) => {
     // Parse Information
     aidList = req.body.aidList;
     y = Math.floor(req.body.y);
@@ -835,7 +835,9 @@ exports.monthReport = async (req, res) => {
  * description: 
  * (1) Returns the latest period. 
  */
-exports.latestReport = async (req, res) => {
+exports.latestReport = async(req, res) => {
+
+
     aidList = req.body.aidList;
     let y = moment().jYear();
     // because it counts from 0 to 11 and I have shifted it 
@@ -843,7 +845,7 @@ exports.latestReport = async (req, res) => {
     let d = moment().jDate();
     let hour = moment().hour();
     let minute = moment().minute();
-    let timeIndex = Math.floor((hour * 60 + minute)/ 30);
+    let timeIndex = Math.floor((hour * 60 + minute) / 30);
 
     actuatorLists = await Actuator.find({});
 
@@ -890,7 +892,7 @@ exports.latestReport = async (req, res) => {
                 tempSid = relatedReports[i].data[j].sid;
                 // find related sid index in data[indexAID]
                 indexSID = data[indexAID].data.findIndex(el => el.sid == tempSid);
-                data[indexAID].data[indexSID].T= relatedReports[i].data[j].temperature[timeIndex];
+                data[indexAID].data[indexSID].T = relatedReports[i].data[j].temperature[timeIndex];
                 data[indexAID].data[indexSID].H = relatedReports[i].data[j].humidity[timeIndex];
             }
         }
@@ -901,6 +903,6 @@ exports.latestReport = async (req, res) => {
     response.m = m;
     response.y = y;
     response.d = d;
-    response.h= hour;
+    response.h = hour;
     res.status(200).send(response);
 }

@@ -9,9 +9,9 @@ var sensorStatus_controller = require('../controllers/_sensorStatus.controller')
 
 // MQTT
 
-var saveStatus = (aid, status) => { 
+var saveStatus = (aid, status) => {
     sensorStatus_controller.saveStatus(aid, status);
- }
+}
 
 // // REST
 // sensorStatus_router.post('/report',
@@ -33,16 +33,13 @@ var saveStatus = (aid, status) => {
 // sensorStatus_controller.todayHisotryAll);
 
 sensorStatus_router.post('/day_report',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.dayReport);
+    sensorStatus_controller.dayReport);
 
 sensorStatus_router.post('/month_report',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.monthReport);
+    sensorStatus_controller.monthReport);
 
 sensorStatus_router.post('/latest_report',
-passport.authenticate('jwt', { session: false }),
-sensorStatus_controller.latestReport);
+    sensorStatus_controller.latestReport);
 
 module.exports = {
     saveStatus,

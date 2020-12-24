@@ -14,7 +14,7 @@ app.use(cors());
 
 // Actuator initialization ................................
 const IoTConfiguration = require("./config/IoTManager")
- IoTConfiguration.initialization();
+IoTConfiguration.initialization();
 //  IoTConfiguration.subscribtion();
 
 // app.use(express.static(__dirname + '/public'));
@@ -28,7 +28,7 @@ app.use(express.static("public"));
 // Request logging middleware
 app.use((req, res, next) => {
     // log here
-    logger.log('info',{
+    logger.log('info', {
         type: "HTTP",
         url: req.url,
         method: req.method,
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
         msgBody: req.body,
         res: res.body,
         resStatus: res.status
-        })
+    })
     next();
 })
 
@@ -65,12 +65,14 @@ const userRouter = require("./routes/user.routes")
 app.use('/user', userRouter);
 // --------------------------------------------------------
 
-app.get("/*", function (req, res, next) {
-    res.sendFile(path.join(__dirname, "./public/index.html"));
-  });
+
+
+app.get("/reports", function(req, res, next) {
+    res.sendFile(path.join(__dirname, "./public/monitor.html"));
+});
 
 //SEVER
 const PORT = 2999;
-app.listen(PORT, function () {
+app.listen(PORT, function() {
     console.log("Server application is listening port " + PORT + ".");
 });
