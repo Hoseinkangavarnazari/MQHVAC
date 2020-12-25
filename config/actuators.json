@@ -1,221 +1,222 @@
 [{
-    "aid": "1",
-    "location": "IT & CS Dept.",
-    "conf": {
-        "controlMode": "thermostat",
-        "actuateMode":"heating",
-        "thermostat": {
-            "max": 30,
-            "min": 15
-        },
-        "schedule": {
-            "sunday":{
-                "start": "9:00-AM",
-                "end": "10:00-AM"
-            }
-        },
-        "sensorsList": [{
-                "sid": "a1s1",
-                "location": ""
+        "aid": "1",
+        "location": "IT & CS Dept.",
+        "conf": {
+            "controlMode": "thermostat",
+            "actuateMode": "heating",
+            "thermostat": {
+                "max": 30,
+                "min": 15
             },
-            {
-                "sid": "a1s2",
-                "location": ""
+            "schedule": {
+                "sunday": {
+                    "start": "9:00-AM",
+                    "end": "10:00-AM"
+                }
             },
-            {
-                "sid": "a1s3",
-                "location": ""
-            }, {
-                "sid": "a1s4",
-                "location": ""
-            }, {
-                "sid": "a1s5",
-                "location": ""
-            }, {
-                "sid": "a1s6",
-                "location": ""
-            }
-        ]
+            "sensorsList": [{
+                    "sid": "a1s1",
+                    "location": ""
+                },
+                {
+                    "sid": "a1s2",
+                    "location": ""
+                },
+                {
+                    "sid": "a1s3",
+                    "location": ""
+                }, {
+                    "sid": "a1s4",
+                    "location": ""
+                }, {
+                    "sid": "a1s5",
+                    "location": ""
+                }, {
+                    "sid": "a1s6",
+                    "location": ""
+                }
+            ]
+        },
+        "mapURL": ""
     },
-    "mapURL": ""
-},
-{
-    "aid": "2",
-    "location": "IT & CS Dept.",
-    "conf": {
-        "controlMode": "thermostat",
-        "actuateMode":"heating",
-        "thermostat": {
-            "max": 30,
-            "min": 15
+    {
+        "aid": "2",
+        "location": "IT & CS Dept.",
+        "conf": {
+            "controlMode": "thermostat",
+            "actuateMode": "heating",
+            "thermostat": {
+                "max": 30,
+                "min": 15
+            },
+            "schedule": {},
+            "sensorsList": [{
+                    "sid": "a2s1",
+                    "location": ""
+                },
+                {
+                    "sid": "a2s2",
+                    "location": ""
+                },
+                {
+                    "sid": "a2s3",
+                    "location": ""
+                }, {
+                    "sid": "a2s4",
+                    "location": ""
+                }, {
+                    "sid": "a2s5",
+                    "location": ""
+                }, {
+                    "sid": "a2s6",
+                    "location": ""
+                }
+            ]
         },
-        "schedule": {},
-        "sensorsList": [{
-                "sid": "a2s1",
-                "location": ""
-            },
-            {
-                "sid": "a2s2",
-                "location": ""
-            },
-            {
-                "sid": "a2s3",
-                "location": ""
-            }, {
-                "sid": "a2s4",
-                "location": ""
-            }, {
-                "sid": "a2s5",
-                "location": ""
-            }, {
-                "sid": "a2s6",
-                "location": ""
-            }
-        ]
+        "mapURL": ""
     },
-    "mapURL": ""
-},
-{
-    "aid": "3",
-    "location": "IT & CS Dept.",
-    "conf": {
-        "controlMode": "thermostat",
-        "actuateMode":"heating",
-        "thermostat": {
-            "max": 30,
-            "min": 15
+    {
+        "aid": "3",
+        "location": "IT & CS Dept.",
+        "conf": {
+            "controlMode": "thermostat",
+            "actuateMode": "heating",
+            "thermostat": {
+                "max": 30,
+                "min": 15
+            },
+            "schedule": {},
+            "sensorsList": [{
+                    "sid": "a3s1",
+                    "location": ""
+                },
+                {
+                    "sid": "a3s2",
+                    "location": ""
+                },
+                {
+                    "sid": "a3s3",
+                    "location": ""
+                }, {
+                    "sid": "a3s4",
+                    "location": ""
+                }, {
+                    "sid": "a3s5",
+                    "location": ""
+                }, {
+                    "sid": "a3s6",
+                    "location": ""
+                }
+            ]
         },
-        "schedule": {},
-        "sensorsList": [{
-                "sid": "a3s1",
-                "location": ""
-            },
-            {
-                "sid": "a3s2",
-                "location": ""
-            },
-            {
-                "sid": "a3s3",
-                "location": ""
-            }, {
-                "sid": "a3s4",
-                "location": ""
-            }, {
-                "sid": "a3s5",
-                "location": ""
-            }, {
-                "sid": "a3s6",
-                "location": ""
-            }
-        ]
+        "mapURL": ""
     },
-    "mapURL": ""
-},
-{
-    "aid": "4",
-    "location": "IT & CS Dept.",
-    "conf": {
-        "controlMode": "thermostat",
-        "actuateMode":"heating",
-        "thermostat": {
-            "max": 30,
-            "min": 15
+    {
+        "aid": "4",
+        "location": "IT & CS Dept.",
+        "conf": {
+            "controlMode": "thermostat",
+            "actuateMode": "heating",
+            "thermostat": {
+                "max": 30,
+                "min": 15
+            },
+            "schedule": {},
+            "sensorsList": [{
+                    "sid": "a4s1",
+                    "location": ""
+                },
+                {
+                    "sid": "a4s2",
+                    "location": ""
+                },
+                {
+                    "sid": "a4s3",
+                    "location": ""
+                }, {
+                    "sid": "a4s4",
+                    "location": ""
+                }, {
+                    "sid": "a4s5",
+                    "location": ""
+                }, {
+                    "sid": "a4s6",
+                    "location": ""
+                }
+            ]
         },
-        "schedule": {},
-        "sensorsList": [{
-                "sid": "a4s1",
-                "location": ""
-            },
-            {
-                "sid": "a4s2",
-                "location": ""
-            },
-            {
-                "sid": "a4s3",
-                "location": ""
-            }, {
-                "sid": "a4s4",
-                "location": ""
-            }, {
-                "sid": "a4s5",
-                "location": ""
-            }, {
-                "sid": "a4s6",
-                "location": ""
-            }
-        ]
+        "mapURL": ""
     },
-    "mapURL": ""
-},
-{
-    "aid": "5",
-    "location": "IT & CS Dept.",
-    "conf": {
-        "controlMode": "thermostat",
-        "actuateMode":"heating",
-        "thermostat": {
-            "max": 30,
-            "min": 15
+    {
+        "aid": "5",
+        "location": "IT & CS Dept.",
+        "conf": {
+            "controlMode": "thermostat",
+            "actuateMode": "heating",
+            "thermostat": {
+                "max": 30,
+                "min": 15
+            },
+            "schedule": {},
+            "sensorsList": [{
+                    "sid": "a5s1",
+                    "location": ""
+                },
+                {
+                    "sid": "a5s2",
+                    "location": ""
+                },
+                {
+                    "sid": "a5s3",
+                    "location": ""
+                }, {
+                    "sid": "a5s4",
+                    "location": ""
+                }, {
+                    "sid": "a5s5",
+                    "location": ""
+                }, {
+                    "sid": "a5s6",
+                    "location": ""
+                }
+            ]
         },
-        "schedule": {},
-        "sensorsList": [{
-                "sid": "a5s1",
-                "location": ""
-            },
-            {
-                "sid": "a5s2",
-                "location": ""
-            },
-            {
-                "sid": "a5s3",
-                "location": ""
-            }, {
-                "sid": "a5s4",
-                "location": ""
-            }, {
-                "sid": "a5s5",
-                "location": ""
-            }, {
-                "sid": "a5s6",
-                "location": ""
-            }
-        ]
+        "mapURL": ""
     },
-    "mapURL": ""
-},
-{
-    "aid": "6",
-    "location": "IT & CS Dept.",
-    "conf": {
-        "controlMode": "thermostat",
-        "actuateMode":"heating",
-        "thermostat": {
-            "max": 30,
-            "min": 15
+    {
+        "aid": "6",
+        "location": "IT & CS Dept.",
+        "conf": {
+            "controlMode": "thermostat",
+            "actuateMode": "heating",
+            "thermostat": {
+                "max": 30,
+                "min": 15
+            },
+            "schedule": {},
+            "sensorsList": [{
+                    "sid": "a6s1",
+                    "location": ""
+                },
+                {
+                    "sid": "a6s2",
+                    "location": ""
+                },
+                {
+                    "sid": "a6s3",
+                    "location": ""
+                }, {
+                    "sid": "a6s4",
+                    "location": ""
+                }, {
+                    "sid": "a6s5",
+                    "location": ""
+                }, {
+                    "sid": "a6s6",
+                    "location": ""
+                }
+            ]
         },
-        "schedule": {},
-        "sensorsList": [{
-                "sid": "a6s1",
-                "location": ""
-            },
-            {
-                "sid": "a6s2",
-                "location": ""
-            },
-            {
-                "sid": "a6s3",
-                "location": ""
-            }, {
-                "sid": "a6s4",
-                "location": ""
-            }, {
-                "sid": "a6s5",
-                "location": ""
-            }, {
-                "sid": "a6s6",
-                "location": ""
-            }
-        ]
-    },
-    "mapURL": ""
-}]
+        "mapURL": ""
+    }
+]

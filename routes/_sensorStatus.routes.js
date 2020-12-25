@@ -23,9 +23,8 @@ var saveStatus = (aid, status) => {
 // sensorStatus_controller.reportAll);
 
 
-// sensorStatus_router.post('/today_history',
-// passport.authenticate('jwt', { session: false }),
-// sensorStatus_controller.todayHisotry);
+sensorStatus_router.post('/today_history',
+    sensorStatus_controller.todayHisotry);
 
 
 // sensorStatus_router.post('/today_history_all',

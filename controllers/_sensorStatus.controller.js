@@ -439,101 +439,101 @@ exports.saveStatus = async(aid, msg) => {
 //  * (1) returns an array that contains data of each sensor for every 30 minutes
 //  *     in a day for requested aid
 //  */
-// exports.todayHisotry = async (req, res) => {
+exports.todayHisotry = async(req, res) => {
 
-//     let aid = req.body.aid;
+    let aid = req.body.aid;
 
-//     let actuators = await Actuator.find({
-//         aid: aid
-//     });
-//     if (actuators.length == 0) {
-//         res.status(404).send("Requested Actuator doesn't exists in our database.");
-//         return;
-//     }
+    let actuators = await Actuator.find({
+        aid: aid
+    });
+    if (actuators.length == 0) {
+        res.status(404).send("Requested Actuator doesn't exists in our database.");
+        return;
+    }
 
-//     let responseMessage = {}
-//     for (var i = 0; i < actuators.length; i++) {
-//         responseMessage[actuators[i].aid] = {};
-//         for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
-//             responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
-//                 // we split the day into 48 half an hour
-//                 humidity: Array(48).fill(0),
-//                 temperature: Array(48).fill(0),
-//                 count: Array(48).fill(0)
-//             }
-//         }
-//     }
+    let responseMessage = {}
+    for (var i = 0; i < actuators.length; i++) {
+        responseMessage[actuators[i].aid] = {};
+        for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
+            responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
+                // we split the day into 48 half an hour
+                humidity: Array(48).fill(0),
+                temperature: Array(48).fill(0),
+                count: Array(48).fill(0)
+            }
+        }
+    }
 
-//     // you need to look at all the data you have 
-//     // if your frequency is every 5 minutes in every hour about 12 messages from a gateway
-//     // each day you have about 24*12 =  288 messages
-//     // with this type of calculation, I consider about 1000 messages as safety margin 
-//     // ** In this version I considered 3000 because at the moment the round time is 5 seconds
-//     // TODO :  this method can be optimized
-//     let data = await SensorStatus.find({
-//         aid: aid
-//     }).sort({
-//         _id: -1
-//     }).limit(3000);
+    // you need to look at all the data you have 
+    // if your frequency is every 5 minutes in every hour about 12 messages from a gateway
+    // each day you have about 24*12 =  288 messages
+    // with this type of calculation, I consider about 1000 messages as safety margin 
+    // ** In this version I considered 3000 because at the moment the round time is 5 seconds
+    // TODO :  this method can be optimized
+    let data = await SensorStatus.find({
+        aid: aid
+    }).sort({
+        _id: -1
+    }).limit(3000);
 
-//     var today = moment();
-//     data.forEach(element => {
-//         // First check if this is for today
+    var today = moment();
+    data.forEach(element => {
+        // First check if this is for today
 
 
-//         if (today.isSame(moment(element.time), 'day')) {
+        if (today.isSame(moment(element.time), 'day')) {
 
-//             tempAid = element.aid;
-//             time = moment(element.time)
-//             minutesPassedToday = time.hours() * 60 + time.minutes()
-//             index = getCorrectInterval(minutesPassedToday);
-//             // for each sids
-//             sensorsData = element.data;
-//             if (sensorsData == null) {
-//                 return;
-//             }
+            tempAid = element.aid;
+            time = moment(element.time)
+            minutesPassedToday = time.hours() * 60 + time.minutes()
+            index = getCorrectInterval(minutesPassedToday);
+            // for each sids
+            sensorsData = element.data;
+            if (sensorsData == null) {
+                return;
+            }
 
-//             for (var i = 0; i < sensorsData.length; i++) {
-//                 let tempSid = sensorsData[i].sid;
+            for (var i = 0; i < sensorsData.length; i++) {
+                let tempSid = sensorsData[i].sid;
 
-//                 if (typeof responseMessage[tempAid][tempSid] != "undefined") {
-//                     responseMessage[tempAid][tempSid].temperature[index] += sensorsData[i].temperature;
-//                     responseMessage[tempAid][tempSid].humidity[index] += sensorsData[i].humidity;
-//                     responseMessage[tempAid][tempSid].count[index] += 1;
-//                 } else {
-//                     console.log(`*** INVALID tempaid : ${tempAid} tempsid: ${tempSid}`)
-//                 }
-//             }
+                if (typeof responseMessage[tempAid][tempSid] != "undefined") {
+                    responseMessage[tempAid][tempSid].temperature[index] += sensorsData[i].temperature;
+                    responseMessage[tempAid][tempSid].humidity[index] += sensorsData[i].humidity;
+                    responseMessage[tempAid][tempSid].count[index] += 1;
+                } else {
+                    console.log(`*** INVALID tempaid : ${tempAid} tempsid: ${tempSid}`)
+                }
+            }
 
-//         } else {
-//             return;
-//         }
-//     })
+        } else {
+            return;
+        }
+    })
 
-//     // make the average
-//     // get average
-//     for (var tempActuator in responseMessage) {
-//         for (var tempSensor in responseMessage[tempActuator]) {
-//             if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
-//                 for (var i = 0; i < 48; i++) {
-//                     if (responseMessage[tempActuator][tempSensor].count[i] > 0) {
-//                         responseMessage[tempActuator][tempSensor].temperature[i] /= responseMessage[tempActuator][tempSensor].count[i];
-//                         responseMessage[tempActuator][tempSensor].humidity[i] /= responseMessage[tempActuator][tempSensor].count[i];
-//                         //  round the values
-//                         responseMessage[tempActuator][tempSensor].temperature[i] = responseMessage[tempActuator][tempSensor].temperature[i].toPrecision(4);
-//                         responseMessage[tempActuator][tempSensor].humidity[i] = responseMessage[tempActuator][tempSensor].humidity[i].toPrecision(4);
+    // make the average
+    // get average
+    for (var tempActuator in responseMessage) {
+        for (var tempSensor in responseMessage[tempActuator]) {
+            if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
+                for (var i = 0; i < 48; i++) {
+                    if (responseMessage[tempActuator][tempSensor].count[i] > 0) {
+                        responseMessage[tempActuator][tempSensor].temperature[i] /= responseMessage[tempActuator][tempSensor].count[i];
+                        responseMessage[tempActuator][tempSensor].humidity[i] /= responseMessage[tempActuator][tempSensor].count[i];
+                        //  round the values
+                        responseMessage[tempActuator][tempSensor].temperature[i] = responseMessage[tempActuator][tempSensor].temperature[i].toPrecision(4);
+                        responseMessage[tempActuator][tempSensor].humidity[i] = responseMessage[tempActuator][tempSensor].humidity[i].toPrecision(4);
 
-//                     } else {
-//                         responseMessage[tempActuator][tempSensor].temperature[i] /= NaN;
-//                         responseMessage[tempActuator][tempSensor].humidity[i] /= NaN;
-//                     }
-//                 }
+                    } else {
+                        responseMessage[tempActuator][tempSensor].temperature[i] /= NaN;
+                        responseMessage[tempActuator][tempSensor].humidity[i] /= NaN;
+                    }
+                }
 
-//             }
-//         }
-//     }
-//     res.status(200).send(responseMessage);
-// }
+            }
+        }
+    }
+    res.status(200).send(responseMessage);
+}
 
 
 // /**
