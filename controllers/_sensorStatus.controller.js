@@ -806,6 +806,7 @@ exports.monthReport = async(req, res) => {
             return;
         }
     }
+
     actuatorLists = await Actuator.find({});
 
     if (actuatorLists.length == 0) {
@@ -943,3 +944,46 @@ exports.latestReport = async(req, res) => {
     response.h = hour;
     res.status(200).send(response);
 }
+
+
+/**
+ * method: POST 
+ * Auth: required
+ * url: /sensor_status/uptime_report
+ * description: 
+ * (1) Returns uptime in a given hour range for a month
+ */
+
+ exports.upTimeReport = async(req,res) =>{
+    
+
+
+
+    let aidList = [1,2,3,4,5,6]
+    let y = Math.floor(req.body.y);
+    let m = Math.floor(req.body.m);
+    let daysInMonth = 0;
+
+    if (m > 6) {
+        daysInMonth = 30;
+    } else {
+        daysInMonth = 31
+    }
+    // check received data if they are resonable or not !
+    if (aidList.length == 0) {
+        res.status(404).send("101");
+        return;
+    } else {
+        if (y == null || m == null) {
+            res.status(400).send("900")
+            return;
+        }
+        if (m > 12 || m <= 0 || y < 1390 || y > 1450) {
+            res.status(400).send("903");
+            return;
+        }
+    }
+
+
+
+ }
