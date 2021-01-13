@@ -41,14 +41,19 @@
         request.done(function(msg) {
 
             receivedReport = msg.data[0].data;
-            // console.log(receivedReport);
+            console.log("here receive report" , receivedReport);
 
             receivedReport.forEach(element => {
 
                 // console.log(element)
                 tempID = element.sid[3]
-                document.getElementById("t" + tempID).innerHTML = element.T;
-                document.getElementById("h" + tempID).innerHTML = element.H + "%";
+                if(element.T.value){
+                document.getElementById("t" + tempID).innerHTML = element.T.value.toFixed(2);
+                document.getElementById("h" + tempID).innerHTML = element.H.value.toFixed(2) + "%";
+                }else{
+                    document.getElementById("t" + tempID).innerHTML = "No Information";
+                    document.getElementById("h" + tempID).innerHTML = "No Information";
+                }
             });
 
         });
