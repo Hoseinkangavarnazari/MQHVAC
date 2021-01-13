@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 const connection = require("./conn_db");
 
-
 var reportSchema = new Schema({
     y: Number,
     m: Number,
@@ -26,7 +25,16 @@ var reportSchema = new Schema({
             value: Number,
             count: Number
         }]
-    }]
+    }],
+
+    workingPeriod:{
+        on:[{
+            value: Number
+        }],
+        off: [{
+            value:Number
+        }]
+    } 
 
 })
 

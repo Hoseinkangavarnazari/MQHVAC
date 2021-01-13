@@ -105,8 +105,26 @@ exports.saveStatus = async(aid, msg) => {
                 delete temp;
             }
 
+            // new working period
+            let newWP = {};
+            newWP.on= Array(48).fill().map(u => ({
+                value: 0
+            }));
+
+            newWP.off= Array(48).fill().map(u => ({
+                value: 0
+            }));
+
             // Add new data to initialized data
-            let timeIndex = Math.floor((hour * 60 + minute) / 30)
+            let timeIndex = Math.floor((hour * 60 + minute) / 30);
+
+           relayStatus = msg.Relays[0].CurrentStatus;
+           if(relayStatus == true){
+               newWP.on[timeIndex].value +=1; 
+           }else {
+               newWP.off[timeIndex].value +=1; 
+           }
+
             console.log("INDEX", timeIndex)
             for (var i = 0; i < msg.data.length; i++) {
                 // //drop objects with no data
@@ -158,7 +176,8 @@ exports.saveStatus = async(aid, msg) => {
                 d: day,
                 aid: aid,
                 time: time,
-                data: newdata
+                data: newdata,
+                workingPeriod:newWP
             })
 
             try {
@@ -172,9 +191,22 @@ exports.saveStatus = async(aid, msg) => {
         } else {
 
             updatedData = todayReportExistance.data;
+            
             // update the value
             // use today report existance to manage your updates
             let timeIndex = Math.floor((hour * 60 + minute) / 30)
+
+            // first try to update working period
+            updatedWP = todayReportExistance.workingPeriod;
+            
+            relayStatus = msg.Relays[0].CurrentStatus;
+
+            if(relayStatus == true){
+                updatedWP.on[timeIndex].value +=1; 
+            }else {
+                updatedWP.off[timeIndex].value +=1; 
+            }
+
             for (var i = 0; i < msg.data.length; i++) {
                 // //drop objects with no data
                 if (msg.data[i].temperature == "" || msg.data[i].humidity == "") {
@@ -223,6 +255,10 @@ exports.saveStatus = async(aid, msg) => {
                 updatedData[itu].avgHumidity = hSum / hCount;
                 updatedData[itu].avgTemperature = tSum / tCount;
             }
+
+            // update the presence data
+
+
             try {
                 await Report.findOneAndUpdate({
                     y: year,
@@ -230,7 +266,8 @@ exports.saveStatus = async(aid, msg) => {
                     d: day,
                     aid: aid
                 }, {
-                    data: updatedData
+                    data: updatedData,
+                    workingPeriod:updatedWP
                 })
 
                 console.log("Saved into the database.")
