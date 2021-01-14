@@ -1007,10 +1007,29 @@ exports.upTimeReport = async(req, res) => {
 
 
 
-    let data = {};
-    data.a = [1, 2];
+    let data = [{
+            aid: "1",
+            pc: Array(30).fill(1)
+        },
+        {
+            aid: "2",
+            pc: Array(30).fill(2)
+        },
+        {
+            aid: "3",
+            pc: Array(30).fill(3)
+        }, {
+            aid: "4",
+            pc: Array(30).fill(4)
+        },
+        {
+            aid: "5",
+            pc: Array(30).fill(5)
+        },
+        {
+            aid: "6",
+            pc: Array(30).fill(6)
+        }
+    ];
     res.status(200).send(data)
-
-
-
 }

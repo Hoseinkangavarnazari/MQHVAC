@@ -36,6 +36,11 @@ function search() {
 
     request.done(function(msg) {
         console.log(msg);
+        msg.forEach(element => {
+            aid = element.aid;
+            aid = aid.toString();
+            globalReport[aid] = element.pc;
+        });
     });
 
 
