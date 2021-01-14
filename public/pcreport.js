@@ -1,4 +1,6 @@
-var ctx = document.getElementById('pcmonthly').getContext('2d');
+var ctx3 = document.getElementById('pcmonthly').getContext('2d');
+
+// var errorFile = require('codeRepo.json');
 
 var globalReport = {};
 globalReport["1"] = Array(31).fill(0);
@@ -10,19 +12,32 @@ globalReport["6"] = Array(31).fill(0);
 
 
 function search() {
+
     let data = {
         aidList: ["1", "2", "3", "4", "5", "6"],
         y: document.getElementById('reqYear').value,
-        m: document.getElementById('reqMonth').value
+        m: document.getElementById('reqMonth').value,
+        startingHour: document.getElementById('reqstart').value,
+        endingHour: document.getElementById('reqFinish').value
     }
 
 
+
     var request = $.ajax({
-        url: "http://localhost:2999/sensor_status/month_report",
+        url: "http://localhost:2999/sensor_status/uptime_report",
         method: "POST",
         data: data,
-        dataType: "json"
+        dataType: "json",
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
+        }
     });
+
+    request.done(function(msg) {
+        console.log(msg);
+    });
+
 
     // request.done(function(msg) {
 
@@ -60,4 +75,21 @@ function search() {
 
 function changeReport(aid) {
     console.log("Change report received from aid:", aid);
+    var chart = new Chart(ctx3, {
+        // The type of chart we want to create
+        type: 'line',
+
+        // The data for our dataset
+        data: {
+            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+            datasets: [{
+                label: 'دما- سانتی گراد',
+                backgroundColor: 'rgb(150, 200, 250)',
+                borderColor: 'rgb(100,0, 0)',
+                data: globalReport[aid]
+            }]
+        },
+        // Configuration options go here
+        options: {}
+    });
 }

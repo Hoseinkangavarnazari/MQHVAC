@@ -4,6 +4,7 @@ var Actuator = require("../models/_Actuator.model")
 var Report = require("../models/_Report.model")
 var moment = require('moment-jalaali');
 
+
 // gerneral time lib for
 
 changeTime = (time) => {
@@ -107,23 +108,23 @@ exports.saveStatus = async(aid, msg) => {
 
             // new working period
             let newWP = {};
-            newWP.on= Array(48).fill().map(u => ({
+            newWP.on = Array(48).fill().map(u => ({
                 value: 0
             }));
 
-            newWP.off= Array(48).fill().map(u => ({
+            newWP.off = Array(48).fill().map(u => ({
                 value: 0
             }));
 
             // Add new data to initialized data
             let timeIndex = Math.floor((hour * 60 + minute) / 30);
 
-           relayStatus = msg.Relays[0].CurrentStatus;
-           if(relayStatus == true){
-               newWP.on[timeIndex].value +=1; 
-           }else {
-               newWP.off[timeIndex].value +=1; 
-           }
+            relayStatus = msg.Relays[0].CurrentStatus;
+            if (relayStatus == true) {
+                newWP.on[timeIndex].value += 1;
+            } else {
+                newWP.off[timeIndex].value += 1;
+            }
 
             console.log("INDEX", timeIndex)
             for (var i = 0; i < msg.data.length; i++) {
@@ -177,7 +178,7 @@ exports.saveStatus = async(aid, msg) => {
                 aid: aid,
                 time: time,
                 data: newdata,
-                workingPeriod:newWP
+                workingPeriod: newWP
             })
 
             try {
@@ -191,20 +192,20 @@ exports.saveStatus = async(aid, msg) => {
         } else {
 
             updatedData = todayReportExistance.data;
-            
+
             // update the value
             // use today report existance to manage your updates
             let timeIndex = Math.floor((hour * 60 + minute) / 30)
 
             // first try to update working period
             updatedWP = todayReportExistance.workingPeriod;
-            
+
             relayStatus = msg.Relays[0].CurrentStatus;
 
-            if(relayStatus == true){
-                updatedWP.on[timeIndex].value +=1; 
-            }else {
-                updatedWP.off[timeIndex].value +=1; 
+            if (relayStatus == true) {
+                updatedWP.on[timeIndex].value += 1;
+            } else {
+                updatedWP.off[timeIndex].value += 1;
             }
 
             for (var i = 0; i < msg.data.length; i++) {
@@ -267,7 +268,7 @@ exports.saveStatus = async(aid, msg) => {
                     aid: aid
                 }, {
                     data: updatedData,
-                    workingPeriod:updatedWP
+                    workingPeriod: updatedWP
                 })
 
                 console.log("Saved into the database.")
@@ -954,14 +955,30 @@ exports.latestReport = async(req, res) => {
  * (1) Returns uptime in a given hour range for a month
  */
 
- exports.upTimeReport = async(req,res) =>{
-    
+exports.upTimeReport = async(req, res) => {
 
+    console.log(req.body)
 
-
-    let aidList = [1,2,3,4,5,6]
+    let aidList = [1, 2, 3, 4, 5, 6]
     let y = Math.floor(req.body.y);
     let m = Math.floor(req.body.m);
+    let startTime = Math.floor(req.body.startingHour);
+    let finishTime = Math.floor(req.body.endingHour);
+
+
+    if (!isNaN(startTime) && !isNaN(finishTime)) {
+
+        if (startTime < 0 || finishTime < 1 || finishTime > 23 || startTime > 23 || startTime > finishTime) {
+
+            res.status(400).send("Invalid arguments.");
+            return;
+        }
+
+    } else {
+        res.status(404).send("Invalid arguments.");
+        return;
+    }
+
     let daysInMonth = 0;
 
     if (m > 6) {
@@ -969,6 +986,7 @@ exports.latestReport = async(req, res) => {
     } else {
         daysInMonth = 31
     }
+
     // check received data if they are resonable or not !
     if (aidList.length == 0) {
         res.status(404).send("101");
@@ -985,5 +1003,14 @@ exports.latestReport = async(req, res) => {
     }
 
 
+    // search reporst in given year and month and then for each actuator and day we will have a power consumption report
 
- }
+
+
+    let data = {};
+    data.a = [1, 2];
+    res.status(200).send(data)
+
+
+
+}

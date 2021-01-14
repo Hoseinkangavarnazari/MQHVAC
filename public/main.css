@@ -30,3 +30,7 @@ input {
     background-image: linear-gradient(rgb(145, 226, 192), rgb(73, 179, 129));
     padding: 10px;
 }
+
+button {
+    margin: 5px;
+}

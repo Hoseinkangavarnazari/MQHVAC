@@ -40,6 +40,10 @@ sensorStatus_router.post('/month_report',
 sensorStatus_router.post('/latest_report',
     sensorStatus_controller.latestReport);
 
+sensorStatus_router.post('/uptime_report',
+    sensorStatus_controller.upTimeReport);
+
+
 module.exports = {
     saveStatus,
     sensorStatus_router

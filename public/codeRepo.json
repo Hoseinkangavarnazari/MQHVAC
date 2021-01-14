@@ -1,0 +1,82 @@
+{
+    "001": {
+        "description": {
+            "EN": "Operation successfully completed.",
+            "FA": ".عملیات با موفقیت انجام شد"
+        }
+    },
+    "100": {
+        "description": {
+            "EN": "A problem occurred in connection with database.",
+            "FA": "اشکالی در ارتباط با دیتابیس رخ داده است."
+        }
+    },
+    "101": {
+        "description": {
+            "EN": "Requested aid could not be found.",
+            "FA": "عملگر درخواستی در دیتابیس موجود نیست."
+        }
+    },
+    "102": {
+        "description": {
+            "EN": "Something went worng in database. Contact with administrator.",
+            "FA": "مشکلی در دیتابیس رخ داده است. لطفا با مدیر سیستم تماس بگیرید"
+        }
+    },
+    "103": {
+        "description": {
+            "EN": "There are no actuators in database. Contact administrator.",
+            "FA": "هیچ عملگری در سیستم دیتابیس ثبت نشده است. با مدیر سیستم تماس بگیرید."
+        }
+    },
+    "104": {
+        "description": {
+            "EN": "No log found.",
+            "FA": "لاگی در سیستم یافت نشده است."
+        }
+    },
+    "200": {
+        "description": {
+            "EN": "The operation was successful.",
+            "FA": "عملیات موفقیت آمیز بود."
+        }
+    },
+    "900": {
+        "description": {
+            "EN": "Couldn't Parse received request. Please verify the request format and try again.",
+            "FA": " مشکلی در پردازش اطلاعات رخ داده است. لطفا فرمت فایل ارسالی را چک کنید و دوباره بررسی کنید"
+        }
+    },
+    "901": {
+        "description": {
+            "EN": "Invalid Control mode..",
+            "FA": "مد کنترلی ارسالی صحیح نیست"
+        }
+    },
+    "902": {
+        "description": {
+            "EN": "There is no schedule available for requested actuator.",
+            "FA": "برای عملگر درخواستی هیچ برنامه ای پیش از این لحاظ نشده است."
+        }
+    },
+
+    "903": {
+        "description": {
+            "EN": "Parameters are not reasonable. Check them again.",
+            "FA": "پارامتر های ارسالی منطقی نیست."
+        }
+
+    },
+    "904": {
+        "description": {
+            "EN": "Time patterns are not correct. Both start and end must match with our regex.",
+            "FA": "فرمت زمان ارسالی درست نیست."
+        }
+    },
+    "905": {
+        "description": {
+            "EN": "There is a conflict in the schedule. Please check your schedule again.",
+            "FA": "در برنامه زمانی ارسالی مشکل منطقی وجود دارد. بازه های زمانی نباید با بازه ی اشتراکی داشته باشند."
+        }
+    }
+}
