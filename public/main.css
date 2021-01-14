@@ -23,9 +23,10 @@ input {
 }
 
 #mainTitle {
-    border: 1px solid rgb(53, 160, 119);
-    border-radius: 50px;
+    border: 3px solid rgb(93, 216, 169);
+    border-radius: 10px;
     text-align: center;
     font-size: 30px;
-    background-color: rgb(115, 172, 101);
+    background-image: linear-gradient(rgb(145, 226, 192), rgb(73, 179, 129));
+    padding: 10px;
 }

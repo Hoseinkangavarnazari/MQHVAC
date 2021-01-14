@@ -17,10 +17,10 @@
             <li class="nav-item ">
                 <a class="nav-link" href="monitor.html">پایش لحظه ای</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="history.html">تاریخچه داده ها</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="PCreports.html">تاریخچه مصرف انرژی</a>
             </li>
         </ul>
@@ -29,36 +29,36 @@
 
 
     <div class="row" style="margin:10px;">
-        <div class="col-12" id="mainTitle">تاریخچه ماهانه</div>
+        <div class="col-12" id="mainTitle">تاریخچه مصرف ماهانه</div>
     </div>
 
 
 
     <div class="row">
         <div class="col-4" style="  background-color:rgb(213, 255, 226);"></div>
-        <div class="col-2" style="text-align:center; background-color:rgb(187, 248, 207);">
+        <div class="col-2" style="text-align:center; background-color:rgb(187, 248, 207); padding: 20px;">
             <h5>:نمایش اطلاعات برای</h5>
             <br>
-            <button type="button" class="btn btn-sm btn-success" onclick="changeDiagram(6)">
+            <button type="button" class="btn btn-sm btn-success" onclick="changeReport(6)">
                 طبقه دوم ج
                 </button>
-            <button type="button" class="btn btn-sm btn-success" onclick="changeDiagram(5)">
+            <button type="button" class="btn btn-sm btn-success" onclick="changeReport(5)">
                 طبقه دوم ش
                 </button>
             <br>
             <br>
-            <button type="button" class="btn btn-sm btn-success" onclick="changeDiagram(4)">
+            <button type="button" class="btn btn-sm btn-success" onclick="changeReport(4)">
                 طبقه اول ج
             </button>
-            <button type="button" class="btn btn-sm btn-success" onclick="changeDiagram(3)">
+            <button type="button" class="btn btn-sm btn-success" onclick="changeReport(3)">
                 طبقه اول ش
                 </button>
             <br>
             <br>
-            <button type="button" class="btn btn-sm btn-success" onclick="changeDiagram(2)">
+            <button type="button" class="btn btn-sm btn-success" onclick="changeReport(2)">
                 طبقه همکف ج
             </button>
-            <button type="button" class="btn btn-sm btn-success" onclick="changeDiagram(1)">
+            <button type="button" class="btn btn-sm btn-success" onclick="changeReport(1)">
                 طبقه همکف ش
             </button>
             <br>
@@ -68,7 +68,9 @@
         </div>
 
         <div class="col-2" style="  background-color:rgb(213, 255, 226);">
+
             <div style="text-align:right; padding-right:10px;">
+
                 <div>
                     <label for="reqYear">سال</label>
                     <input id="reqYear" size="4" width="100px" min="1399" max="1410" type="number" placeholder="سال" style=" display: block;
@@ -78,6 +80,18 @@
                 <div style=" margin-top:10px; ">
                     <label for="month">ماه</label>
                     <input id="reqMonth" size="4" min="1" max="12" type="number" placeholder="ماه" style=" display: block;
+                    width: 100%;">
+                </div>
+
+                <div style=" margin-top:10px; ">
+                    <label for="timeStart">  از ساعت</label>
+                    <input id="reqstart" size="4" min="1" max="24" type="number" placeholder="مثال 8" style=" display: block;
+                    width: 100%;">
+                </div>
+
+                <div style=" margin-top:10px; ">
+                    <label for="timeEnd">تا ساعت</label>
+                    <input id="reqFinish" size="4" min="1" max="24" type="number" placeholder="مثال 16" style=" display: block;
                     width: 100%;">
                 </div>
 
@@ -91,12 +105,13 @@
 
             </div>
         </div>
+
         <div class="col-4" style="  background-color:rgb(213, 255, 226);"></div>
     </div>
 
-    <canvas id="history" width="300" height="70"></canvas>
+    <canvas id="pcmonthly" width="300" height="70"></canvas>
 
 </body>
-<script src="history.js"></script>
+<script src="pcreport.js"></script>
 
 </html>
