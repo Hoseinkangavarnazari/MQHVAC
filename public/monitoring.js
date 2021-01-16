@@ -41,7 +41,7 @@
         request.done(function(msg) {
 
             receivedReport = msg.data[0].data;
-            // console.log("here receive report", receivedReport);
+            console.log("here receive report", receivedReport);
 
             receivedReport.forEach(element => {
 
@@ -114,9 +114,17 @@
                 },
 
                 // Configuration options go here
-                options: {}
+                options: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: 'rgb(255, 99, 132)'
+                        }
+                }}
             });
         });
+
+        document.getElementById("legend").style.visibility = "visible";
 
         requestTwo.fail(function() {
             console.log("FAILED to receive data!");

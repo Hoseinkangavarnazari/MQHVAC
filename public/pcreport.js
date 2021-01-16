@@ -82,13 +82,13 @@ function changeReport(aid) {
     console.log("Change report received from aid:", aid);
     var chart = new Chart(ctx3, {
         // The type of chart we want to create
-        type: 'line',
+        type: 'bar',
 
         // The data for our dataset
         data: {
             labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
             datasets: [{
-                label: 'دما- سانتی گراد',
+                label: 'دقیقه',
                 backgroundColor: 'rgb(150, 200, 250)',
                 borderColor: 'rgb(100,0, 0)',
                 data: globalReport[aid]
@@ -97,4 +97,6 @@ function changeReport(aid) {
         // Configuration options go here
         options: {}
     });
+    
+    document.getElementById("legend").style.visibility = "visible";
 }

@@ -80,4 +80,5 @@ function changeDiagram(aid) {
         // Configuration options go here
         options: {}
     });
+    document.getElementById("legend").style.visibility = "visible";
 }
