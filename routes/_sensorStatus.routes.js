@@ -23,13 +23,16 @@ var saveStatus = (aid, status) => {
 // sensorStatus_controller.reportAll);
 
 
-sensorStatus_router.post('/today_history',
-    sensorStatus_controller.todayHisotry);
+// sensorStatus_router.post('/today_history',
+//     sensorStatus_controller.todayHisotry);
 
 
 // sensorStatus_router.post('/today_history_all',
 // passport.authenticate('jwt', { session: false }),
 // sensorStatus_controller.todayHisotryAll);
+
+sensorStatus_router.post('/today_report',
+    sensorStatus_controller.todayReport);
 
 sensorStatus_router.post('/day_report',
     sensorStatus_controller.dayReport);

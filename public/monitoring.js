@@ -41,7 +41,7 @@
         request.done(function(msg) {
 
             receivedReport = msg.data[0].data;
-            console.log("here receive report", receivedReport);
+            // console.log("here receive report", receivedReport);
 
             receivedReport.forEach(element => {
 
@@ -63,9 +63,9 @@
 
         //requst for today history
         var requestTwo = $.ajax({
-            url: "http://localhost:2999/sensor_status/today_history",
+            url: "http://localhost:2999/sensor_status/today_report",
             method: "POST",
-            data: { aid: aid },
+            data: { aidList: aidList },
             dataType: "json"
         });
 
@@ -73,13 +73,15 @@
 
         requestTwo.done(function(msg) {
 
-            msg = msg[aid];
+            
+            msg = msg.data[0].data;
+            // console.log(msg[0].temperature);
             sensorIDTEMP = "a" + aid + "s";
 
             allTemperatureVector = [];
 
-            for (var i = 1; i <= 6; i++) {
-                allTemperatureVector.push(msg[sensorIDTEMP + i].temperature);
+            for (var i = 0; i <= 5; i++) {
+                allTemperatureVector.push(msg[i].temperature);
             }
 
 
@@ -88,9 +90,9 @@
 
             for (var i = 0; i < 48; i++) {
                 // calculate the average!
-                avgTempRes.push((atv[0][i] + atv[1][i] + atv[2][i] + atv[3][i] + atv[4][i] + atv[5][i]) / 6)
+                avgTempRes.push(Math.round((atv[0][i].value + atv[1][i].value + atv[2][i].value + atv[3][i].value + atv[4][i].value + atv[5][i].value) / 6))
             }
-            console.log(avgTempRes);
+            // console.log(avgTempRes);
 
             information = avgTempRes;
 

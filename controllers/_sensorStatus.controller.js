@@ -477,101 +477,101 @@ exports.saveStatus = async(aid, msg) => {
 //  * (1) returns an array that contains data of each sensor for every 30 minutes
 //  *     in a day for requested aid
 //  */
-exports.todayHisotry = async(req, res) => {
+// exports.todayHisotry = async(req, res) => {
 
-    let aid = req.body.aid;
+//     let aid = req.body.aid;
 
-    let actuators = await Actuator.find({
-        aid: aid
-    });
-    if (actuators.length == 0) {
-        res.status(404).send("Requested Actuator doesn't exists in our database.");
-        return;
-    }
+//     let actuators = await Actuator.find({
+//         aid: aid
+//     });
+//     if (actuators.length == 0) {
+//         res.status(404).send("Requested Actuator doesn't exists in our database.");
+//         return;
+//     }
 
-    let responseMessage = {}
-    for (var i = 0; i < actuators.length; i++) {
-        responseMessage[actuators[i].aid] = {};
-        for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
-            responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
-                // we split the day into 48 half an hour
-                humidity: Array(48).fill(0),
-                temperature: Array(48).fill(0),
-                count: Array(48).fill(0)
-            }
-        }
-    }
+//     let responseMessage = {}
+//     for (var i = 0; i < actuators.length; i++) {
+//         responseMessage[actuators[i].aid] = {};
+//         for (var j = 0; j < actuators[i].conf.sensorsList.length; j++) {
+//             responseMessage[actuators[i].aid][actuators[i].conf.sensorsList[j].sid] = {
+//                 // we split the day into 48 half an hour
+//                 humidity: Array(48).fill(0),
+//                 temperature: Array(48).fill(0),
+//                 count: Array(48).fill(0)
+//             }
+//         }
+//     }
 
-    // you need to look at all the data you have 
-    // if your frequency is every 5 minutes in every hour about 12 messages from a gateway
-    // each day you have about 24*12 =  288 messages
-    // with this type of calculation, I consider about 1000 messages as safety margin 
-    // ** In this version I considered 3000 because at the moment the round time is 5 seconds
-    // TODO :  this method can be optimized
-    let data = await SensorStatus.find({
-        aid: aid
-    }).sort({
-        _id: -1
-    }).limit(3000);
+//     // you need to look at all the data you have 
+//     // if your frequency is every 5 minutes in every hour about 12 messages from a gateway
+//     // each day you have about 24*12 =  288 messages
+//     // with this type of calculation, I consider about 1000 messages as safety margin 
+//     // ** In this version I considered 3000 because at the moment the round time is 5 seconds
+//     // TODO :  this method can be optimized
+//     let data = await SensorStatus.find({
+//         aid: aid
+//     }).sort({
+//         _id: -1
+//     }).limit(3000);
 
-    var today = moment();
-    data.forEach(element => {
-        // First check if this is for today
+//     var today = moment();
+//     data.forEach(element => {
+//         // First check if this is for today
 
 
-        if (today.isSame(moment(element.time), 'day')) {
+//         if (today.isSame(moment(element.time), 'day')) {
 
-            tempAid = element.aid;
-            time = moment(element.time)
-            minutesPassedToday = time.hours() * 60 + time.minutes()
-            index = getCorrectInterval(minutesPassedToday);
-            // for each sids
-            sensorsData = element.data;
-            if (sensorsData == null) {
-                return;
-            }
+//             tempAid = element.aid;
+//             time = moment(element.time)
+//             minutesPassedToday = time.hours() * 60 + time.minutes()
+//             index = getCorrectInterval(minutesPassedToday);
+//             // for each sids
+//             sensorsData = element.data;
+//             if (sensorsData == null) {
+//                 return;
+//             }
 
-            for (var i = 0; i < sensorsData.length; i++) {
-                let tempSid = sensorsData[i].sid;
+//             for (var i = 0; i < sensorsData.length; i++) {
+//                 let tempSid = sensorsData[i].sid;
 
-                if (typeof responseMessage[tempAid][tempSid] != "undefined") {
-                    responseMessage[tempAid][tempSid].temperature[index] += sensorsData[i].temperature;
-                    responseMessage[tempAid][tempSid].humidity[index] += sensorsData[i].humidity;
-                    responseMessage[tempAid][tempSid].count[index] += 1;
-                } else {
-                    console.log(`*** INVALID tempaid : ${tempAid} tempsid: ${tempSid}`)
-                }
-            }
+//                 if (typeof responseMessage[tempAid][tempSid] != "undefined") {
+//                     responseMessage[tempAid][tempSid].temperature[index] += sensorsData[i].temperature;
+//                     responseMessage[tempAid][tempSid].humidity[index] += sensorsData[i].humidity;
+//                     responseMessage[tempAid][tempSid].count[index] += 1;
+//                 } else {
+//                     console.log(`*** INVALID tempaid : ${tempAid} tempsid: ${tempSid}`)
+//                 }
+//             }
 
-        } else {
-            return;
-        }
-    })
+//         } else {
+//             return;
+//         }
+//     })
 
-    // make the average
-    // get average
-    for (var tempActuator in responseMessage) {
-        for (var tempSensor in responseMessage[tempActuator]) {
-            if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
-                for (var i = 0; i < 48; i++) {
-                    if (responseMessage[tempActuator][tempSensor].count[i] > 0) {
-                        responseMessage[tempActuator][tempSensor].temperature[i] /= responseMessage[tempActuator][tempSensor].count[i];
-                        responseMessage[tempActuator][tempSensor].humidity[i] /= responseMessage[tempActuator][tempSensor].count[i];
-                        //  round the values
-                        responseMessage[tempActuator][tempSensor].temperature[i] = responseMessage[tempActuator][tempSensor].temperature[i].toPrecision(4);
-                        responseMessage[tempActuator][tempSensor].humidity[i] = responseMessage[tempActuator][tempSensor].humidity[i].toPrecision(4);
+//     // make the average
+//     // get average
+//     for (var tempActuator in responseMessage) {
+//         for (var tempSensor in responseMessage[tempActuator]) {
+//             if (typeof responseMessage[tempActuator][tempSensor] != "undefined") {
+//                 for (var i = 0; i < 48; i++) {
+//                     if (responseMessage[tempActuator][tempSensor].count[i] > 0) {
+//                         responseMessage[tempActuator][tempSensor].temperature[i] /= responseMessage[tempActuator][tempSensor].count[i];
+//                         responseMessage[tempActuator][tempSensor].humidity[i] /= responseMessage[tempActuator][tempSensor].count[i];
+//                         //  round the values
+//                         responseMessage[tempActuator][tempSensor].temperature[i] = responseMessage[tempActuator][tempSensor].temperature[i].toPrecision(4);
+//                         responseMessage[tempActuator][tempSensor].humidity[i] = responseMessage[tempActuator][tempSensor].humidity[i].toPrecision(4);
 
-                    } else {
-                        responseMessage[tempActuator][tempSensor].temperature[i] /= NaN;
-                        responseMessage[tempActuator][tempSensor].humidity[i] /= NaN;
-                    }
-                }
+//                     } else {
+//                         responseMessage[tempActuator][tempSensor].temperature[i] /= NaN;
+//                         responseMessage[tempActuator][tempSensor].humidity[i] /= NaN;
+//                     }
+//                 }
 
-            }
-        }
-    }
-    res.status(200).send(responseMessage);
-}
+//             }
+//         }
+//     }
+//     res.status(200).send(responseMessage);
+// }
 
 
 // /**
@@ -774,6 +774,111 @@ exports.dayReport = async(req, res) => {
         res.status(200).send(response);
         // res.send("you hit day report");
     }
+
+
+
+
+
+    // like today history but today history wokrs on sensor status model which is obsolete now but today report works on report
+
+    exports.todayReport = async(req, res) => {
+        aidList = req.body.aidList;
+        y = moment().jYear();
+        m = moment().jMonth()+1;
+        d= moment().jDate();
+
+        if (m > 6) {
+            daysInMonth = 30;
+        } else {
+            daysInMonth = 31
+        }
+
+        // check received data if they are resonable or not !
+        if (aidList.length == 0) {
+            res.status(404).send("101");
+            return;
+        } else {
+            if (y == null || m == null) {
+                res.status(400).send("900")
+                return;
+            }
+            if (m > 12 || m <= 0 || y < 1390 || y > 1450 || d > 31 || d < 1) {
+                res.status(400).send("903");
+                return;
+            }
+        }
+        actuatorLists = await Actuator.find({});
+
+        if (actuatorLists.length == 0) {
+            res.status(404).send("103");
+            return;
+        }
+
+        var data = []
+        for (var i = 0; i < actuatorLists.length; i++) {
+            if (aidList.includes(actuatorLists[i].aid)) {
+                let tempAid = {};
+                tempAid.aid = actuatorLists[i].aid;
+                tempAid.data = []
+                for (var j = 0; j < actuatorLists[i].conf.sensorsList.length; j++) {
+                    let tempSid = {};
+                    tempSid.sid = actuatorLists[i].conf.sensorsList[j].sid;
+                    tempSid.avgH = 0;
+                    tempSid.avgT = 0;
+                    // every 30 min in a day
+                    tempSid.humidity = [];
+                    tempSid.temperature = [];
+                    tempAid.data.push(tempSid);
+                    delete tempSid;
+                }
+                data.push(tempAid)
+                delete tempAid;
+            } else {
+                continue;
+            }
+        }
+
+        relatedReports = await Report.find({
+            y: y,
+            m: m,
+            d: d
+        });
+
+
+        for (var i = 0; i < relatedReports.length; i++) {
+            if (aidList.includes(relatedReports[i].aid)) {
+                tempAid = relatedReports[i].aid;
+                // find related aid index in data 
+                indexAID = data.findIndex(el => el.aid == tempAid);
+                d = relatedReports[i].d;
+                for (var j = 0; j < relatedReports[i].data.length; j++) {
+                    tempSid = relatedReports[i].data[j].sid;
+                    tempH = relatedReports[i].data[j].avgHumidity;
+                    tempT = relatedReports[i].data[j].avgTemperature;
+                    // find related sid index in data[indexAID]
+                    indexSID = data[indexAID].data.findIndex(el => el.sid == tempSid);
+                    data[indexAID].data[indexSID].temperature = relatedReports[i].data[j].temperature;
+                    data[indexAID].data[indexSID].humidity = relatedReports[i].data[j].humidity;
+                    data[indexAID].data[indexSID].avgH = relatedReports[i].data[j].avgHumidity;
+                    data[indexAID].data[indexSID].avgT = relatedReports[i].data[j].avgTemperature;
+                }
+            }
+        }
+
+        let response = {};
+        response.data = data;
+        response.m = m;
+        response.y = y;
+        response.d = d;
+        res.status(200).send(response);
+        // res.send("you hit day report");
+    }
+
+
+
+
+
+
     /**
      * method: POST 
      * Auth: required
