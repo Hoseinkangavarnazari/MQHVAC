@@ -19,7 +19,7 @@ var mqtt = require("mqtt");
 //     clientId: "mqttjs99"
 // };
 
-// const mqttBroker = "mqtt://mqtt.eclipse.org"
+//  const mqttBroker = "mqtt://mqtt.eclipse.org"
 
 const mqttBroker = "mqtt://localhost:1883";
 
@@ -30,7 +30,7 @@ const options = {
 
 
 var mqttClient = mqtt.connect(mqttBroker, {
-    clientId: "ESP8266Client-"
+    clientId: "test"
 }, options);
 
 mqttClient.on("connect", () => {
