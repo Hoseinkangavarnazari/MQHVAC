@@ -1003,33 +1003,79 @@ exports.upTimeReport = async(req, res) => {
     }
 
 
+    // you will send data using following structure
+
+
+    let predata ={
+        "1": Array(daysInMonth).fill(0),
+        "2":Array(daysInMonth).fill(0),
+        "3": Array(daysInMonth).fill(0),
+        "4":Array(daysInMonth).fill(0),
+        "5": Array(daysInMonth).fill(0),
+        "6":Array(daysInMonth).fill(0)
+    }
+
     // search reporst in given year and month and then for each actuator and day we will have a power consumption report
 
 
+    // find the currect index according to given time
+    let starting_index= startTime * 2;
+    let finish_index= finishTime*2;
+
+    // returns the data only when workingPeriod is exist in our data 
+    reports = await Report.find({m:m,y:y, workingPeriod:{$exists: true}});
+
+    for (var i = 0; i < reports.length; i++) {
+        // first check if it is available
+
+        let tempaid = reports[i].aid;
+        let tempDay =reports[i].d;
+        if(tempDay ==27){
+            let a=29038659;
+        }
+
+        for (var j = starting_index ; j < finish_index; j++) {
+
+            var numberON= reports[i].workingPeriod.on[j].value;
+            var numberOFF= reports[i].workingPeriod.off[j].value;
+            var total = numberON + numberOFF;
+
+            if (total !=0){
+
+                onTimeMinutes = Math.floor((numberON/total)*30);
+                predata[tempaid][tempDay] += onTimeMinutes;
+
+            }
+
+        }
+
+
+    }
 
     let data = [{
-            aid: "1",
-            pc: Array(30).fill(1)
-        },
-        {
-            aid: "2",
-            pc: Array(30).fill(2)
-        },
-        {
-            aid: "3",
-            pc: Array(30).fill(3)
-        }, {
-            aid: "4",
-            pc: Array(30).fill(4)
-        },
-        {
-            aid: "5",
-            pc: Array(30).fill(5)
-        },
-        {
-            aid: "6",
-            pc: Array(30).fill(6)
-        }
-    ];
+        aid: "1",
+        pc: predata["1"]
+    },
+    {
+        aid: "2",
+        pc: predata["2"]
+    },
+    {
+        aid: "3",
+        pc: predata["3"]
+    }, {
+        aid: "4",
+        pc: predata["4"]
+    },
+    {
+        aid: "5",
+        pc: predata["5"]
+    },
+    {
+        aid: "6",
+        pc: predata["6"]
+    }
+];
+
     res.status(200).send(data)
 }
