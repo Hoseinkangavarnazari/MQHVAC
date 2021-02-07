@@ -72,7 +72,7 @@ app.get("/reports", function(req, res, next) {
 });
 
 //SEVER
-const PORT = 2999;
+const PORT = 80;
 app.listen(PORT, function() {
     console.log("Server application is listening port " + PORT + ".");
 });

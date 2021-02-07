@@ -24,7 +24,7 @@ function search() {
 
 
     var request = $.ajax({
-        url: "http://localhost:2999/sensor_status/uptime_report",
+        url: "http://192.168.99.8:80/sensor_status/uptime_report",
         method: "POST",
         data: data,
         dataType: "json",
@@ -79,8 +79,12 @@ function search() {
 
 
 function changeReport(aid) {
+
+    if (window.chart !=undefined) {
+        window.chart.destroy();
+    }
     console.log("Change report received from aid:", aid);
-    var chart = new Chart(ctx3, {
+    window.chart = new Chart(ctx3, {
         // The type of chart we want to create
         type: 'bar',
 
@@ -95,7 +99,9 @@ function changeReport(aid) {
             }]
         },
         // Configuration options go here
-        options: {}
+        options: {
+        
+        }
     });
     
     document.getElementById("legend").style.visibility = "visible";

@@ -23,7 +23,7 @@ function search() {
 
 
     var request = $.ajax({
-        url: "http://localhost:2999/sensor_status/month_report",
+        url: "http://192.168.99.8:80/sensor_status/month_report",
         method: "POST",
         data: data,
         dataType: "json"
@@ -63,9 +63,14 @@ function search() {
 
 
 function changeDiagram(aid) {
-    var chart = new Chart(ctx2, {
+
+    if (window.chart !=undefined) {
+        window.chart.destroy();
+    }
+
+    window.chart = new Chart(ctx2, {
         // The type of chart we want to create
-        type: 'line',
+        type: 'bar',
 
         // The data for our dataset
         data: {
@@ -78,7 +83,8 @@ function changeDiagram(aid) {
             }]
         },
         // Configuration options go here
-        options: {}
+        options: {
+        }
     });
     document.getElementById("legend").style.visibility = "visible";
 }
