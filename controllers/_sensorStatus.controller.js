@@ -1135,7 +1135,7 @@ exports.upTimeReport = async(req, res) => {
 
         let tempaid = reports[i].aid;
         let tempDay =reports[i].d;
-        if(tempDay ==27){
+        if(tempDay ==30){
             let a=29038659;
         }
 
@@ -1148,7 +1148,7 @@ exports.upTimeReport = async(req, res) => {
             if (total !=0){
 
                 onTimeMinutes = Math.floor((numberON/total)*30);
-                predata[tempaid][tempDay] += onTimeMinutes;
+                predata[tempaid][tempDay-1] += onTimeMinutes;
 
             }
 

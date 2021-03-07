@@ -75,7 +75,7 @@
             
             
             msg = msg.data[0].data;
-            // console.log(msg[0].temperature);
+            // console.log(msg);
             sensorIDTEMP = "a" + aid + "s";
 
             allTemperatureVector = [];
@@ -86,13 +86,34 @@
 
 
             let atv = allTemperatureVector;
+            window.gatv=atv;
+           
             avgTempRes = [];
 
             for (var i = 0; i < 48; i++) {
                 // calculate the average!
-                avgTempRes.push(Math.round((atv[0][i].value + atv[1][i].value + atv[2][i].value + atv[3][i].value + atv[4][i].value + atv[5][i].value) / 6))
+                // dont consider the sensors without information in here
+                activeSensorsCount= 0;
+
+                for( j=0;  j< 5;j++){
+                    if(atv[j][i].count >0){ 
+                        activeSensorsCount++;
+                    }
+                }
+
+                
+
+                // if(activeSensorsCount==0){
+                //     for( j=0; j< 5;j++){
+                //         console.log(atv[j][i].value); 
+                //     }
+                //     activeSensorsCount=0;
+                // }
+
+                // console.log(activeSensorsCount);
+                avgTempRes.push(Math.round((atv[0][i].value + atv[1][i].value + atv[2][i].value + atv[3][i].value + atv[4][i].value) / activeSensorsCount))
             }
-            // console.log(avgTempRes);
+            console.log(avgTempRes);
 
             information = avgTempRes;
 
@@ -120,6 +141,29 @@
 
                 // Configuration options go here
                 options: {
+                    scales: {
+                        xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'ساعت',
+                                    fontSize:20
+                                }
+                            }],
+                        yAxes: [{
+                                display: true,
+                                ticks: {
+                                    
+                                    beginAtZero:true
+                                    
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'دما',
+                                    fontSize:20
+                                }
+                            }]
+                    },
                     legend: {
                         display: true,
                         labels: {

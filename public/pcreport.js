@@ -100,8 +100,26 @@ function changeReport(aid) {
         },
         // Configuration options go here
         options: {
-        
+            scales: {
+                xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'تاریخ روز',
+                            fontSize:20
+                        }
+                    }],
+                yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'روشن بودن سیستم به دقیقه',
+                            fontSize:20
+                        }
+                    }]
+            },
         }
+        
     });
     
     document.getElementById("legend").style.visibility = "visible";

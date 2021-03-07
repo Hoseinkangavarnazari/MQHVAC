@@ -48,13 +48,13 @@ function search() {
                 asog.push(element.data[i.toString()].temperature);
             }
 
-            // console.log(asog);
+            console.log(asog);
 
             avgTempRes = [];
 
             for (var i = 0; i < asog[0].length; i++) {
                 // calculate the average! for each gateway acros 6 sensors
-                avgTempRes.push((asog[0][i] + asog[1][i] + asog[2][i] + asog[3][i] + asog[4][i] + asog[5][i]) / 6)
+                avgTempRes.push(Math.round((asog[0][i] + asog[1][i] + asog[2][i] + asog[3][i] + asog[4][i]) / 5));
             }
             globalReport[element.aid] = avgTempRes;
         })
@@ -84,6 +84,24 @@ function changeDiagram(aid) {
         },
         // Configuration options go here
         options: {
+            scales: {
+                xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'تاریخ روز',
+                            fontSize:20
+                        }
+                    }],
+                yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'دما',
+                            fontSize:20
+                        }
+                    }]
+            },
         }
     });
     document.getElementById("legend").style.visibility = "visible";
